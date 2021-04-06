@@ -9,6 +9,6 @@ for i in range(21):
 
 print(len(my_set))
 
-# with open('species_names.txt', 'wb') as f:
-#    pickle.dump(species_names, f)
+with open('species_names.txt', 'wb') as f:
+   pickle.dump(species_names, f)
 
