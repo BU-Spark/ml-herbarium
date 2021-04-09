@@ -14,7 +14,7 @@ Use CRAFT's heatmap to detect text on the Herbarium specimen. Next, expand the r
 1. Environment Setup: 
       * Clone the Label_Segmentation Branch (has an environment.yml file) 
       * conda env create --name envname --file=environment.yml
-2. Update path: 
+2. Update path in test.py: 
       * Change line 49 to where you placed the original specimen scans  
       * Change line 50 to an arbitrary local directory
       * Change line 226 to where you want to store the cropped labels
