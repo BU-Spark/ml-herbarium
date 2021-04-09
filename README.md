@@ -6,7 +6,7 @@
 Use CRAFT's heatmap to detect text on the Herbarium specimen. Next, expand the resulting bounding box, merge overlapping ones, then crop out the label which contains specimen type, name, location, etc. by identifying the largest bounding box on the images. 
 
 #### *Results* 
-[Labels](https://drive.google.com/file/d/1YqlqDSl7fUcgLrR02slxLUG_mLXbevEF/view?usp=sharing) 
+[Sample Labels](https://drive.google.com/file/d/1YqlqDSl7fUcgLrR02slxLUG_mLXbevEF/view?usp=sharing) 
 
 [Grouth Truth](https://github.com/mzheng27/Herbarium_Project/blob/main/words.txt) 
 
