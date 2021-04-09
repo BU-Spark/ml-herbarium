@@ -1,5 +1,18 @@
 # Herbarium_Project
 
+### Scraping Scripts
+#### *Usage*
+Use these scritps to scrape plant data to use for training and validation
+
+#### *Results*
+The results are the included files: `species.json` (species images) and `species_names.txt` (this is a python set binary that can be opened using pickle)
+
+#### *Testing*
+1. Environment Setup (for both `scrape_images.py` and  `scrape_plant_names.py`): 
+      * Make sure you have sellenium Installed. you may need an OS-specific chrome webdriver that is in the same directory as these files. The files can be found in the 'herb_dat' folder
+      * Beware that these scripts could take DAYS to run, so just use them as a way to test that they actually run. Note that for the `species_names.txt`,
+        we saved different sections of the set of plant names to avoid any memory issues, and created `species_names.txt` separately on a local machine
+        using the union of these sets
 
 ### Label Segmentation
 #### *Usage*
