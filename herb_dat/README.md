@@ -1,0 +1,3 @@
+1. species_names.pkl is a Python set pickle containing all species names from http://powo.science.kew.org/?q=
+2. words.txt is obtained by spliting all strings in species_names by space ' ' and putting them in a set to remove duplicates; however, strings that contain 'X' or '+' (meaning hybrid species) were excluded. We will primarily be using this.
+3. words2.txt is obtained by splitting all strings in species_names by any non-alphanumerical character and putting them in a set. Additionally, all names were split by ' ' and put int the set. This means that when we encounter "alfredi-fuchsii", we will store "alfredi-fuchsii", "alfredi", and "fuchsii" in the set.
