@@ -13,7 +13,7 @@ import time
 chromedriver_location = os.getcwd() + '/chromedriver'
 driver = webdriver.Chrome(chromedriver_location)
 
-CNH_SITE = "https://neherbaria.org/portal/checklists/checklist.php?clid=61&pid=5"
+CNH_SITE = "https://neherbaria.org/portal/checklists/checklist.php?clid=28&pid=3"
 CNH_CHECKLIST = "https://neherbaria.org/portal/checklists/"
 
 driver.implicitly_wait(10)
