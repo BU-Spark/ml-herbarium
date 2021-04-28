@@ -315,9 +315,9 @@ for i,lines in enumerate(all_decoded_am):
 cnt = 0
 for i,t in enumerate(gt_txt):
     if t == final[i]:
-        print("img "+str(i)+": "+t)
+        print(fname+": "+t)
         cnt+=1
     else:
-        print("img "+str(i)+": N/A")
+        print(fname+": N/A")
 print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
 
