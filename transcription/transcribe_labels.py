@@ -240,6 +240,7 @@ def get_denoised(prob, ctc_bs=False):
     return output.strip()
 
 
+### --------------------------------- Turn character probs into words --------------------------------- ###
 all_decoded_am = [] # arg max
 all_decoded_bs = [] # beam search
 
@@ -271,8 +272,9 @@ for i, form_character_probs in enumerate(character_probs):
     # axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
     # axs[-1].axis('off')
 
-from difflib import get_close_matches
 
+### --------------------------------- Match words to corpus --------------------------------- ###
+from difflib import get_close_matches
 cnt = 0
 final = []
 for i,lines in enumerate(all_decoded_am):
@@ -308,6 +310,8 @@ for i,lines in enumerate(all_decoded_am):
     
 # print("matched ", cnt, " out of ", len(imgs))
 
+
+### --------------------------------- Determine which are same as ground truth --------------------------------- ###
 cnt = 0
 for i,t in enumerate(gt_txt):
     if t == final[i]:
