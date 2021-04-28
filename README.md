@@ -15,6 +15,10 @@ The results are the included files: `species.json` (species images) and `species
         using the union of these sets
       * Run `scrape_images.py` or  `scrape_plant_names.py`
 
+#### *Download and Convert to IAM format*
+* Specifies the path to `bruh.json` file
+* Runs `python download.py`
+
 ### Label Segmentation
 #### *Usage*
 Use CRAFT's heatmap to detect text on the Herbarium specimen. Next, expand the resulting bounding box, merge overlapping ones, then crop out the label which contains specimen type, name, location, etc. by identifying the largest bounding box on the images. 
