@@ -9,10 +9,10 @@ folder respectively.
 Dependencies can be found in requirements.txt
 
 ## Instructions for running on the SCC
-Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if your system does not have all of the following modules)
+Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if don't have / don't need some modules)
 
 ```
-module load python3/3.8.6 mxnet/1.7.0 opencv/4.5.0 pytorch/1.8.1
+module load python3/3.8.6 cuda/11.1 mxnet/1.7.0 opencv/4.5.0 pytorch/1.8.1
 git clone https://github.com/mzheng27/Herbarium_Project
 cd Herbarium_Project
 pip install -r requirements.txt
