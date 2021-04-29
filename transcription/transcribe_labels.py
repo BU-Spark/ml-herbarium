@@ -65,7 +65,7 @@ def get_imgsAndBoxes():
 	# get the original images to crop them
 	for fname in sorted(os.listdir(org_img_dir)):
 		if ".jpg" in fname:
-			imgs.append(cv2.imread(os.path.join(org_img_dir, fname)))
+			imgs.append(cv2.imread(os.path.join(org_img_dir, fname), cv2.IMREAD_GRAYSCALE))
 			fnames.append(fname)
 
 	return boxes,imgs,fnames
@@ -250,7 +250,7 @@ for i, form_character_probs in enumerate(character_probs):
 	this_am = [] 
 	this_bs = []
 	
-	print(i)
+	# print(i)
 	for j, line_character_probs in enumerate(form_character_probs):
 		decoded_line_am = get_arg_max(line_character_probs)
 		# print("[AM]",decoded_line_am)
@@ -312,7 +312,7 @@ for i,lines in enumerate(all_decoded_am):
 
 
 ### --------------------------------- Determine which are same as ground truth --------------------------------- ###
-f = open("results.txt", w)
+f = open("results.txt", "w")
 cnt = 0
 for i,t in enumerate(gt_txt):
 	if t == final[i]:
