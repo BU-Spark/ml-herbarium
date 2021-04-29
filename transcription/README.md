@@ -10,7 +10,7 @@ Documentation found here: https://github.com/awslabs/handwritten-text-recognitio
 
 To run CRAFT, enter the CRAFT directory and run:
 ```
-python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../../in_data"
 ```
 This will process the images in the global "in_data" folder <br />
 

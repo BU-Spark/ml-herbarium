@@ -294,7 +294,7 @@ if gt_txt != None:
 	f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
 	f.close()
 else:
-	for i,n in fnames:
+	for i,n in enumerate(fnames):
 		f.write(n+": "+final[i])
 	f.close()
 
