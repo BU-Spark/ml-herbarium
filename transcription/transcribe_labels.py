@@ -317,11 +317,11 @@ cnt = 0
 for i,t in enumerate(gt_txt):
 	if t == final[i]:
 		print(fnames[i]+": "+t)
-		f.write(fnames[i]+": "+t)
+		f.write(fnames[i]+": "+t+"\n")
 		cnt+=1
 	else:
 		print(fnames[i]+": N/A")
-		f.write(fnames[i]+": N/A")
+		f.write(fnames[i]+": N/A\n")
 
 print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
 f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
