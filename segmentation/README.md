@@ -20,6 +20,8 @@ This will process the images in the global "in_data" folder
 
 Then, this script can be run and will create a `labels` folder where it will output the cropped labels.
 ```
+cd ../..
+cd segmentation
 python seg_label.py
 ```
 

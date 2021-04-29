@@ -3,6 +3,7 @@ This script uses transfer learning on a pretrained CNN-bi-LSTM network (```check
 
 To run the training script, 
 ```
+cd training_model
 python train_model.py
 ```
 The weights of the new models will be save to the checkpoint_models directory. 

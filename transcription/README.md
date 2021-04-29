@@ -17,6 +17,8 @@ This will process the images in the global "in_data" folder <br />
 
 Once CRAFT has processed the input data, come back to this directory and run:
 ```
+cd ../..
+cd transcription
 python transcribe_labels.py
 ```
 This script will take those text boxes outputted by CRAFT along with the original images, to output the labels of the images it was able to transcribe into
