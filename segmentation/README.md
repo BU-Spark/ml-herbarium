@@ -10,9 +10,9 @@ resulting combined boxes to have an even higher probability of retaining the lab
 of text using CRAFT's text boxes, which can then be used in models such as the AWS MXNET for testing or training. 
 
 
-To run CRAFT, enter the CRAFT directory and run:
+To run CRAFT, change to the CRAFT directory and run:
 ```
-python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../../in_data"
 ```
 This will process the images in the global "in_data" folder 
 
