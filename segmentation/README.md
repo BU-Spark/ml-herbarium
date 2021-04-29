@@ -12,6 +12,7 @@ of text using CRAFT's text boxes, which can then be used in models such as the A
 
 To run CRAFT, change to the CRAFT directory and run:
 ```
+cd CRAFT/CRAFT-pytorch-master/
 python test.py --trained_model=craft_mlt_25k.pth --test_folder="../../in_data"
 ```
 This will process the images in the global "in_data" folder 
