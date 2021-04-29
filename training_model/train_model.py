@@ -30,7 +30,7 @@ np.seterr(all='raise')
 
 import multiprocessing
 mx.random.seed(1)
-from mxboard import SummaryWriter
+# from mxboard import SummaryWriter
 import matplotlib as plt
 import os
 import PIL

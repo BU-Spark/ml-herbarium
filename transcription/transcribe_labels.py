@@ -14,8 +14,6 @@ import matplotlib.patches as patches
 
 random.seed(123)
 
-import gluonnlp as nlp
-import leven
 import mxnet as mx
 from skimage import transform as skimage_tf, exposure
 from tqdm import tqdm
@@ -203,66 +201,31 @@ def get_arg_max(prob):
 	arg_max = prob.topk(axis=2).asnumpy()
 	return decoder_handwriting(arg_max)[0]
 
-def get_beam_search(prob, width=5):
-	possibilities = ctcBeamSearch(prob.softmax()[0].asnumpy(), alphabet_encoding, None, width)
-	return possibilities[0]
-
-### --------------------------------- Denoisers (unused in final) --------------------------------- ###
-FEATURE_LEN = 150
-denoiser = Denoiser(alphabet_size=len(ALPHABET), max_src_length=FEATURE_LEN, max_tgt_length=FEATURE_LEN, num_heads=16, embed_size=256, num_layers=2)
-denoiser.load_parameters('models/denoiser2.params', ctx=ctx)
-denoiser.hybridize(static_alloc=True)
-
-ctx_nlp = mx.cpu()# gpu(3)
-language_model, vocab = nlp.model.big_rnn_lm_2048_512(dataset_name='gbw', pretrained=True, ctx=ctx_nlp)
-moses_tokenizer = nlp.data.SacreMosesTokenizer()
-moses_detokenizer = nlp.data.SacreMosesDetokenizer()
-
-### --------------------------------- Beam sampler (unused in final) --------------------------------- ###
-beam_sampler = nlp.model.BeamSearchSampler(beam_size=20,
-										   decoder=denoiser.decode_logprob,
-										   eos_id=EOS,
-										   scorer=nlp.model.BeamSearchScorer(),
-										   max_length=150)
-
-generator = SequenceGenerator(beam_sampler, language_model, vocab, ctx_nlp, moses_tokenizer, moses_detokenizer)
-
-def get_denoised(prob, ctc_bs=False):
-	if ctc_bs: # Using ctc beam search before denoising yields only limited improvements a is very slow
-		text = get_beam_search(prob)
-	else:
-		text = get_arg_max(prob)
-	src_seq, src_valid_length = encode_char(text)
-	src_seq = mx.nd.array([src_seq], ctx=ctx)
-	src_valid_length = mx.nd.array(src_valid_length, ctx=ctx)
-	encoder_outputs, _ = denoiser.encode(src_seq, valid_length=src_valid_length)
-	states = denoiser.decoder.init_state_from_encoder(encoder_outputs, 
-													  encoder_valid_length=src_valid_length)
-	inputs = mx.nd.full(shape=(1,), ctx=src_seq.context, dtype=np.float32, val=BOS)
-	output = generator.generate_sequences(inputs, states, text)
-	return output.strip()
+# def get_beam_search(prob, width=5):
+# 	possibilities = ctcBeamSearch(prob.softmax()[0].asnumpy(), alphabet_encoding, None, width)
+# 	return possibilities[0]
 
 
 ### --------------------------------- Turn character probs into words --------------------------------- ###
 all_decoded_am = [] # arg max
-all_decoded_bs = [] # beam search
+# all_decoded_bs = [] # beam search
 
 for i, form_character_probs in enumerate(character_probs):
 	# fig, axs = plt.subplots(len(form_character_probs) + 1, 
 	#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
 	this_am = [] 
-	this_bs = []
+	# this_bs = []
 	
 	print("Processed img "+str(i)+" character prob")
 	for j, line_character_probs in enumerate(form_character_probs):
 		decoded_line_am = get_arg_max(line_character_probs)
 		# print("[AM]",decoded_line_am)
-		decoded_line_bs = get_beam_search(line_character_probs)
-		decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
+		# decoded_line_bs = get_beam_search(line_character_probs)
+		# decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
 		# print("[D ]",decoded_line_denoiser)
 		
 		this_am.append(decoded_line_am)
-		this_bs.append(decoded_line_bs)
+		# this_bs.append(decoded_line_bs)
 		
 		line_image = lines[i][j]
 		# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
@@ -270,7 +233,7 @@ for i, form_character_probs in enumerate(character_probs):
 		# axs[j].axis('off')
 	# print()
 	all_decoded_am.append(this_am)
-	all_decoded_bs.append(this_bs)
+	# all_decoded_bs.append(this_bs)
 	
 	# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
 	# axs[-1].axis('off')
