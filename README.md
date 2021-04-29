@@ -3,7 +3,7 @@
 For our final deliverable, we have a pipeline to segment the labels from the full specimen images, and another pipeline that will output label transcriptions
 for images it was able to correctly identify. Both work on images/data stored in the global "in_data" folder. 
 
-The segmentation is located in the `segmentation` folder and the transcription is located in the `transcription` folder, with further instructions in each
+The segmentation is located in the `segmentation` folder, the transcription is located in the `transcription` folder, and the transfer learning is located in the `training_model` folder with further instructions in each
 folder respectively. 
 
 Requirements can be found in requirements.txt
