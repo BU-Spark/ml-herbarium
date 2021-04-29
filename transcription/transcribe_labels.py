@@ -217,27 +217,27 @@ moses_detokenizer = nlp.data.SacreMosesDetokenizer()
 
 ### --------------------------------- Beam sampler (unused in final) --------------------------------- ###
 beam_sampler = nlp.model.BeamSearchSampler(beam_size=20,
-                                           decoder=denoiser.decode_logprob,
-                                           eos_id=EOS,
-                                           scorer=nlp.model.BeamSearchScorer(),
-                                           max_length=150)
+										   decoder=denoiser.decode_logprob,
+										   eos_id=EOS,
+										   scorer=nlp.model.BeamSearchScorer(),
+										   max_length=150)
 
 generator = SequenceGenerator(beam_sampler, language_model, vocab, ctx_nlp, moses_tokenizer, moses_detokenizer)
 
 def get_denoised(prob, ctc_bs=False):
-    if ctc_bs: # Using ctc beam search before denoising yields only limited improvements a is very slow
-        text = get_beam_search(prob)
-    else:
-        text = get_arg_max(prob)
-    src_seq, src_valid_length = encode_char(text)
-    src_seq = mx.nd.array([src_seq], ctx=ctx)
-    src_valid_length = mx.nd.array(src_valid_length, ctx=ctx)
-    encoder_outputs, _ = denoiser.encode(src_seq, valid_length=src_valid_length)
-    states = denoiser.decoder.init_state_from_encoder(encoder_outputs, 
-                                                      encoder_valid_length=src_valid_length)
-    inputs = mx.nd.full(shape=(1,), ctx=src_seq.context, dtype=np.float32, val=BOS)
-    output = generator.generate_sequences(inputs, states, text)
-    return output.strip()
+	if ctc_bs: # Using ctc beam search before denoising yields only limited improvements a is very slow
+		text = get_beam_search(prob)
+	else:
+		text = get_arg_max(prob)
+	src_seq, src_valid_length = encode_char(text)
+	src_seq = mx.nd.array([src_seq], ctx=ctx)
+	src_valid_length = mx.nd.array(src_valid_length, ctx=ctx)
+	encoder_outputs, _ = denoiser.encode(src_seq, valid_length=src_valid_length)
+	states = denoiser.decoder.init_state_from_encoder(encoder_outputs, 
+													  encoder_valid_length=src_valid_length)
+	inputs = mx.nd.full(shape=(1,), ctx=src_seq.context, dtype=np.float32, val=BOS)
+	output = generator.generate_sequences(inputs, states, text)
+	return output.strip()
 
 
 ### --------------------------------- Turn character probs into words --------------------------------- ###
@@ -245,32 +245,32 @@ all_decoded_am = [] # arg max
 all_decoded_bs = [] # beam search
 
 for i, form_character_probs in enumerate(character_probs):
-    # fig, axs = plt.subplots(len(form_character_probs) + 1, 
-    #                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
-    this_am = [] 
-    this_bs = []
-    
-    print(i)
-    for j, line_character_probs in enumerate(form_character_probs):
-        decoded_line_am = get_arg_max(line_character_probs)
-        # print("[AM]",decoded_line_am)
-        decoded_line_bs = get_beam_search(line_character_probs)
-        decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
-        # print("[D ]",decoded_line_denoiser)
-        
-        this_am.append(decoded_line_am)
-        this_bs.append(decoded_line_bs)
-        
-        line_image = lines[i][j]
-        # axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
-        # axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
-        # axs[j].axis('off')
-    # print()
-    all_decoded_am.append(this_am)
-    all_decoded_bs.append(this_bs)
-    
-    # axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
-    # axs[-1].axis('off')
+	# fig, axs = plt.subplots(len(form_character_probs) + 1, 
+	#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
+	this_am = [] 
+	this_bs = []
+	
+	print(i)
+	for j, line_character_probs in enumerate(form_character_probs):
+		decoded_line_am = get_arg_max(line_character_probs)
+		# print("[AM]",decoded_line_am)
+		decoded_line_bs = get_beam_search(line_character_probs)
+		decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
+		# print("[D ]",decoded_line_denoiser)
+		
+		this_am.append(decoded_line_am)
+		this_bs.append(decoded_line_bs)
+		
+		line_image = lines[i][j]
+		# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
+		# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
+		# axs[j].axis('off')
+	# print()
+	all_decoded_am.append(this_am)
+	all_decoded_bs.append(this_bs)
+	
+	# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
+	# axs[-1].axis('off')
 
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
@@ -278,46 +278,53 @@ from difflib import get_close_matches
 cnt = 0
 final = []
 for i,lines in enumerate(all_decoded_am):
-    matched = False
-    matches = []
+	matched = False
+	matches = []
 
-    for j,s in enumerate(lines):
-        tmp = get_close_matches(s, corpus)
-        if len(tmp) != 0:
-            matches.append(tmp)
+	for j,s in enumerate(lines):
+		tmp = get_close_matches(s, corpus)
+		if len(tmp) != 0:
+			matches.append(tmp)
 #             print('am matched words img'+str(i)+':',tmp)
-            matched = True
-        else:
-            split = s.split(" ")
-            for s2 in split:
-                tmp = get_close_matches(s2, corpus)
-                if len(tmp) != 0:
-                    matches.append(tmp)
+			matched = True
+		else:
+			split = s.split(" ")
+			for s2 in split:
+				tmp = get_close_matches(s2, corpus)
+				if len(tmp) != 0:
+					matches.append(tmp)
 #                     print("    img"+str(i)+":", tmp)
-                    matched = True
+					matched = True
 #         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
 
-    has_spaces = [label for strs in matches for label in strs if " " in label]
-    if len(has_spaces) > 0: 
-        # print('am matched words img'+str(i)+':',has_spaces)
-        final.append(has_spaces[0])
-    else: 
-        # print(print('am matched words img'+str(i)+':',matches))
-        final.append("-- "+str(i)+" --")
+	has_spaces = [label for strs in matches for label in strs if " " in label]
+	if len(has_spaces) > 0: 
+		# print('am matched words img'+str(i)+':',has_spaces)
+		final.append(has_spaces[0])
+	else: 
+		# print(print('am matched words img'+str(i)+':',matches))
+		final.append("-- "+str(i)+" --")
 
-    if matched: cnt+=1
-    # print()
-    
+	if matched: cnt+=1
+	# print()
+	
 # print("matched ", cnt, " out of ", len(imgs))
 
 
 ### --------------------------------- Determine which are same as ground truth --------------------------------- ###
+f = open("results.txt", w)
 cnt = 0
 for i,t in enumerate(gt_txt):
-    if t == final[i]:
-        print(fname+": "+t)
-        cnt+=1
-    else:
-        print(fname+": N/A")
+	if t == final[i]:
+		print(fname+": "+t)
+		f.write(fname+": "+t)
+		cnt+=1
+	else:
+		print(fname+": N/A")
+		f.write(fname+": N/A")
+
 print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
+f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
+f.close()
+
 
