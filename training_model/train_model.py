@@ -30,7 +30,7 @@ np.seterr(all='raise')
 
 import multiprocessing
 mx.random.seed(1)
-from mxboard import SummaryWriter
+# from mxboard import SummaryWriter
 import matplotlib as plt
 import os
 import PIL
@@ -39,9 +39,9 @@ from mxnet.gluon.data import dataset
 from ocr.handwriting_line_recognition import Network as HandwritingRecognitionNet, handwriting_recognition_transform
 from ocr.handwriting_line_recognition import decode 
 
-DATA_FOLDER = "../training_data/images/"
-checkpoint_dir = "../checkpoint_models/"
-log_dir = "../logs"
+DATA_FOLDER = "../training_model/training_data/images/"
+checkpoint_dir = "../training_model/checkpoint_models/"
+log_dir = "../training_model/logs"
 image_data_file_name = "image_data-word-text-word.plk"
 MAX_IMAGE_SIZE_WORD = (60, 800)
 
@@ -164,7 +164,7 @@ test_subjects = images_names[int(split*len(images_names)):]
 class IAMDataSet(dataset.ArrayDataset):
     def __init__(self, train=True): 
         images_data = []
-        f = open('../training_data/images/ground_truth.txt')
+        f = open('../training_model/training_data/ground_truth.txt')
         for line in f:
             if not line or line[0] == '#':
                 continue
@@ -257,14 +257,14 @@ def run_epoch(e, network, dataloader, trainer, log_dir, print_name, update_netwo
 ### --------------------------------- Create Datasets --------------------------------- ###
 
 train_ds = IAMDataSet(train=True)
-# print("Number of training samples: {}".format(len(train_ds)))
+print("Number of training samples: {}".format(len(train_ds)))
 test_ds = IAMDataSet(train=False)
-# print("Number of testing samples: {}".format(len(test_ds)))
+print("Number of testing samples: {}".format(len(test_ds)))
 train_data = gluon.data.DataLoader(train_ds.transform(augment_transform), BATCH_SIZE, shuffle=True, last_batch="rollover")
 test_data = gluon.data.DataLoader(test_ds.transform(transform), BATCH_SIZE, shuffle=False, last_batch="keep")
 ### --------------------------------- Create Model --------------------------------- ###
 net = HandwritingRecognitionNet(rnn_hidden_states=512,rnn_layers=2, ctx=ctx, max_seq_len=160)
-net.load_parameters("../checkpoint_models/handwriting_line8.params", ctx=ctx)
+net.load_parameters("../training_model/checkpoint_models/handwriting_line8.params", ctx=ctx)
 net.hybridize()
 schedule = mx.lr_scheduler.FactorScheduler(step=lr_period, factor=lr_scale)
 schedule.base_lr = learning_rate
