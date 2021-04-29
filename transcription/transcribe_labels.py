@@ -250,7 +250,7 @@ for i, form_character_probs in enumerate(character_probs):
 	this_am = [] 
 	this_bs = []
 	
-	print("Processed img "+i+" character prob")
+	print("Processed img "+str(i)+" character prob")
 	for j, line_character_probs in enumerate(form_character_probs):
 		decoded_line_am = get_arg_max(line_character_probs)
 		# print("[AM]",decoded_line_am)
