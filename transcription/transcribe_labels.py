@@ -250,7 +250,7 @@ for i, form_character_probs in enumerate(character_probs):
 	this_am = [] 
 	this_bs = []
 	
-	# print(i)
+	print("Processed img "+i+" character prob")
 	for j, line_character_probs in enumerate(form_character_probs):
 		decoded_line_am = get_arg_max(line_character_probs)
 		# print("[AM]",decoded_line_am)
@@ -316,12 +316,12 @@ f = open("results.txt", "w")
 cnt = 0
 for i,t in enumerate(gt_txt):
 	if t == final[i]:
-		print(fname+": "+t)
-		f.write(fname+": "+t)
+		print(fnames[i]+": "+t)
+		f.write(fnames[i]+": "+t)
 		cnt+=1
 	else:
-		print(fname+": N/A")
-		f.write(fname+": N/A")
+		print(fnames[i]+": N/A")
+		f.write(fnames[i]+": N/A")
 
 print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
 f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
