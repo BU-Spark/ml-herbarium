@@ -6,7 +6,7 @@ for images it was able to correctly identify. Both work on images/data stored in
 The segmentation is located in the `segmentation` folder, the transcription is located in the `transcription` folder, and the transfer learning is located in the `training_model` folder with further instructions in each
 folder respectively. 
 
-Requirements can be found in requirements.txt
+Dependencies can be found in requirements.txt
 
 ## Instructions for running on the SCC
 Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if your system does not have all of the following modules)
