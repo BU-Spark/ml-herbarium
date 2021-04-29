@@ -72,8 +72,11 @@ def get_imgsAndBoxes():
 
 def get_gt():
 	gt_dir = "../in_data/"
-	gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
-	return gt
+	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
+		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
+		return gt
+
+	return None
 
 def get_corpus():
 	corpus_dir = "../in_data/"
@@ -311,20 +314,24 @@ for i,lines in enumerate(all_decoded_am):
 # print("matched ", cnt, " out of ", len(imgs))
 
 
-### --------------------------------- Determine which are same as ground truth --------------------------------- ###
+### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 f = open("results.txt", "w")
 cnt = 0
-for i,t in enumerate(gt_txt):
-	if t == final[i]:
-		print(fnames[i]+": "+t)
-		f.write(fnames[i]+": "+t+"\n")
-		cnt+=1
-	else:
-		print(fnames[i]+": N/A")
-		f.write(fnames[i]+": N/A\n")
+if gt_txt != None:
+	for i,t in enumerate(gt_txt):
+		if t == final[i]:
+			print(fnames[i]+": "+t)
+			f.write(fnames[i]+": "+t+"\n")
+			cnt+=1
+		else:
+			print(fnames[i]+": N/A")
+			f.write(fnames[i]+": N/A\n")
 
-print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
-f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
-f.close()
-
+	print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
+	f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
+	f.close()
+else:
+	for i,n in fnames:
+		f.write(n+": "+final[i])
+	f.close()
 
