@@ -9,9 +9,17 @@ boxes, expands them, combines overlapping boxes, and keeps the largest resulting
 resulting combined boxes to have an even higher probability of retaining the label. The script also contains code that will crop out sub-images of the lines 
 of text using CRAFT's text boxes, which can then be used in models such as the AWS MXNET for testing or training. 
 
-The script can be run with:
+
+To run CRAFT, enter the CRAFT directory and run:
+```
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+```
+This will process the images in the global "in_data" folder 
+
+
+Then, this script can be run and will create a `labels` folder where it will output the cropped labels.
 ```
 python segmentation.py
 ```
-It will use the text boxes output by CRAFT and segment out the largest blob it finds, which 95% of the time will be the requisite label. These cropped
-labels will be in a directory called "labels", located within the CRAFT directory.
+
+It will use the text boxes output by CRAFT and segment out the largest blob it finds, which 95% of the time will be the requisite label.
