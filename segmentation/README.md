@@ -13,3 +13,5 @@ The script can be run with:
 ```
 python segmentation.py
 ```
+It will use the text boxes output by CRAFT and segment out the largest blob it finds, which 95% of the time will be the requisite label. These cropped
+labels will be in a directory called "labels", located within the CRAFT directory.
