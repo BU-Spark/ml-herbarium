@@ -19,4 +19,4 @@ Once CRAFT has processed the input data, this script can be run with:
 python transcribe_labels.py
 ```
 This script will take those text boxes outputted by CRAFT along with the original images, to output the labels of the images it was able to transcribe into
-this folder as "results.txt"
+this folder as "results.txt". Images one wants to run through the pipeline must be added to the `in_data` folder, along with the corresponding corpus text file. 
