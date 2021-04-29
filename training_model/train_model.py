@@ -209,7 +209,7 @@ random_x_scaling = 0.10
 random_y_scaling = 0.1
 random_shearing = 0.5
 max_seq_len = 48
-epochs = 35
+epochs = 32
 SEQ_LEN = 32
 BATCH_SIZE = 64
 

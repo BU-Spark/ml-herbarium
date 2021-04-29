@@ -173,7 +173,7 @@ lines = crop_lines(lines, imgs)
 ### --------------------------------- Handwritting recognition --------------------------------- ###
 handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
 															 rnn_layers=2, ctx=ctx, max_seq_len=160)
-pretrained_params = "models/herbarium_line_no_dropout_1e-3_tunedDecay.params"
+pretrained_params = "models/herb_line_trained_on_all.params"
 handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
 handwriting_line_recognition_net.hybridize()
 
