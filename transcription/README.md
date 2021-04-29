@@ -8,13 +8,14 @@ This model also requires installing the AWS MXNET library and its dependencies: 
 Documentation found here: https://github.com/awslabs/handwritten-text-recognition-for-apache-mxnet
 
 
-To run CRAFT, enter the CRAFT directory and run:
+To run CRAFT, change to the CRAFT directory and run:
 ```
-python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+cd CRAFT/CRAFT-pytorch-master/
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../../in_data"
 ```
 This will process the images in the global "in_data" folder <br />
 
-Once CRAFT has processed the input data, this script can be run with:
+Once CRAFT has processed the input data, come back to this directory and run:
 ```
 python transcribe_labels.py
 ```

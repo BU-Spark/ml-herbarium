@@ -10,16 +10,17 @@ resulting combined boxes to have an even higher probability of retaining the lab
 of text using CRAFT's text boxes, which can then be used in models such as the AWS MXNET for testing or training. 
 
 
-To run CRAFT, enter the CRAFT directory and run:
+To run CRAFT, change to the CRAFT directory and run:
 ```
-python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+cd CRAFT/CRAFT-pytorch-master/
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../../in_data"
 ```
 This will process the images in the global "in_data" folder 
 
 
 Then, this script can be run and will create a `labels` folder where it will output the cropped labels.
 ```
-python segmentation.py
+python seg_label.py
 ```
 
 It will use the text boxes output by CRAFT and segment out the largest blob it finds, which 95% of the time will be the requisite label.
