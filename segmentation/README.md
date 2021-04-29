@@ -20,7 +20,7 @@ This will process the images in the global "in_data" folder
 
 Then, this script can be run and will create a `labels` folder where it will output the cropped labels.
 ```
-python segmentation.py
+python seg_label.py
 ```
 
 It will use the text boxes output by CRAFT and segment out the largest blob it finds, which 95% of the time will be the requisite label.
