@@ -6,3 +6,4 @@ for images it was able to correctly identify. Both work on images/data stored in
 The segmentation is located in the `segmentation` folder and the transcription is located in the `transcription` folder, with further instructions in each
 folder respectively. 
 
+Requirements can be found in requirements.txt
