@@ -20,7 +20,7 @@ import mxnet as mx
 from skimage import transform as skimage_tf, exposure
 from tqdm import tqdm
 
-os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
+# os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
 print(os.getcwd())
 from ocr.utils.expand_bounding_box import expand_bounding_box
 from ocr.utils.sclite_helper import ScliteHelper
