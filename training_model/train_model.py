@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import pickle
 import glob
 import matplotlib.gridspec as gridspec
-%matplotlib inline
+#%matplotlib inline
 from skimage import transform as skimage_tf
 from skimage import exposure
 np.seterr(all='raise')
