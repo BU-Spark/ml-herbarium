@@ -20,25 +20,25 @@ from tqdm import tqdm
 
 # os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
 print(os.getcwd())
-from ocr.utils.expand_bounding_box import expand_bounding_box
-from ocr.utils.sclite_helper import ScliteHelper
-from ocr.utils.word_to_line import sort_bbs_line_by_line, crop_line_images
-from ocr.utils.iam_dataset import IAMDataset, resize_image, crop_image, crop_handwriting_page
-from ocr.utils.encoder_decoder import Denoiser, ALPHABET, encode_char, decode_char, EOS, BOS
-from ocr.utils.beam_search import ctcBeamSearch
+# from ocr.utils.expand_bounding_box import expand_bounding_box
+# from ocr.utils.sclite_helper import ScliteHelper
+# from ocr.utils.word_to_line import sort_bbs_line_by_line, crop_line_images
+# from ocr.utils.iam_dataset import IAMDataset, resize_image, crop_image, crop_handwriting_page
+# from ocr.utils.encoder_decoder import ALPHABET, encode_char, decode_char, EOS, BOS
+# from ocr.utils.beam_search import ctcBeamSearch
 
-import ocr.utils.denoiser_utils
+# import ocr.utils.denoiser_utils
 import ocr.utils.beam_search
 
-importlib.reload(ocr.utils.denoiser_utils)
-from ocr.utils.denoiser_utils import SequenceGenerator
+# importlib.reload(ocr.utils.denoiser_utils)
+# from ocr.utils.denoiser_utils import SequenceGenerator
 
 importlib.reload(ocr.utils.beam_search)
-from ocr.utils.beam_search import ctcBeamSearch
+# from ocr.utils.beam_search import ctcBeamSearch
 
 
-from ocr.paragraph_segmentation_dcnn import SegmentationNetwork, paragraph_segmentation_transform
-from ocr.word_and_line_segmentation import SSD as WordSegmentationNet, predict_bounding_boxes
+# from ocr.paragraph_segmentation_dcnn import SegmentationNetwork, paragraph_segmentation_transform
+# from ocr.word_and_line_segmentation import SSD as WordSegmentationNet, predict_bounding_boxes
 from ocr.handwriting_line_recognition import Network as HandwritingRecognitionNet, handwriting_recognition_transform
 from ocr.handwriting_line_recognition import decode as decoder_handwriting, alphabet_encoding
 
