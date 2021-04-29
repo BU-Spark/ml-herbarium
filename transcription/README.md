@@ -7,10 +7,12 @@ This model also requires installing the AWS MXNET library and its dependencies:
 Documentation found here: https://github.com/awslabs/handwritten-text-recognition-for-apache-mxnet
 
 
-Once CRAFT has been run, this script will print out the determined specimen label for each image
-python test.py --trained_model=[weightfile] --test_folder=
+To run CRAFT, enter the CRAFT directory and run:
+```
+python test.py --trained_model=craft_mlt_25k.pth --test_folder="../in_data"
+```
 
-The script can be run with:
+Once CRAFT has processed the input data, this script can be run with:
 ```
 python transcribe_labels.py
 ```
