@@ -1,0 +1,51 @@
+# Author: Rishab 
+name: Add Collaborators v1.1
+
+on: 
+  push:
+    branches:
+      - master
+      - main
+      - dev
+
+jobs:
+  add-collaborators:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Add Collaborators
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{secrets.ADMIN_GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            const readline = require('readline');
+            const readInterface = readline.createInterface({
+              input: fs.createReadStream('./COLLABORATORS'),
+              output: process.stdout,
+              console: false
+            });
+            readInterface.on('line', async function(line) {
+              try {
+                await github.repos.checkCollaborator({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            username: line,
+                            });
+              } catch(err) {
+                console.log(err)
+                if(err.toString() === "HttpError: Not Found"){
+                  await github.repos.addCollaborator({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            username: line,
+                            permission: 'push'
+                            });
+                } else { 
+                  core.setFailed(err.toString())
+                }
+
+              }
+            });
+
