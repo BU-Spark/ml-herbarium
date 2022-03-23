@@ -12,10 +12,29 @@ Dependencies can be found in requirements.txt
 Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if don't have / don't need some modules)
 
 ```
-module load python3/3.8.6 cuda/11.1 mxnet/1.7.0 opencv/4.5.0 pytorch/1.8.1
+# syscall for executing jobs on GPU
+qrsh -l gpus=1 -l gpu_type=V100
+# pip cache not required for 3.8.10
+module load python3/3.8.10
+# unset this variable to let pip access it
+unset PIP_NO_CACHE_DIR
+# clear the cache
+pip cache purge
+# load other necessary modules
+module load mxnet/1.7.0
+module load pytorch/1.10.2
 git clone https://github.com/mzheng27/Herbarium_Project
 cd Herbarium_Project
+# create virtual environment for lower memory overhead
+python -m venv ./
+source bin/activate # execute virtualenv, run deactivate to exit
+# necessary installs
 pip install -r requirements.txt
+# bounding boxes for image masks of text boxes
+cd CRAFT/CRAFT-pytorch-master
+chmod +x bash_submit.sh # make script executable
+./bash_submit.sh # execute CRAFT detector on HUH images
+
 ```
 
 # Add Users
