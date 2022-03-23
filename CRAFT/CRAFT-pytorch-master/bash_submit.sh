@@ -8,7 +8,7 @@ module load python3/3.8.10
 module load mxnet/1.7.0
 module load pytorch/1.10.2
 
-python test.py --trained_model=craft_mlt_25k.pth --test_folder=/projectnb/sparkgrp/ml-herbarium-angeline/ml-herbarium/in_data/images
+python test.py --trained_model=craft_mlt_25k.pth --test_folder=../../in_data/images
 
 ###if you want to run on cpu, run the below command line###
-#python test.py --trained_model=craft_mlt_25k.pth --test_folder=/projectnb/sparkgrp/ml-herbarium-angeline/ml-herbarium/in_data/images/..cuda=False
+#python test.py --trained_model=craft_mlt_25k.pth --test_folder=../../in_data/images/..cuda=False
