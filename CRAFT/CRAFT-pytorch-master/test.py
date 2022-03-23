@@ -67,7 +67,7 @@ if not os.path.isdir(result_folder):
     os.mkdir(result_folder)
 
 def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, refine_net=None):
-    cuda=False ## **************************************** ##
+    cuda=True ## **************************************** ##
     t0 = time.time()
 
     # resize

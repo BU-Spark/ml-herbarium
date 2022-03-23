@@ -26,7 +26,14 @@ PyTorch implementation for CRAFT text detector that effectively detect text area
 - opencv-python>=3.4.2
 - check requiremtns.txt
 ```
-pip install -r requirements.txt
+cd ../../
+python -m venv ./ # do not run if already in virtual environment
+source bin/activate # activate virtualenv if not already activated
+pip install -r requirements.txt 
+cd CRAFT/CRAFT-pytorch-master 
+chmod +x bash_submit.sh # make script executable 
+./bash_submit.sh # execute
+
 ```
 
 ### Training
