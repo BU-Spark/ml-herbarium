@@ -47,7 +47,7 @@ ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 
 def get_imgsAndBoxes():
 	craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
-	org_img_dir = "../in_data/"
+	org_img_dir = "../in_data/images/"
 	boxes = []
 	imgs = []
 	fnames = []
@@ -62,7 +62,7 @@ def get_imgsAndBoxes():
 
 	# get the original images to crop them
 	for fname in sorted(os.listdir(org_img_dir)):
-		if ".jpg" in fname:
+		if ".jpeg" in fname:
 			imgs.append(cv2.imread(os.path.join(org_img_dir, fname), cv2.IMREAD_GRAYSCALE))
 			fnames.append(fname)
 
@@ -282,6 +282,8 @@ f = open("results.txt", "w")
 cnt = 0
 if gt_txt != None:
 	for i,t in enumerate(gt_txt):
+		#if i >= len(final):
+	#		break
 		if t == final[i]:
 			print(fnames[i]+": "+t)
 			f.write(fnames[i]+": "+t+"\n")

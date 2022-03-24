@@ -11,7 +11,7 @@ boxes = []
 # imgs = []
 
 for fname in sorted(os.listdir(craft_res_dir)):
-	if ".jpeg" in fname and "mask" not in fname:
+	if ".jpg" in fname and "mask" not in fname:
 		# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
 		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
 		tmp_txt = [line.split(",") for line in tmp_txt]
@@ -113,13 +113,15 @@ def sort_by_size(boxes):
 
 # crops the labels from the images
 def crop_labels(img, box):
+	print("&&&&&&&&&")
 	print(box)
-	#OLD #tl, tr, br, bl = box
+	#tl, tr, br, bl = box
 	#new
 	tl = box[1][0]
 	tr = box[1][1]
 	br = box[1][2]
 	bl = box[1][3]
+	
 	#endnew
 	return img[tl[1]:bl[1],tl[0]:tr[0]]
 
@@ -174,24 +176,30 @@ def crop_lines(boxes, imgs):
 
 # segment the labels
 boxes_exp = [expand_boxes(bxs, diff_axes=True) for bxs in boxes] # expand boxes
+#for bx in boxes_exp:
+#	print(bx)
+	
 boxes_comb = [combine_boxes(bxs) for bxs in boxes_exp] # combine the expanded boxes
+#print("#################")
 # new...
 boxes_comb_sorted = []
 for bxs in boxes_comb:
 	if not bxs:
-		break
+		continue
 	else:
-		x = sort_by_size(bxs)[0]
+		x = list(reversed(sort_by_size(bxs)))[0]
 		boxes_comb_sorted.append(x)
+
 #endnew
-#OLD #boxes_comb_sorted = [list((sort_by_size(bxs)))[0] for bxs in boxes_comb] # sort them and take the largest box
+#boxes_comb_sorted = [list((sort_by_size(bxs)))[0] for bxs in boxes_comb] # sort them and take the largest box
 labels = []
 #new...
-try:
-	for i in range(n_imgs):
+for i in range(n_imgs):
+	if i >= (len(boxes_comb_sorted)):
+		break
+	else:
 		labels.append(crop_labels(imgs[i],boxes_comb_sorted[i]))
-except IndexError:
-	print("index error at ", i)
+	#print("index error at ", i)
 #endnew
 #OLD #labels = [crop_labels(imgs[i], boxes_comb_sorted[i]) for i in range(n_imgs)] # segment label
 
