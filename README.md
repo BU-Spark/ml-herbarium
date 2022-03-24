@@ -12,8 +12,12 @@ Dependencies can be found in requirements.txt
 Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if don't have / don't need some modules)
 
 ```
-# syscall for executing jobs on GPU
-qrsh -l gpus=1 -l gpu_type=V100
+# check if V100 GPU being used
+lshw -C display
+# syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
+qrsh -l gpus=1 -l gpu_type=V100 
+# if first time installing requirements,
+rm -rf ~/.local/lib/python3.8
 # pip cache not required for 3.8.10
 module load python3/3.8.10
 # unset this variable to let pip access it
