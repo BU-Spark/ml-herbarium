@@ -29,15 +29,20 @@ module load mxnet/1.7.0
 module load pytorch/1.10.2
 git clone https://github.com/mzheng27/Herbarium_Project
 cd Herbarium_Project
+# install venv if not done yet
+pip install virtualenv
 # create virtual environment for lower memory overhead
-python -m venv ./
-source bin/activate # execute virtualenv, run deactivate to exit
+python3 -m venv env
+# activate virtual env
+source env/bin/activate
 # necessary installs
 pip install -r requirements.txt
 # bounding boxes for image masks of text boxes
 cd CRAFT/CRAFT-pytorch-master
-chmod +x bash_submit.sh # make script executable
-./bash_submit.sh # execute CRAFT detector on HUH images
+# make script executable
+chmod +x bash_submit.sh
+# execute CRAFT detector on HUH images
+./bash_submit.sh
 
 ```
 
