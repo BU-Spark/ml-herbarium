@@ -1,0 +1,3 @@
+DwCAReader
+requests
+shutil
