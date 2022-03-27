@@ -16,6 +16,8 @@ Run the following commands: (the module load command is tailored for the SCC; sk
 lshw -C display
 # syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
 qrsh -l gpus=1 -l gpu_type=V100 
+# check that GPU updated
+lshw -C display
 # if first time installing requirements,
 rm -rf ~/.local/lib/python3.8
 # pip cache not required for 3.8.10
@@ -24,11 +26,6 @@ module load python3/3.8.10
 unset PIP_NO_CACHE_DIR
 # clear the cache
 pip cache purge
-# load other necessary modules
-module load mxnet/1.7.0
-module load pytorch/1.10.2
-git clone https://github.com/mzheng27/Herbarium_Project
-cd Herbarium_Project
 # install venv if not done yet
 pip install virtualenv
 # create virtual environment for lower memory overhead
