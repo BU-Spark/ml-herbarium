@@ -1,3 +1,5 @@
-DwCAReader
+python-dwca-reader
 requests
-shutil
+pandas
+jupyter
+ipykernel
