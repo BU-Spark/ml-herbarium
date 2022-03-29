@@ -34,6 +34,7 @@ DATASET_CSV = "data.csv"
 OUTPUT_PATH = "/projectnb/sparkgrp/ml-herbarium-data/scraped-data/" + timestr + "/"
 DATASET_URL = "https://occurrence-download.gbif.org/occurrence/download/request/0196625-210914110416597.zip"
 NUM_CORES = min(mp.cpu_count(), 50)
+DATA = None
 
 
 # %% [markdown]
@@ -274,7 +275,9 @@ if __name__ == "__main__":
     print('Successfully saved CSV rows to Pandas DataFrame.')
     print('Exporting data to output path...')
     data = export_gbif_urls(df)
+    DATA = data
     download_images(data)
+    DATA = None
     export_geography_data(data)
     export_taxon_data(data)
     print('Successfully exported data to output path. Done!')
