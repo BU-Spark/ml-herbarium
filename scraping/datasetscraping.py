@@ -41,11 +41,19 @@ DATASET_URL = (
 
 # %%
 def download_dataset():
-    if os.path.exists(DATASET_PATH+DATASET_ARCHIVE):
-        os.remove(DATASET_PATH+DATASET_ARCHIVE)
-    ds = requests.get(DATASET_URL, stream=True)
-    with open(DATASET_PATH+DATASET_ARCHIVE, "wb") as f:
-        shutil.copyfileobj(ds.raw, f)
+  if os.path.exists(DATASET_PATH+DATASET_ARCHIVE):
+      os.remove(DATASET_PATH+DATASET_ARCHIVE)
+  ds = requests.get(DATASET_URL, stream=True)
+  total_size_in_bytes=int(ds.headers.get('content-length', 0))
+  block_size = 1024 #1 Kibibyte
+  progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
+  with open(DATASET_PATH+DATASET_ARCHIVE, "wb") as f:
+      for data in ds.iter_content(block_size):
+          progress_bar.update(len(data))
+          f.write(data)
+  progress_bar.close()
+  if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
+      print("ERROR, something went wrong")
 
 
 # %% [markdown]
