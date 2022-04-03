@@ -13,8 +13,6 @@ Dependencies can be found in requirements.txt
 ## Install Requirements
 ### Load Python 3.8.10
 `module load python3/3.8.10`
-### Install venv if not done yet
-`pip install virtualenv`
 ### Create virtual environment for lower memory overhead
 `python3 -m venv .env`
 ### Activate virtual env
