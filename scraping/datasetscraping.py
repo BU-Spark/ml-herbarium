@@ -160,7 +160,10 @@ def scrape_occurrence(key, data):
     return_dict[key] = {}
     return_dict[key]["img_url"] = json.loads(rq.content)["media"][0]["identifier"]
     return_dict[key]["img_type"] = json.loads(rq.content)["media"][0]["format"]
-    return_dict[key]["country"] = json.loads(rq.content)["country"]
+    if "country" in json.loads(rq.content):
+        return_dict[key]["country"] = json.loads(rq.content)["country"]
+    else:
+        return_dict[key]["country"] = "Missing"
     return_dict[key]["genus"] = json.loads(rq.content)["genus"]
     return_dict[key]["species"] = json.loads(rq.content)["species"]
     return return_dict
