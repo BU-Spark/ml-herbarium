@@ -20,7 +20,7 @@ for fname in sorted(os.listdir(craft_res_dir)):
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium/in_data/images/" # "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium/in_data/images/" # "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
 imgs = []
 fnames = []
 for fname in sorted(os.listdir(org_img_dir)):
