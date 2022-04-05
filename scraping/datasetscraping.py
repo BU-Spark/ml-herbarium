@@ -32,11 +32,13 @@ NUMBER_TO_SKIP = 40000
 DATASET_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/"
 DATASET_ARCHIVE = "data.zip"
 DATASET_CSV = "data.csv"
-OUTPUT_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/" + timestr + "/"
+OUTPUT_PATH = (
+    "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/"
+    + timestr
+    + "/"
+)
 DATASET_URL = "https://occurrence-download.gbif.org/occurrence/download/request/0196625-210914110416597.zip"
 NUM_CORES = min(mp.cpu_count(), 50)
-DF = None
-TYPE = None
 
 # %% [markdown]
 # ## Download Dataset
@@ -111,16 +113,17 @@ def close_dwca(dwca):
 
 # %%
 def save_csv_rows_to_pandas():
-    print("Unzipping dataset...")
-    if os.path.exists(DATASET_PATH + "*.csv"):
-        os.remove(DATASET_PATH + "*.csv")
-    with zipfile.ZipFile(DATASET_PATH + DATASET_ARCHIVE, "r") as zip_ref:
-        zip_ref.extractall(DATASET_PATH)
-    print("CSV file extracted")
+    if not KEEP:
+        print("Unzipping dataset...")
+        if os.path.exists(DATASET_PATH + "*.csv"):
+            os.remove(DATASET_PATH + "*.csv")
+        with zipfile.ZipFile(DATASET_PATH + DATASET_ARCHIVE, "r") as zip_ref:
+            zip_ref.extractall(DATASET_PATH)
+        f = glob(os.path.join(DATASET_PATH, "*-*.csv"))[0]
+        os.rename(f, DATASET_PATH + DATASET_CSV)
+        print("CSV file extracted")
     print("Saving rows to pandas dataframe...")
-    f = glob(os.path.join(DATASET_PATH, "*-*.csv"))[0]
-    os.rename(f, DATASET_PATH + DATASET_CSV)
-    df = pandas.read_csv(DATASET_PATH + DATASET_CSV, sep="\t")
+    df = pandas.read_csv(DATASET_PATH + DATASET_CSV, sep="\t", low_memory=False)
     print("Rows saved to pandas dataframe")
     global DF
     DF = df
@@ -145,44 +148,53 @@ def print_pandas_column_names(df):
 # ### Export GBIF URLs
 
 # %%
-def export_gbif_ids(df, args):
+def export_gbif_ids(df):
     data = {}
     NUMBER_TO_SKIP = math.floor(df.shape[0] / (df.shape[0] * PERCENT_TO_SCRAPE))
     NUMBER_TO_SCRAPE = math.ceil(df.shape[0] / NUMBER_TO_SKIP)
     print(str(NUMBER_TO_SCRAPE) + " IDs will be scraped.")
     for i in range(1, df.shape[0], NUMBER_TO_SKIP):
-        if args[0] == "dwca":
+        if TYPE == "dwca":
             id = df.at[i, "id"]
-        elif args[0] == "csv":
+        elif TYPE == "csv":
             id = df.at[i, "gbifID"]
         data[i] = {"id": str(id)}
     print("Successfully scraped " + str(len(data)) + " IDs.")
     return data
 
-def get_next_gbif_id(key):
-    global TYPE
-    if TYPE == "dwca":
-        id = df.at[key+1, "id"]
-    elif TYPE == "csv":
-        id = df.at[key+1, "gbifID"]
-    return str(id)
+# def get_next_gbif_id(key):
+#     if TYPE == "dwca":
+#         id = df.at[key, "id"]
+#     elif TYPE == "csv":
+#         id = df.at[key, "gbifID"]
+#     return str(id)
 
 
 # %%
 def scrape_occurrence(key, data):
     rq = requests.get("https://api.gbif.org/v1/occurrence/" + str(data[key]["id"]))
+    content = json.loads(rq.content)
     return_dict = {}
     return_dict[key] = {}
-    if "country" in json.loads(rq.content) and "genus" in json.loads(rq.content) and "species" in json.loads(rq.content) and "media" in json.loads(rq.content) and 0 in json.loads(rq.content)["media"] and "identifier" in json.loads(rq.content)["media"][0] and "format" in json.loads(rq.content)["media"][0]:
-        return_dict[key]["img_url"] = json.loads(rq.content)["media"][0]["identifier"]
-        return_dict[key]["img_type"] = json.loads(rq.content)["media"][0]["format"]
-        return_dict[key]["country"] = json.loads(rq.content)["country"]
-        return_dict[key]["genus"] = json.loads(rq.content)["genus"]
-        return_dict[key]["species"] = json.loads(rq.content)["species"]
-        return return_dict
-    else:
-        data[key+1] = {"id": get_next_gbif_id(key)}
-        return scrape_occurrence(key+1, data)
+    if (
+        "country" in content
+        and "genus" in content
+        and "species" in content
+        and "media" in content
+        and content["media"]
+        and "format" in content["media"][0]
+        and ("references" in content["media"][0]
+        or "identifier" in content["media"][0])
+    ):
+        if "identifier" in content["media"][0]:
+            return_dict[key]["img_url"] = content["media"][0]["identifier"]
+        else:
+            return_dict[key]["img_url"] = content["media"][0]["references"]
+        return_dict[key]["img_type"] = content["media"][0]["format"]
+        return_dict[key]["country"] = content["country"]
+        return_dict[key]["genus"] = content["genus"]
+        return_dict[key]["species"] = content["species"]
+    return return_dict
 
 
 # %% [markdown]
@@ -261,6 +273,7 @@ def print_help_message():
     )
     print("\t-u, --dataset_url: Specify the dataset URL to download a new dataset.")
     print("\t-c, --num_cores: Specify the number of cores to use. Default is 50.")
+    print("\t-k, --keep: Keep current csv dataset, and do not unzip new dataset.")
     print("\t-h, --help: Print this help message.")
     sys.exit(1)
 
@@ -269,6 +282,8 @@ def print_help_message():
 # ## Main Function
 if __name__ == "__main__":
     import sys
+    global TYPE
+    global KEEP
 
     args = sys.argv[1:]
     if len(args) == 0:
@@ -283,6 +298,8 @@ if __name__ == "__main__":
         DATASET_URL = args[args.index("-u") + 1]
     if args.count("-c") > 0:
         NUM_CORES = int(args[args.index("-c") + 1])
+    if args.count("-k") > 0:
+        KEEP = True
     if args.count("--output_path") > 0:
         OUTPUT_PATH = args[args.index("--output_path") + 1]
     if args.count("--percent_to_scrape") > 0:
@@ -291,6 +308,8 @@ if __name__ == "__main__":
         DATASET_URL = args[args.index("--dataset_url") + 1]
     if args.count("--num_cores") > 0:
         NUM_CORES = int(args[args.index("--num_cores") + 1])
+    if args.count("--keep") > 0:
+        KEEP = True
     if args[0] == "dwca":
         TYPE = "dwca"
         print("Scraping dataset from Darwin Core Archive.")
@@ -298,10 +317,7 @@ if __name__ == "__main__":
         print("Opening Darwin Core Archive...")
         dwca = open_dwca()
         print("Successfully opened Darwin Core Archive.")
-        print("Saving rows to Pandas DataFrame...")
         df = save_dwca_rows_to_pandas(dwca)
-        print("")
-        print("Successfully saved rows to Pandas DataFrame.")
         print("Exporting data to output path...")
         data = export_gbif_ids(df, args)
         data = fetch_data(data)
@@ -314,9 +330,8 @@ if __name__ == "__main__":
         print("Scraping dataset from CSV.")
         print("Output path: " + OUTPUT_PATH)
         df = save_csv_rows_to_pandas()
-        print("Successfully saved CSV rows to Pandas DataFrame.")
         print("Exporting data to output path...")
-        data = export_gbif_ids(df, args)
+        data = export_gbif_ids(df)
         data = fetch_data(data)
         download_images(data)
         export_geography_data(data)
