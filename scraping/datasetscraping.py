@@ -35,7 +35,8 @@ DATASET_CSV = "data.csv"
 OUTPUT_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/" + timestr + "/"
 DATASET_URL = "https://occurrence-download.gbif.org/occurrence/download/request/0196625-210914110416597.zip"
 NUM_CORES = min(mp.cpu_count(), 50)
-
+DF = None
+TYPE = None
 
 # %% [markdown]
 # ## Download Dataset
@@ -85,7 +86,11 @@ def test_dwca(dwca):
 # %%
 def save_dwca_rows_to_pandas(dwca):
     # df = dwca.pd_read('occurrence.txt')
+    print("Saving rows to pandas dataframe...")
     df = dwca.pd_read("occurrence.txt", low_memory=False)
+    print("Rows saved to pandas dataframe")
+    global DF
+    DF = df
     return df
 
 
@@ -117,6 +122,8 @@ def save_csv_rows_to_pandas():
     os.rename(f, DATASET_PATH + DATASET_CSV)
     df = pandas.read_csv(DATASET_PATH + DATASET_CSV, sep="\t")
     print("Rows saved to pandas dataframe")
+    global DF
+    DF = df
     return df
 
 
@@ -138,7 +145,7 @@ def print_pandas_column_names(df):
 # ### Export GBIF URLs
 
 # %%
-def export_gbif_urls(df):
+def export_gbif_ids(df, args):
     data = {}
     NUMBER_TO_SKIP = math.floor(df.shape[0] / (df.shape[0] * PERCENT_TO_SCRAPE))
     NUMBER_TO_SCRAPE = math.ceil(df.shape[0] / NUMBER_TO_SKIP)
@@ -152,21 +159,30 @@ def export_gbif_urls(df):
     print("Successfully scraped " + str(len(data)) + " IDs.")
     return data
 
+def get_next_gbif_id(key):
+    global TYPE
+    if TYPE == "dwca":
+        id = df.at[key+1, "id"]
+    elif TYPE == "csv":
+        id = df.at[key+1, "gbifID"]
+    return str(id)
+
 
 # %%
 def scrape_occurrence(key, data):
     rq = requests.get("https://api.gbif.org/v1/occurrence/" + str(data[key]["id"]))
     return_dict = {}
     return_dict[key] = {}
-    return_dict[key]["img_url"] = json.loads(rq.content)["media"][0]["identifier"]
-    return_dict[key]["img_type"] = json.loads(rq.content)["media"][0]["format"]
-    if "country" in json.loads(rq.content):
+    if "country" in json.loads(rq.content) and "genus" in json.loads(rq.content) and "species" in json.loads(rq.content) and "media" in json.loads(rq.content) and 0 in json.loads(rq.content)["media"] and "identifier" in json.loads(rq.content)["media"][0] and "format" in json.loads(rq.content)["media"][0]:
+        return_dict[key]["img_url"] = json.loads(rq.content)["media"][0]["identifier"]
+        return_dict[key]["img_type"] = json.loads(rq.content)["media"][0]["format"]
         return_dict[key]["country"] = json.loads(rq.content)["country"]
+        return_dict[key]["genus"] = json.loads(rq.content)["genus"]
+        return_dict[key]["species"] = json.loads(rq.content)["species"]
+        return return_dict
     else:
-        return_dict[key]["country"] = "Missing"
-    return_dict[key]["genus"] = json.loads(rq.content)["genus"]
-    return_dict[key]["species"] = json.loads(rq.content)["species"]
-    return return_dict
+        data[key+1] = {"id": get_next_gbif_id(key)}
+        return scrape_occurrence(key+1, data)
 
 
 # %% [markdown]
@@ -180,6 +196,7 @@ def fetch_data(data):
         data.update(item)
     pool.close()
     pool.join()
+    data = {k: v for k, v in data.items() if v}
     print("\nSuccessfully fetched data for", len(data), "occurrences.")
     return data
 
@@ -198,7 +215,6 @@ def download(key, data):
 def download_images(data):
     if not os.path.exists(OUTPUT_PATH):
         os.makedirs(OUTPUT_PATH)
-
     print("Starting multiprocessing...")
     pool = mp.Pool(NUM_CORES)
     print("Downloading images...")
@@ -276,6 +292,7 @@ if __name__ == "__main__":
     if args.count("--num_cores") > 0:
         NUM_CORES = int(args[args.index("--num_cores") + 1])
     if args[0] == "dwca":
+        TYPE = "dwca"
         print("Scraping dataset from Darwin Core Archive.")
         print("Output path: " + OUTPUT_PATH)
         print("Opening Darwin Core Archive...")
@@ -286,19 +303,20 @@ if __name__ == "__main__":
         print("")
         print("Successfully saved rows to Pandas DataFrame.")
         print("Exporting data to output path...")
-        data = export_gbif_urls(df)
+        data = export_gbif_ids(df, args)
         data = fetch_data(data)
         download_images(data)
         export_geography_data(data)
         export_taxon_data(data)
         print("Successfully exported data to output path. Done!")
     elif args[0] == "csv":
+        TYPE = "csv"
         print("Scraping dataset from CSV.")
         print("Output path: " + OUTPUT_PATH)
         df = save_csv_rows_to_pandas()
         print("Successfully saved CSV rows to Pandas DataFrame.")
         print("Exporting data to output path...")
-        data = export_gbif_urls(df)
+        data = export_gbif_ids(df, args)
         data = fetch_data(data)
         download_images(data)
         export_geography_data(data)
