@@ -153,12 +153,14 @@ def export_gbif_ids(df):
     NUMBER_TO_SKIP = math.floor(df.shape[0] / (df.shape[0] * PERCENT_TO_SCRAPE))
     NUMBER_TO_SCRAPE = math.ceil(df.shape[0] / NUMBER_TO_SKIP)
     print(str(NUMBER_TO_SCRAPE) + " IDs will be scraped.")
+    count = 1
     for i in range(1, df.shape[0], NUMBER_TO_SKIP):
         if TYPE == "dwca":
             id = df.at[i, "id"]
         elif TYPE == "csv":
             id = df.at[i, "gbifID"]
-        data[i] = {"id": str(id)}
+        data[count] = {"id": str(id)}
+        count += 1
     print("Successfully scraped " + str(len(data)) + " IDs.")
     return data
 
@@ -218,8 +220,9 @@ def download(key, data):
             OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
         ) as f:
             shutil.copyfileobj(img.raw, f)
+        return True, key
     except:
-        return 1
+        return False, key
 
 
 # %% [markdown]
@@ -232,11 +235,21 @@ def download_images(data):
     print("Downloading images...")
     func = partial(download, data=data)
     errorCount = 0
-    for i in tqdm(pool.imap(func, data), total=len(data)):
-        if i == 1:
+    errorKeys = []
+    for success, key in tqdm(pool.imap(func, data), total=len(data)):
+        if success == False:
             errorCount += 1
+            errorKeys.append(key)
     pool.close()
     pool.join()
+    for key in errorKeys:
+        del data[key]
+    for count, filename in enumerate(os.listdir(OUTPUT_PATH)):
+        new = str(count) + "." + filename.split(".")[1]  # new file name
+        src = os.path.join(OUTPUT_PATH, filename)  # file source
+        dst = os.path.join(OUTPUT_PATH, new)  # file destination
+        # rename all the file
+        os.rename(src, dst)
     print("\nSuccessfully downloaded", len(data) - errorCount, "images, with", errorCount, "errors.")
 
 
