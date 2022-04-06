@@ -6,6 +6,9 @@ import os
 
 import cv2
 
+import multiprocessing as mp
+from tqdm import tqdm
+
 random.seed(123)
 
 import mxnet as mx
@@ -35,33 +38,51 @@ from ocr.handwriting_line_recognition import Network as HandwritingRecognitionNe
 from ocr.handwriting_line_recognition import decode as decoder_handwriting, alphabet_encoding
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
+NUM_CORES = min(mp.cpu_count(), 50)
+craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447"
 
+def addBox(fname):
+	if ".jpg" in fname and "mask" not in fname:
+		# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
+		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
+		tmp_txt = [line.split(",") for line in tmp_txt]
+		tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
+		boxes[fname[4:len(fname)-4]] = tmp_bxs
+		return boxes
+
+def addImg(fIdx):
+	imgs[fIdx]=cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))
+	return imgs
 
 def get_imgsAndBoxes():
-	craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
-	org_img_dir = "../in_data/"
-	boxes = []
-	imgs = []
-	fnames = []
+	boxes = {}
+	imgs = {}
 
-	for fname in sorted(os.listdir(craft_res_dir)):
-		if ".jpg" in fname and "mask" not in fname:
-			# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
-			tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
-			tmp_txt = [line.split(",") for line in tmp_txt]
-			tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-			boxes.append(tmp_bxs)
+	print("\nFilling boxes dictionary...")
+	print("Starting multiprocessing...")
+	list_imgs = sorted(os.listdir(craft_res_dir))
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addBox, list_imgs), total=len(sorted(os.listdir(craft_res_dir)))):
+		if item: boxes.update(item)
+	pool.close()
+	pool.join()
+	print("\nBoxes dictionary filled.\n")
 
 	# get the original images to crop them
-	for fname in sorted(os.listdir(org_img_dir)):
-		if ".jpg" in fname:
-			imgs.append(cv2.imread(os.path.join(org_img_dir, fname), cv2.IMREAD_GRAYSCALE))
-			fnames.append(fname)
+	print("Getting original images...")
+	print("Starting multiprocessing...")
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addImg, boxes), total=len(boxes)):
+		imgs.update(item)
+	pool.close()
+	pool.join()
+	print("\nOriginal images obtained.\n")
 
-	return boxes,imgs,fnames
+	return boxes,imgs
 
 def get_gt():
-	gt_dir = "../in_data/"
+	gt_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/taxon.txt"
 	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
 		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
 		return gt
@@ -134,29 +155,29 @@ def get_lines(boxes, vert_m=12):
 
 # crops out images of the lines 
 def crop_lines(boxes, imgs):
-	line_crops = []
-	for i,bxs in enumerate(boxes):
+	line_crops = {}
+	for key, bxs in boxes.items():
 		img_lines = []
 		for bx in bxs:
 			t1,t2,t3,t4 = bx
-			tmp_crop = imgs[i][t1[1]:t4[1],t1[0]:t2[0]]
+			tmp_crop = imgs[key][t1[1]:t4[1],t1[0]:t2[0]]
 			if len(tmp_crop) > 0 and len(tmp_crop[0]) > 0:
 				img_lines.append(tmp_crop)
 		
-		line_crops.append(img_lines)
+		line_crops[key]=img_lines
 	return line_crops
 
 
 
 ### --------------------------------- Import data & process --------------------------------- ###
-boxes,imgs,fnames = get_imgsAndBoxes()
+boxes,imgs = get_imgsAndBoxes()
 corpus = get_corpus()
 gt_txt = get_gt()
 n_imgs = len(imgs)
 
 # segment the lines of text (used to feed into models like mxnet)
-lines = [get_lines(bxs) for bxs in boxes]
-lines = [expand_boxes(bxs) for bxs in lines]
+lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
+lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
 lines = crop_lines(lines, imgs)
 
 
@@ -171,17 +192,14 @@ handwriting_line_recognition_net.hybridize()
 
 
 line_image_size = (60, 800)
-character_probs = []
-x = 0
-for line_images in lines:
+character_probs = {}
+for key, line_images in lines.items():
 	form_character_prob = []
 	for i, line_image in enumerate(line_images):
-		# print(x,i)
 		line_image = handwriting_recognition_transform(line_image, line_image_size)
 		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
 		form_character_prob.append(line_character_prob)
-	character_probs.append(form_character_prob)
-	x+=1
+	character_probs[key]=form_character_prob
 
 
 ### --------------------------------- Probability to text funcs --------------------------------- ###
@@ -199,16 +217,16 @@ def get_arg_max(prob):
 
 
 ### --------------------------------- Turn character probs into words --------------------------------- ###
-all_decoded_am = [] # arg max
+all_decoded_am = {} # arg max
 # all_decoded_bs = [] # beam search
 
-for i, form_character_probs in enumerate(character_probs):
+for key, form_character_probs in character_probs.items():
 	# fig, axs = plt.subplots(len(form_character_probs) + 1, 
 	#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
 	this_am = [] 
 	# this_bs = []
 	
-	print("Processed img "+str(i)+" character prob")
+	print("Processed img "+str(key)+" character prob")
 	for j, line_character_probs in enumerate(form_character_probs):
 		decoded_line_am = get_arg_max(line_character_probs)
 		# print("[AM]",decoded_line_am)
@@ -219,12 +237,12 @@ for i, form_character_probs in enumerate(character_probs):
 		this_am.append(decoded_line_am)
 		# this_bs.append(decoded_line_bs)
 		
-		line_image = lines[i][j]
+		line_image = lines[int(key)][j]
 		# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
 		# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
 		# axs[j].axis('off')
 	# print()
-	all_decoded_am.append(this_am)
+	all_decoded_am[key]=(this_am)
 	# all_decoded_bs.append(this_bs)
 	
 	# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
@@ -235,7 +253,7 @@ for i, form_character_probs in enumerate(character_probs):
 from difflib import get_close_matches
 cnt = 0
 final = []
-for i,lines in enumerate(all_decoded_am):
+for key,lines in all_decoded_am:
 	matched = False
 	matches = []
 
@@ -261,7 +279,7 @@ for i,lines in enumerate(all_decoded_am):
 		final.append(has_spaces[0])
 	else: 
 		# print(print('am matched words img'+str(i)+':',matches))
-		final.append("-- "+str(i)+" --")
+		final.append("-- "+str(key)+" --")
 
 	if matched: cnt+=1
 	# print()
