@@ -8,40 +8,41 @@ folder respectively.
 
 Dependencies can be found in requirements.txt
 
-## Instructions for running on the SCC
-Run the following commands: (the module load command is tailored for the SCC; skip/modify this command if don't have / don't need some modules)
+<br />
 
-```
-# check if V100 GPU being used
-lshw -C display
-# syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
-qrsh -l gpus=1 -l gpu_type=V100 
-# check that GPU updated
-lshw -C display
-# if first time installing requirements,
-rm -rf ~/.local/lib/python3.8
-# pip cache not required for 3.8.10
-module load python3/3.8.10
-# unset this variable to let pip access it
-unset PIP_NO_CACHE_DIR
-# clear the cache
-pip cache purge
-# install venv if not done yet
-pip install virtualenv
-# create virtual environment for lower memory overhead
-python3 -m venv env
-# activate virtual env
-source env/bin/activate
-# necessary installs
-pip install -r requirements.txt
-# bounding boxes for image masks of text boxes
-cd CRAFT/CRAFT-pytorch-master
-# make script executable
-chmod +x bash_submit.sh
-# execute CRAFT detector on HUH images
-./bash_submit.sh
+## Install Requirements
+### Install venv if not done yet
+`pip install virtualenv `
+### Create virtual environment for lower memory overhead
+`virtualenv -p python3.8.10 .env`
+### Activate virtual env
+`source .env/bin/activate`
+### Install requirements
+`pip install -r requirements.txt`
+### If scraping is needed, install more requirements
+`pip install -r scraping/requirements.txt`
 
-```
+<br />
+
+## Allocate GPU for Training
+### check if V100 GPU being used
+`lshw -C display`
+### syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
+`qrsh -l gpus=1 -l gpu_type=V100`
+### check that GPU updated
+`lshw -C display`
+
+<br/>
+
+## Run the CRAFT pipeline
+### Bounding boxes for image masks of text boxes
+`cd CRAFT/CRAFT-pytorch-master`
+### make script executable
+`chmod +x bash_submit.sh`
+### execute CRAFT detector on HUH images
+`./bash_submit.sh`
+
+<br/>
 
 # Add Users
 To add yourself to the repository, open a Pull Request modifying `COLLABORATORS`, entering your GitHub username in a newline.
