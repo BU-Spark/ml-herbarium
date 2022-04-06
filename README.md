@@ -11,8 +11,10 @@ Dependencies can be found in requirements.txt
 <br />
 
 ## Install Requirements
-### Load Python 3.8.10
-`module load python3/3.8.10`
+### Add Python 3.8.10 to your .bashrc
+`nano ~/.bashrc`
+Add this to the file: `module load python3/3.8.10`
+ctrl+x then return to save and exit
 ### Create virtual environment for lower memory overhead
 `python3 -m venv .env`
 ### Activate virtual env
