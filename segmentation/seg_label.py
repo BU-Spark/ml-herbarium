@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import cv2
 import os
@@ -172,7 +173,9 @@ for key, image in imgs.items():
 # lines = crop_lines(lines, imgs)
 
 # save cropped labels
-save_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/seg-results/"
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+save_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/seg-results/'+timestr+'/'
 if not os.path.exists(save_dir):
 	os.makedirs(save_dir)
 
