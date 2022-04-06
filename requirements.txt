@@ -9,3 +9,7 @@ matplotlib
 mxboard>=0.1.0
 pandas
 tqdm>=4.63.1
+jupyter
+ipykernel
+notebook
+python-dwca-reader

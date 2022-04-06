@@ -11,16 +11,16 @@ Dependencies can be found in requirements.txt
 <br />
 
 ## Install Requirements
-### Load Python 3.8.10
-`module load python3/3.8.10`
+### Add Python 3.8.10 to your .bashrc
+`nano ~/.bashrc`
+Add this to the file: `module load python3/3.8.10`
+ctrl+x then return to save and exit
 ### Create virtual environment for lower memory overhead
 `python3 -m venv .env`
 ### Activate virtual env
 `source .env/bin/activate`
 ### Install requirements
 `pip install -r requirements.txt`
-### If scraping is needed, install more requirements
-`pip install -r scraping/requirements.txt`
 
 ## Note for VS Code
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
