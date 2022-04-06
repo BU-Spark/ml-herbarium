@@ -2,8 +2,5 @@
 **/.env/**
 **__pycache__**
 **.pyc
-labels**
+labels
 **settings.json
-**.ipynb_checkpoints**
-.vscode**
-CRAFT/CRAFT-pytorch-master/result**
