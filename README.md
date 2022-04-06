@@ -24,7 +24,7 @@ Dependencies can be found in requirements.txt
 ### If scraping is needed, install more requirements
 `pip install -r scraping/requirements.txt`
 
-## Note for VS Code
+## Note for VS Code on SCC
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
 
 <br />
