@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import cv2
 import os
@@ -24,13 +25,13 @@ imgs = []
 fnames = []
 for fname in sorted(os.listdir(org_img_dir)):
 	#new
-	if ".jpeg" in fname:
+	if ".jpg" in fname:
 		imgs.append(cv2.imread(os.path.join(org_img_dir, fname),1))
 	#endnew
 		fnames.append(fname)
 n_imgs = len(imgs)
 print(n_imgs)
-#print(fnames)
+# print(fnames)
 
 
 ### ------------------------------------ HELPER FUNCTIONS ------------------------------------ ###
@@ -161,15 +162,25 @@ def get_lines(boxes, vert_m=12):
 # crops out images of the lines 
 def crop_lines(boxes, imgs):
 	line_crops = []
+	errors = 0
 	for i,bxs in enumerate(boxes):
-		img_lines = []
-		for bx in bxs:
-			t1,t2,t3,t4 = bx
-			tmp_crop = imgs[i][t1[1]:t4[1],t1[0]:t2[0]]
-			if len(tmp_crop) > 0 and len(tmp_crop[0]) > 0:
-				img_lines.append(tmp_crop)
-		
-		line_crops.append(img_lines)
+		try:
+			img_lines = []
+			for bx in bxs:
+				t1,t2,t3,t4 = bx
+				tmp_crop = imgs[i][t1[1]:t4[1],t1[0]:t2[0]]
+				if len(tmp_crop) > 0 and len(tmp_crop[0]) > 0:
+					img_lines.append(tmp_crop)
+			
+			line_crops.append(img_lines)
+		except:
+			errors += 1
+			print("error in crop_lines at index: ", i)
+			print(bxs)
+			print(i)
+			print(len(boxes))
+			print(len(imgs))
+			print(errors)
 	return line_crops
 
 
@@ -194,13 +205,17 @@ for bxs in boxes_comb:
 labels = []
 #new...
 for i in range(n_imgs):
-	if i >= (len(boxes_comb_sorted)):
-		break
-	else:
-		labels.append(crop_labels(imgs[i],boxes_comb_sorted[i]))
-	#print("index error at ", i)
+	errors = 0
+	try:
+		if i >= (len(boxes_comb_sorted)):
+			break
+		else:
+			labels.append(crop_labels(imgs[i],boxes_comb_sorted[i]))
+	except:
+		errors += 1
+		print("error in loop at line 207 at index: ", i)
+		continue
 #endnew
-#OLD #labels = [crop_labels(imgs[i], boxes_comb_sorted[i]) for i in range(n_imgs)] # segment label
 
 # segment the lines of text (used to feed into models like mxnet)
 lines = [get_lines(bxs) for bxs in boxes]
@@ -209,12 +224,17 @@ lines = [expand_boxes(bxs) for bxs in lines]
 lines = crop_lines(lines, imgs)
 
 # save cropped labels
-save_dir = "../labels/"
+timestr = time.strftime("%Y%m%d-%H%M%S")
+save_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/seg-results" + "/" + timestr + "/"
 if not os.path.exists(save_dir):
 	os.makedirs(save_dir)
 
 for i,label in enumerate(labels):
-	cv2.imwrite(os.path.join(save_dir, fnames[i]+"_label.jpg"), label)
+	try:
+		plt.imsave(os.path.join(save_dir, fnames[i]+"_label.jpg"), label)
+	except:
+		print("error in saving label at index: ", i)
+		continue
 
 # for i,j in enumerate(lines[0]):
 # 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
