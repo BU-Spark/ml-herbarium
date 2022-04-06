@@ -11,10 +11,10 @@ Dependencies can be found in requirements.txt
 <br />
 
 ## Install Requirements
-### Load Python 3.8.10
-`module load python3/3.8.10`
+### Install venv if not done yet
+`pip install virtualenv `
 ### Create virtual environment for lower memory overhead
-`python3 -m venv .env`
+`virtualenv -p python3.8.10 .env`
 ### Activate virtual env
 `source .env/bin/activate`
 ### Install requirements
@@ -22,12 +22,9 @@ Dependencies can be found in requirements.txt
 ### If scraping is needed, install more requirements
 `pip install -r scraping/requirements.txt`
 
-## Note for VS Code
-To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
-
 <br />
 
-## Allocate GPU for Training on SCC
+## Allocate GPU for Training
 ### check if V100 GPU being used
 `lshw -C display`
 ### syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
