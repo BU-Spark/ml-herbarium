@@ -1,22 +1,14 @@
 ### Mostly taken from https://github.com/awslabs/handwritten-text-recognition-for-apache-mxnet/blob/master/0_handwriting_ocr.ipynb
 
-import difflib
 import importlib
-import math
 import random
-import string
 import os
 
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
 random.seed(123)
 
 import mxnet as mx
-from skimage import transform as skimage_tf, exposure
-from tqdm import tqdm
 
 # os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
 print(os.getcwd())
@@ -46,10 +38,11 @@ ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 
 
 def get_imgsAndBoxes():
-	craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212/"
-	org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data"
-	boxes = {}
-	imgs = {}
+	craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
+	org_img_dir = "../in_data/"
+	boxes = []
+	imgs = []
+	fnames = []
 
 	for fname in sorted(os.listdir(craft_res_dir)):
 		if ".jpg" in fname and "mask" not in fname:
@@ -57,12 +50,13 @@ def get_imgsAndBoxes():
 			tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
 			tmp_txt = [line.split(",") for line in tmp_txt]
 			tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-			boxes[fname] = (tmp_bxs)
+			boxes.append(tmp_bxs)
 
 	# get the original images to crop them
-	for i in boxes:
-		if ".jpeg" in fname:
-			imgs.append(cv2.imread(os.path.join(org_img_dir, i), cv2.IMREAD_GRAYSCALE))
+	for fname in sorted(os.listdir(org_img_dir)):
+		if ".jpg" in fname:
+			imgs.append(cv2.imread(os.path.join(org_img_dir, fname), cv2.IMREAD_GRAYSCALE))
+			fnames.append(fname)
 
 	return boxes,imgs,fnames
 
@@ -280,8 +274,6 @@ f = open("results.txt", "w")
 cnt = 0
 if gt_txt != None:
 	for i,t in enumerate(gt_txt):
-		#if i >= len(final):
-	#		break
 		if t == final[i]:
 			print(fnames[i]+": "+t)
 			f.write(fnames[i]+": "+t+"\n")
@@ -297,4 +289,3 @@ else:
 	for i,n in enumerate(fnames):
 		f.write(n+": "+final[i])
 	f.close()
-
