@@ -5,6 +5,7 @@
 # ## Imports
 
 # %%
+from functools import partial
 from dwca.read import DwCAReader
 from dwca.darwincore.utils import qualname as qn
 import requests
@@ -28,13 +29,12 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 PERCENT_TO_SCRAPE = 0.00015
 NUMBER_TO_SKIP = 40000
-DATASET_PATH = "/projectnb/sparkgrp/ml-herbarium-data/"
+DATASET_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/"
 DATASET_ARCHIVE = "data.zip"
 DATASET_CSV = "data.csv"
-OUTPUT_PATH = "/projectnb/sparkgrp/ml-herbarium-data/scraped-data/" + timestr + "/"
+OUTPUT_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/" + timestr + "/"
 DATASET_URL = "https://occurrence-download.gbif.org/occurrence/download/request/0196625-210914110416597.zip"
 NUM_CORES = min(mp.cpu_count(), 50)
-DATA = None
 
 
 # %% [markdown]
@@ -106,14 +106,17 @@ def close_dwca(dwca):
 
 # %%
 def save_csv_rows_to_pandas():
+    print("Unzipping dataset...")
     if os.path.exists(DATASET_PATH + "*.csv"):
         os.remove(DATASET_PATH + "*.csv")
     with zipfile.ZipFile(DATASET_PATH + DATASET_ARCHIVE, "r") as zip_ref:
         zip_ref.extractall(DATASET_PATH)
+    print("CSV file extracted")
+    print("Saving rows to pandas dataframe...")
     f = glob(os.path.join(DATASET_PATH, "*-*.csv"))[0]
     os.rename(f, DATASET_PATH + DATASET_CSV)
-    print("CSV file extracted")
     df = pandas.read_csv(DATASET_PATH + DATASET_CSV, sep="\t")
+    print("Rows saved to pandas dataframe")
     return df
 
 
@@ -137,7 +140,6 @@ def print_pandas_column_names(df):
 # %%
 def export_gbif_urls(df):
     data = {}
-
     NUMBER_TO_SKIP = math.floor(df.shape[0] / (df.shape[0] * PERCENT_TO_SCRAPE))
     NUMBER_TO_SCRAPE = math.ceil(df.shape[0] / NUMBER_TO_SKIP)
     print(str(NUMBER_TO_SCRAPE) + " IDs will be scraped.")
@@ -152,8 +154,8 @@ def export_gbif_urls(df):
 
 
 # %%
-def scrape_occurrence(key):
-    rq = requests.get("https://api.gbif.org/v1/occurrence/" + str(DATA[key]["id"]))
+def scrape_occurrence(key, data):
+    rq = requests.get("https://api.gbif.org/v1/occurrence/" + str(data[key]["id"]))
     return_dict = {}
     return_dict[key] = {}
     return_dict[key]["img_url"] = json.loads(rq.content)["media"][0]["identifier"]
@@ -167,23 +169,21 @@ def scrape_occurrence(key):
 # %% [markdown]
 # ### Fetch Image URLs and Specimen Data from GBIF API
 def fetch_data(data):
-    DATA = data
     print("Starting multiprocessing...")
     pool = mp.Pool(NUM_CORES)
     print("Fetching data...")
-    for item in tqdm(pool.imap(scrape_occurrence, data), total=len(data)):
+    func = partial(scrape_occurrence, data=data)
+    for item in tqdm(pool.imap(func, data), total=len(data)):
         data.update(item)
     pool.close()
     pool.join()
-
     print("\nSuccessfully fetched data for", len(data), "occurrences.")
-    DATA = None
     return data
 
 
 # %%
-def download(key):
-    img = requests.get(DATA[key]["img_url"], stream=True)
+def download(key, data):
+    img = requests.get(data[key]["img_url"], stream=True)
     with open(
         OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
     ) as f:
@@ -193,17 +193,16 @@ def download(key):
 # %% [markdown]
 # ### Download Images
 def download_images(data):
-    DATA = data
     if not os.path.exists(OUTPUT_PATH):
         os.makedirs(OUTPUT_PATH)
 
     print("Starting multiprocessing...")
     pool = mp.Pool(NUM_CORES)
     print("Downloading images...")
-    for _ in tqdm(pool.imap(download, data), total=len(data)):
+    func = partial(download, data=data)
+    for _ in tqdm(pool.imap(func, data), total=len(data)):
         pass
     pool.close()
-    DATA = None
 
 
 # %% [markdown]
@@ -293,7 +292,6 @@ if __name__ == "__main__":
     elif args[0] == "csv":
         print("Scraping dataset from CSV.")
         print("Output path: " + OUTPUT_PATH)
-        print("Opening CSV...")
         df = save_csv_rows_to_pandas()
         print("Successfully saved CSV rows to Pandas DataFrame.")
         print("Exporting data to output path...")
