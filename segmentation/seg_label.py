@@ -24,7 +24,7 @@ def addBox(fname):
 		return boxes
 
 def fillBoxes():
-	print("Filling boxes dictionary...")
+	print("\nFilling boxes dictionary...")
 	print("Starting multiprocessing...")
 	list_imgs = sorted(os.listdir(craft_res_dir))
 	pool = mp.Pool(NUM_CORES)
@@ -32,7 +32,7 @@ def fillBoxes():
 		if item: boxes.update(item)
 	pool.close()
 	pool.join()
-	print("\nBoxes dictionary filled.")
+	print("\nBoxes dictionary filled.\n")
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
