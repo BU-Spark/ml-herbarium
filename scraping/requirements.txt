@@ -1,6 +1,0 @@
-python-dwca-reader
-requests
-pandas
-jupyter
-ipykernel
-tqdm
