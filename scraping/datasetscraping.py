@@ -215,7 +215,7 @@ def fetch_data(data):
 # %%
 def download(key, data):
     try:
-        img = requests.get(data[key]["img_url"], stream=True)
+        img = requests.get(data[key]["img_url"], stream=True, timeout=10)
         with open(
             OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
         ) as f:
@@ -250,7 +250,7 @@ def download_images(data):
         dst = os.path.join(OUTPUT_PATH, new)  # file destination
         # rename all the file
         os.rename(src, dst)
-    print("\nSuccessfully downloaded", len(data) - errorCount, "images, with", errorCount, "errors.")
+    print("\nSuccessfully downloaded", len(data), "images, with", errorCount, " download failures.")
 
 
 # %% [markdown]
@@ -261,7 +261,7 @@ def export_geography_data(data):
     with open(OUTPUT_PATH + "countries.txt", "w") as f:
         for idx in data:
             f.write(data[idx]["country"] + "\n")
-    print("\nSuccessfully wrote countries to file.")
+    print("Successfully wrote countries to file.")
 
 
 # %% [markdown]
@@ -272,7 +272,7 @@ def export_taxon_data(data):
     with open(OUTPUT_PATH + "taxon.txt", "w") as f:
         for idx in data:
             f.write(data[idx]["genus"] + " " + data[idx]["species"] + "\n")
-    print("\nSuccessfully wrote taxon to file.")
+    print("Successfully wrote taxon to file.")
 
 
 # %% [markdown]
@@ -354,4 +354,4 @@ if __name__ == "__main__":
         download_images(data)
         export_geography_data(data)
         export_taxon_data(data)
-        print("Successfully exported data to output path. Done!")
+        print("\nSuccessfully exported data to output path. Done!")
