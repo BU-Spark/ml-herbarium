@@ -180,7 +180,10 @@ if not os.path.exists(save_dir):
 	os.makedirs(save_dir)
 
 for key, label in labels.items():
-	plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
+	try:
+		plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
+	except:
+		print("Error saving label for image: ", key+".jpg")
 
 # for i,j in enumerate(lines[0]):
 # 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
