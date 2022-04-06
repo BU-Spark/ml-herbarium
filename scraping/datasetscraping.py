@@ -162,6 +162,7 @@ def export_gbif_ids(df):
     print("Successfully scraped " + str(len(data)) + " IDs.")
     return data
 
+
 # def get_next_gbif_id(key):
 #     if TYPE == "dwca":
 #         id = df.at[key, "id"]
@@ -183,13 +184,9 @@ def scrape_occurrence(key, data):
         and "media" in content
         and content["media"]
         and "format" in content["media"][0]
-        and ("references" in content["media"][0]
-        or "identifier" in content["media"][0])
+        and "identifier" in content["media"][0]
     ):
-        if "identifier" in content["media"][0]:
-            return_dict[key]["img_url"] = content["media"][0]["identifier"]
-        else:
-            return_dict[key]["img_url"] = content["media"][0]["references"]
+        return_dict[key]["img_url"] = content["media"][0]["identifier"]
         return_dict[key]["img_type"] = content["media"][0]["format"]
         return_dict[key]["country"] = content["country"]
         return_dict[key]["genus"] = content["genus"]
@@ -215,11 +212,14 @@ def fetch_data(data):
 
 # %%
 def download(key, data):
-    img = requests.get(data[key]["img_url"], stream=True)
-    with open(
-        OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
-    ) as f:
-        shutil.copyfileobj(img.raw, f)
+    try:
+        img = requests.get(data[key]["img_url"], stream=True)
+        with open(
+            OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
+        ) as f:
+            shutil.copyfileobj(img.raw, f)
+    except:
+        return 1
 
 
 # %% [markdown]
@@ -231,9 +231,13 @@ def download_images(data):
     pool = mp.Pool(NUM_CORES)
     print("Downloading images...")
     func = partial(download, data=data)
-    for _ in tqdm(pool.imap(func, data), total=len(data)):
-        pass
+    errorCount = 0
+    for i in tqdm(pool.imap(func, data), total=len(data)):
+        if i == 1:
+            errorCount += 1
     pool.close()
+    pool.join()
+    print("\nSuccessfully downloaded", len(data) - errorCount, "images, with", errorCount, "errors.")
 
 
 # %% [markdown]
@@ -282,6 +286,7 @@ def print_help_message():
 # ## Main Function
 if __name__ == "__main__":
     import sys
+
     global TYPE
     global KEEP
 
