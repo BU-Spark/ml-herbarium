@@ -3,29 +3,55 @@ import numpy as np
 import cv2
 import os
 import matplotlib.pyplot as plt
+import multiprocessing as mp
+from tqdm import tqdm
 
+NUM_CORES = min(mp.cpu_count(), 50)
 
 # get the resulting images and text files
-craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212"
+craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212/"
 # "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/result"
 boxes = {}
 # imgs = []
 
-for fname in sorted(os.listdir(craft_res_dir)):
-	if ".txt" in fname and "mask" not in fname:
+def addBox(fname):
+	if ".jpg" in fname and "mask" not in fname:
 		# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
 		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
 		tmp_txt = [line.split(",") for line in tmp_txt]
 		tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
 		boxes[fname[4:len(fname)-4]] = tmp_bxs
+		return boxes
+
+def fillBoxes():
+	print("Filling boxes dictionary...")
+	print("Starting multiprocessing...")
+	list_imgs = sorted(os.listdir(craft_res_dir))
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addBox, list_imgs), total=len(sorted(os.listdir(craft_res_dir)))):
+		if item: boxes.update(item)
+	pool.close()
+	pool.join()
+	print("\nBoxes dictionary filled.")
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
 imgs = {}
-for key in boxes:
-	if ".jpg" in fname:
-		imgs[key]=cv2.imread(os.path.join(org_img_dir, key+".jpg"))
+
+def addImg(fIdx):
+	imgs[fIdx]=cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))
+	return imgs
+
+def getOrigImgs():
+	print("Getting original images...")
+	print("Starting multiprocessing...")
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addImg, boxes), total=len(boxes)):
+		imgs.update(item)
+	pool.close()
+	pool.join()
+	print("\nOriginal images obtained.\n")
 # print(fnames)
 
 
@@ -155,6 +181,8 @@ def crop_lines(boxes, imgs):
 
 
 # segment the labels
+fillBoxes()
+getOrigImgs()
 boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
 boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
 boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
