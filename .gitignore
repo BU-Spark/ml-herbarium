@@ -5,4 +5,5 @@
 labels**
 **settings.json
 **.ipynb_checkpoints**
+.vscode**
 CRAFT/CRAFT-pytorch-master/result**
