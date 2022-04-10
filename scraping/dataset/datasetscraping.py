@@ -178,7 +178,7 @@ def scrape_occurrence(key, data):
     rq = requests.get("https://api.gbif.org/v1/occurrence/" + str(data[key]["id"]))
     content = json.loads(rq.content)
     return_dict = {}
-    return_dict[key] = {}
+    return_dict[key] = {"id": data[key]["id"]}
     if (
         "country" in content
         and "genus" in content
@@ -217,7 +217,7 @@ def download(key, data):
     try:
         img = requests.get(data[key]["img_url"], stream=True, timeout=10)
         with open(
-            OUTPUT_PATH + str(key) + "." + data[1]["img_type"].split("/", 1)[1], "wb"
+            OUTPUT_PATH + data[key]["id"] + "." + data[1]["img_type"].split("/", 1)[1], "wb"
         ) as f:
             shutil.copyfileobj(img.raw, f)
         return True, key
@@ -244,12 +244,13 @@ def download_images(data):
     pool.join()
     for key in errorKeys:
         del data[key]
-    for count, filename in enumerate(os.listdir(OUTPUT_PATH)):
-        new = str(count) + "." + filename.split(".")[1]  # new file name
-        src = os.path.join(OUTPUT_PATH, filename)  # file source
-        dst = os.path.join(OUTPUT_PATH, new)  # file destination
-        # rename all the file
-        os.rename(src, dst)
+    ## Loop to reindex downloaded images sequentially
+    # for count, filename in enumerate(os.listdir(OUTPUT_PATH)):
+    #     new = str(count) + "." + filename.split(".")[1]  # new file name
+    #     src = os.path.join(OUTPUT_PATH, filename)  # file source
+    #     dst = os.path.join(OUTPUT_PATH, new)  # file destination
+    #     # rename all the file
+    #     os.rename(src, dst)
     print("\nSuccessfully downloaded", len(data), "images, with", errorCount, " download failures.")
 
 
@@ -259,8 +260,8 @@ def download_images(data):
 # %%
 def export_geography_data(data):
     with open(OUTPUT_PATH + "countries.txt", "w") as f:
-        for idx in data:
-            f.write(data[idx]["country"] + "\n")
+        for key in data:
+            f.write(data[key]["id"]+": "+data[key]["country"] + "\n")
     print("Successfully wrote countries to file.")
 
 
@@ -270,8 +271,8 @@ def export_geography_data(data):
 # %%
 def export_taxon_data(data):
     with open(OUTPUT_PATH + "taxon.txt", "w") as f:
-        for idx in data:
-            f.write(data[idx]["genus"] + " " + data[idx]["species"] + "\n")
+        for key in data:
+            f.write(data[key]["id"]+": "+data[key]["genus"] + " " + data[key]["species"] + "\n")
     print("Successfully wrote taxon to file.")
 
 
