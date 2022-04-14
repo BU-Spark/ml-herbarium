@@ -39,8 +39,8 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = min(mp.cpu_count(), 50)
-craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212"
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447"
+craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220414-154031/"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220414-143043/"
 
 def addBox(fname):
 	if ".jpg" in fname and "mask" not in fname:
@@ -48,12 +48,10 @@ def addBox(fname):
 		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
 		tmp_txt = [line.split(",") for line in tmp_txt]
 		tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-		boxes[fname[4:len(fname)-4]] = tmp_bxs
-		return boxes
+		return {fname[4:len(fname)-4]: tmp_bxs}
 
 def addImg(fIdx):
-	imgs[fIdx]=cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))
-	return imgs
+	return {fIdx: cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))}
 
 def get_imgsAndBoxes():
 	boxes = {}
@@ -81,17 +79,39 @@ def get_imgsAndBoxes():
 
 	return boxes,imgs
 
-def get_gt():
-	gt_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/taxon.txt"
+def get_taxon_gt():
+	gt_dir = org_img_dir + "taxon.txt"
 	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
 		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
-		return gt
+		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
+		return ground_truth
 
 	return None
 
-def get_corpus():
-	corpus_dir = "../in_data/"
-	corpus = open(os.path.join(corpus_dir,"corpus.txt")).read().split(" ")
+def get_geography_gt():
+	gt_dir = org_img_dir + "geography.txt"
+	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
+		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
+		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
+		return ground_truth
+
+	return None
+
+def get_taxon_corpus():
+	corpus_dir = org_img_dir + "taxon_corpus.txt"
+	corpus = open(corpus_dir).read().split("\n")
+	corpus = [s.lower() for s in corpus]
+
+	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
+	corpus_fullname = list(set(corpus_fullname))
+
+	corpus_full = corpus_fullname + list(set(corpus))
+
+	return corpus_full
+
+def get_geography_corpus():
+	corpus_dir = org_img_dir + "geography_corpus.txt"
+	corpus = open(corpus_dir).read().split("\n")
 	corpus = [s.lower() for s in corpus]
 
 	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
@@ -171,8 +191,10 @@ def crop_lines(boxes, imgs):
 
 ### --------------------------------- Import data & process --------------------------------- ###
 boxes,imgs = get_imgsAndBoxes()
-corpus = get_corpus()
-gt_txt = get_gt()
+taxon_corpus = get_taxon_corpus()
+geography_corpus = get_geography_corpus()
+taxon_gt_txt = get_taxon_gt()
+geography_gt_txt = get_geography_gt()
 n_imgs = len(imgs)
 
 # segment the lines of text (used to feed into models like mxnet)
@@ -252,23 +274,23 @@ for key, form_character_probs in character_probs.items():
 ### --------------------------------- Match words to corpus --------------------------------- ###
 from difflib import get_close_matches
 cnt = 0
-final = []
+final = {}
 for key,lines in all_decoded_am:
 	matched = False
 	matches = []
 
-	for j,s in enumerate(lines):
-		tmp = get_close_matches(s, corpus)
+	for key, string in lines.items():
+		tmp = get_close_matches(string, taxon_corpus)
 		if len(tmp) != 0:
-			matches.append(tmp)
+			matches[key]=tmp
 #             print('am matched words img'+str(i)+':',tmp)
 			matched = True
 		else:
-			split = s.split(" ")
+			split = string.split(" ")
 			for s2 in split:
-				tmp = get_close_matches(s2, corpus)
+				tmp = get_close_matches(s2, taxon_corpus)
 				if len(tmp) != 0:
-					matches.append(tmp)
+					matches[key]=tmp
 #                     print("    img"+str(i)+":", tmp)
 					matched = True
 #         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
@@ -288,22 +310,22 @@ for key,lines in all_decoded_am:
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-f = open("results.txt", "w")
+f = open("taxon_results.txt", "w")
 cnt = 0
-if gt_txt != None:
-	for i,t in enumerate(gt_txt):
-		if t == final[i]:
-			print(fnames[i]+": "+t)
-			f.write(fnames[i]+": "+t+"\n")
+if taxon_gt_txt != None:
+	for key,gt in taxon_gt_txt.items():
+		if gt == final[key]:
+			print(key+": "+gt)
+			f.write(key+": "+gt+"\n")
 			cnt+=1
 		else:
-			print(fnames[i]+": N/A")
-			f.write(fnames[i]+": N/A\n")
+			print(key+": N/A")
+			f.write(key+": N/A\n")
 
-	print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
-	f.write("acc: "+str(cnt)+"/"+str(len(gt_txt)))
+	print("acc: "+str(cnt)+"/"+str(len(taxon_gt_txt)))
+	f.write("acc: "+str(cnt)+"/"+str(len(taxon_gt_txt)))
 	f.close()
 else:
-	for i,n in enumerate(fnames):
-		f.write(n+": "+final[i])
+	for key,value in final.items():
+		f.write(key+": "+value)
 	f.close()
