@@ -259,12 +259,16 @@ def download_images(data):
 
 # %%
 def export_geography_data(data):
-    with open(OUTPUT_PATH + "countries.txt", "w") as f:
+    with open(OUTPUT_PATH + "geograpy.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["country"] + "\n")
-    print("Successfully wrote countries to file.")
+    print("Successfully wrote geograpy to file.")
 
-
+def export_geography_corpus(data):
+    with open(OUTPUT_PATH + "geograpy_corpus.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["country"] + "\n")
+    print("Successfully wrote geograpy  corpus to file.")
 # %% [markdown]
 # ### Export Taxon Data
 
@@ -275,7 +279,11 @@ def export_taxon_data(data):
             f.write(data[key]["id"]+": "+data[key]["genus"] + " " + data[key]["species"] + "\n")
     print("Successfully wrote taxon to file.")
 
-
+def export_taxon_corpus(data):
+    with open(OUTPUT_PATH + "taxon_corpus.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["genus"] + " " + data[key]["species"] + "\n")
+    print("Successfully wrote taxon corpus to file.")
 # %% [markdown]
 # ## Print Help Message
 def print_help_message():
@@ -341,8 +349,10 @@ if __name__ == "__main__":
         data = export_gbif_ids(df, args)
         data = fetch_data(data)
         download_images(data)
-        export_geography_data(data)
         export_taxon_data(data)
+        export_geography_data(data)
+        export_taxon_corpus(data)
+        export_geography_corpus(data)
         print("Successfully exported data to output path. Done!")
     elif args[0] == "csv":
         TYPE = "csv"
@@ -353,6 +363,8 @@ if __name__ == "__main__":
         data = export_gbif_ids(df)
         data = fetch_data(data)
         download_images(data)
-        export_geography_data(data)
         export_taxon_data(data)
+        export_geography_data(data)
+        export_taxon_corpus(data)
+        export_geography_corpus(data)
         print("\nSuccessfully exported data to output path. Done!")
