@@ -60,7 +60,7 @@ def get_imgsAndBoxes():
 	print("\nFilling boxes dictionary...")
 	print("Starting multiprocessing...")
 	list_imgs = sorted(os.listdir(craft_res_dir))
-	pool = mp.Pool(NUM_CORES)
+	pool = mp.Pool(min(mp.cpu_count(), NUM_CORES))
 	for item in tqdm(pool.imap(addBox, list_imgs), total=len(sorted(os.listdir(craft_res_dir)))):
 		if item: boxes.update(item)
 	pool.close()
@@ -70,7 +70,7 @@ def get_imgsAndBoxes():
 	# get the original images to crop them
 	print("Getting original images...")
 	print("Starting multiprocessing...")
-	pool = mp.Pool(NUM_CORES)
+	pool = mp.Pool(min(mp.cpu_count(), NUM_CORES))
 	for item in tqdm(pool.imap(addImg, boxes), total=len(boxes)):
 		imgs.update(item)
 	pool.close()
@@ -183,7 +183,6 @@ def crop_lines(boxes, imgs):
 			tmp_crop = imgs[key][t1[1]:t4[1],t1[0]:t2[0]]
 			if len(tmp_crop) > 0 and len(tmp_crop[0]) > 0:
 				img_lines.append(tmp_crop)
-		
 		line_crops[key]=img_lines
 	return line_crops
 
@@ -318,8 +317,8 @@ def match_words_to_corpus(all_decoded_am, corpus):
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-def determine_match(gt, final):
-	f = open("taxon_results.txt", "w")
+def determine_match(gt, final, fname):
+	f = open(fname+"_results.txt", "w")
 	cnt = 0
 	if gt != None:
 		for key,gt in gt.items():
@@ -345,8 +344,8 @@ def main():
 	all_decoded_am = probs_to_words(character_probs, lines)
 	taxon_final = match_words_to_corpus(all_decoded_am, taxon_corpus)
 	geography_final = match_words_to_corpus(all_decoded_am, geography_corpus)
-	determine_match(taxon_gt_txt, taxon_final)
-	determine_match(geography_gt_txt, geography_final)
+	determine_match(taxon_gt_txt, taxon_final, "taxon")
+	determine_match(geography_gt_txt, geography_final, "geography")
 
 
 if __name__ == "__main__":
