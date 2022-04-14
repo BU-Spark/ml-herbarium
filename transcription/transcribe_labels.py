@@ -80,7 +80,7 @@ def get_imgsAndBoxes():
 	return boxes,imgs
 
 def get_taxon_gt():
-	gt_dir = org_img_dir + "taxon.txt"
+	gt_dir = org_img_dir + "taxon_gt.txt"
 	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
 		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
 		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
@@ -89,7 +89,7 @@ def get_taxon_gt():
 	return None
 
 def get_geography_gt():
-	gt_dir = org_img_dir + "geography.txt"
+	gt_dir = org_img_dir + "geography_gt.txt"
 	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
 		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
 		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
@@ -190,38 +190,43 @@ def crop_lines(boxes, imgs):
 
 
 ### --------------------------------- Import data & process --------------------------------- ###
-boxes,imgs = get_imgsAndBoxes()
-taxon_corpus = get_taxon_corpus()
-geography_corpus = get_geography_corpus()
-taxon_gt_txt = get_taxon_gt()
-geography_gt_txt = get_geography_gt()
-n_imgs = len(imgs)
+def import_process_data():
+	boxes,imgs = get_imgsAndBoxes()
+	taxon_corpus = get_taxon_corpus()
+	geography_corpus = get_geography_corpus()
+	taxon_gt_txt = get_taxon_gt()
+	geography_gt_txt = get_geography_gt()
+	
+	n_imgs = len(imgs)
 
-# segment the lines of text (used to feed into models like mxnet)
-lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
-lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
-lines = crop_lines(lines, imgs)
+	# segment the lines of text (used to feed into models like mxnet)
+	lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
+	lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
+	lines = crop_lines(lines, imgs)
+	return lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs
 
 
 
 
 ### --------------------------------- Handwritting recognition --------------------------------- ###
-handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
-															 rnn_layers=2, ctx=ctx, max_seq_len=160)
-pretrained_params = "models/herb_line_trained_on_all.params"
-handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
-handwriting_line_recognition_net.hybridize()
+def handwritting_recognition(lines):
+	handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
+																rnn_layers=2, ctx=ctx, max_seq_len=160)
+	pretrained_params = "models/herb_line_trained_on_all.params"
+	handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
+	handwriting_line_recognition_net.hybridize()
 
 
-line_image_size = (60, 800)
-character_probs = {}
-for key, line_images in lines.items():
-	form_character_prob = []
-	for i, line_image in enumerate(line_images):
-		line_image = handwriting_recognition_transform(line_image, line_image_size)
-		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
-		form_character_prob.append(line_character_prob)
-	character_probs[key]=form_character_prob
+	line_image_size = (60, 800)
+	character_probs = {}
+	for key, line_images in lines.items():
+		form_character_prob = []
+		for i, line_image in enumerate(line_images):
+			line_image = handwriting_recognition_transform(line_image, line_image_size)
+			line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
+			form_character_prob.append(line_character_prob)
+		character_probs[key]=form_character_prob
+	return character_probs
 
 
 ### --------------------------------- Probability to text funcs --------------------------------- ###
@@ -239,93 +244,110 @@ def get_arg_max(prob):
 
 
 ### --------------------------------- Turn character probs into words --------------------------------- ###
-all_decoded_am = {} # arg max
-# all_decoded_bs = [] # beam search
+def probs_to_words(character_probs, lines):
+	all_decoded_am = {} # arg max
+	# all_decoded_bs = [] # beam search
 
-for key, form_character_probs in character_probs.items():
-	# fig, axs = plt.subplots(len(form_character_probs) + 1, 
-	#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
-	this_am = [] 
-	# this_bs = []
-	
-	print("Processed img "+str(key)+" character prob")
-	for j, line_character_probs in enumerate(form_character_probs):
-		decoded_line_am = get_arg_max(line_character_probs)
-		# print("[AM]",decoded_line_am)
-		# decoded_line_bs = get_beam_search(line_character_probs)
-		# decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
-		# print("[D ]",decoded_line_denoiser)
+	for key, form_character_probs in character_probs.items():
+		# fig, axs = plt.subplots(len(form_character_probs) + 1, 
+		#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
+		this_am = [] 
+		# this_bs = []
 		
-		this_am.append(decoded_line_am)
-		# this_bs.append(decoded_line_bs)
+		print("Processed img "+str(key)+" character prob")
+		for j, line_character_probs in enumerate(form_character_probs):
+			decoded_line_am = get_arg_max(line_character_probs)
+			# print("[AM]",decoded_line_am)
+			# decoded_line_bs = get_beam_search(line_character_probs)
+			# decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
+			# print("[D ]",decoded_line_denoiser)
+			
+			this_am.append(decoded_line_am)
+			# this_bs.append(decoded_line_bs)
+			
+			line_image = lines[int(key)][j]
+			# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
+			# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
+			# axs[j].axis('off')
+		# print()
+		all_decoded_am[key]=(this_am)
+		# all_decoded_bs.append(this_bs)
 		
-		line_image = lines[int(key)][j]
-		# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
-		# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
-		# axs[j].axis('off')
-	# print()
-	all_decoded_am[key]=(this_am)
-	# all_decoded_bs.append(this_bs)
-	
-	# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
-	# axs[-1].axis('off')
+		# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
+		# axs[-1].axis('off')
+		return all_decoded_am
 
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
-from difflib import get_close_matches
-cnt = 0
-final = {}
-for key,lines in all_decoded_am:
-	matched = False
-	matches = []
+def match_words_to_corpus(all_decoded_am, corpus):
+	from difflib import get_close_matches
+	cnt = 0
+	final = {}
+	for key,lines in all_decoded_am:
+		matched = False
+		matches = []
 
-	for key, string in lines.items():
-		tmp = get_close_matches(string, taxon_corpus)
-		if len(tmp) != 0:
-			matches[key]=tmp
-#             print('am matched words img'+str(i)+':',tmp)
-			matched = True
-		else:
-			split = string.split(" ")
-			for s2 in split:
-				tmp = get_close_matches(s2, taxon_corpus)
-				if len(tmp) != 0:
-					matches[key]=tmp
-#                     print("    img"+str(i)+":", tmp)
-					matched = True
-#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
+		for key, string in lines.items():
+			tmp = get_close_matches(string, corpus)
+			if len(tmp) != 0:
+				matches[key]=tmp
+	#             print('am matched words img'+str(i)+':',tmp)
+				matched = True
+			else:
+				split = string.split(" ")
+				for s2 in split:
+					tmp = get_close_matches(s2, corpus)
+					if len(tmp) != 0:
+						matches[key]=tmp
+	#                     print("    img"+str(i)+":", tmp)
+						matched = True
+	#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
 
-	has_spaces = [label for strs in matches for label in strs if " " in label]
-	if len(has_spaces) > 0: 
-		# print('am matched words img'+str(i)+':',has_spaces)
-		final.append(has_spaces[0])
-	else: 
-		# print(print('am matched words img'+str(i)+':',matches))
-		final.append("-- "+str(key)+" --")
+		has_spaces = [label for strs in matches for label in strs if " " in label]
+		if len(has_spaces) > 0: 
+			# print('am matched words img'+str(i)+':',has_spaces)
+			final.append(has_spaces[0])
+		else: 
+			# print(print('am matched words img'+str(i)+':',matches))
+			final.append("-- "+str(key)+" --")
 
-	if matched: cnt+=1
-	# print()
+		if matched: cnt+=1
+		return final
 	
 # print("matched ", cnt, " out of ", len(imgs))
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-f = open("taxon_results.txt", "w")
-cnt = 0
-if taxon_gt_txt != None:
-	for key,gt in taxon_gt_txt.items():
-		if gt == final[key]:
-			print(key+": "+gt)
-			f.write(key+": "+gt+"\n")
-			cnt+=1
-		else:
-			print(key+": N/A")
-			f.write(key+": N/A\n")
+def determine_match(gt, final):
+	f = open("taxon_results.txt", "w")
+	cnt = 0
+	if gt != None:
+		for key,gt in gt.items():
+			if gt == final[key]:
+				print(key+": "+gt)
+				f.write(key+": "+gt+"\n")
+				cnt+=1
+			else:
+				print(key+": N/A")
+				f.write(key+": N/A\n")
 
-	print("acc: "+str(cnt)+"/"+str(len(taxon_gt_txt)))
-	f.write("acc: "+str(cnt)+"/"+str(len(taxon_gt_txt)))
-	f.close()
-else:
-	for key,value in final.items():
-		f.write(key+": "+value)
-	f.close()
+		print("acc: "+str(cnt)+"/"+str(len(gt)))
+		f.write("acc: "+str(cnt)+"/"+str(len(gt)))
+		f.close()
+	else:
+		for key,value in final.items():
+			f.write(key+": "+value)
+		f.close()
+
+def main():
+	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
+	character_probs = handwritting_recognition(lines)
+	all_decoded_am = probs_to_words(character_probs, lines)
+	taxon_final = match_words_to_corpus(all_decoded_am, taxon_corpus)
+	geography_final = match_words_to_corpus(all_decoded_am, geography_corpus)
+	determine_match(taxon_gt_txt, taxon_final)
+	determine_match(geography_gt_txt, geography_final)
+
+
+if __name__ == "__main__":
+	main()
