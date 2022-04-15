@@ -98,6 +98,43 @@ def expand_boxes(bxs, diff_axes=False, mx=20, my=40, m=4):
 		boxes_exp.append([newtl, newtr, newbr, newbl])
 		
 	return boxes_exp
+
+def expand_boxes2(img_txt, xmarg, ymarg):
+	boxes = []
+	for i, box in enumerate(img_txt):
+		coord = []
+		temppt = []
+		xcoords = []
+		ycoords = []
+		#split the img_txt line into x and y coordinates, separated by commas
+		for j, val in enumerate(box):
+			val = val[0], val[1]
+			if j%2==0:
+				temppt = []
+				xcoords.append(val[0])
+			temppt.append(val)
+			if j%2!=0:
+				coord.append(temppt)
+				ycoords.append(val[1])
+		xavg = np.mean(xcoords)
+		yavg = np.mean(ycoords)
+		coords = []
+		for j, val in enumerate(coord):
+			coords.append(val[0])
+			coords.append(val[1])
+		nc = []
+		for k, v in enumerate(coords):
+			if v[0] > xavg:
+				nc.append(coords[k][0]+xmarg)
+			elif v[0] <= xavg:
+				nc.append(coords[k][0]-xmarg)
+			if v[1] > yavg:
+				nc.append(coords[k][1]+ymarg)
+			elif v[1] <= yavg:
+				nc.append(coords[k][1]-ymarg)
+		boxes.append(nc)
+
+	return boxes
 		
 # combines the expanded boxes into a large box (presumably the label)
 def combine_boxes(boxes):
@@ -184,6 +221,8 @@ def crop_lines(boxes, imgs):
 fillBoxes()
 getOrigImgs()
 boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
+for key, bxs in boxes_exp.items():
+	print(bxs)
 boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
 boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
 labels = {} # segment label
