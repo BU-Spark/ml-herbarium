@@ -184,6 +184,7 @@ def scrape_occurrence(key, data):
         and "genus" in content
         and "species" in content
         and "media" in content
+        and "recordedBy" in content 
         and content["media"]
         and "format" in content["media"][0]
         and "identifier" in content["media"][0]
@@ -193,6 +194,7 @@ def scrape_occurrence(key, data):
         return_dict[key]["country"] = content["country"]
         return_dict[key]["genus"] = content["genus"]
         return_dict[key]["species"] = content["species"]
+        return_dict[key]["recordedBy"] = content["recordedBy"]
     return return_dict
 
 
@@ -269,6 +271,14 @@ def export_geography_data(data):
 # ### Export Taxon Data
 
 # %%
+def export_author_data(data):
+    with open(OUTPUT_PATH + "author.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["id"]+": "+data[key]["recordedBy"] + "\n")
+    print("Successfully wrote author to file.")
+
+
+# %%
 def export_taxon_data(data):
     with open(OUTPUT_PATH + "taxon.txt", "w") as f:
         for key in data:
@@ -343,6 +353,7 @@ if __name__ == "__main__":
         download_images(data)
         export_geography_data(data)
         export_taxon_data(data)
+        export_author_data(data)
         print("Successfully exported data to output path. Done!")
     elif args[0] == "csv":
         TYPE = "csv"
@@ -355,4 +366,5 @@ if __name__ == "__main__":
         download_images(data)
         export_geography_data(data)
         export_taxon_data(data)
+        export_author_data(data)
         print("\nSuccessfully exported data to output path. Done!")
