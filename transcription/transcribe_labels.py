@@ -1,8 +1,10 @@
 ### Mostly taken from https://github.com/awslabs/handwritten-text-recognition-for-apache-mxnet/blob/master/0_handwriting_ocr.ipynb
 
+from functools import partial
 import importlib
 import random
 import os
+import time
 
 import cv2
 
@@ -38,9 +40,11 @@ from ocr.handwriting_line_recognition import Network as HandwritingRecognitionNe
 from ocr.handwriting_line_recognition import decode as decoder_handwriting, alphabet_encoding
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
-NUM_CORES = min(mp.cpu_count(), 50)
+NUM_CORES = 50
+timestr = time.strftime("%Y%m%d-%H%M%S")
 craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220414-154031/"
 org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220414-143043/"
+output_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/transcription-results/"+timestr+"/"
 
 def addBox(fname):
 	if ".jpg" in fname and "mask" not in fname:
@@ -51,21 +55,18 @@ def addBox(fname):
 		return {fname[4:len(fname)-4]: tmp_bxs}
 
 def addImg(fIdx):
-	return {fIdx: cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))}
+	return {fIdx: cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"), cv2.IMREAD_GRAYSCALE)}
 
 def get_imgsAndBoxes():
 	boxes = {}
 	imgs = {}
 
 	print("\nFilling boxes dictionary...")
-	print("Starting multiprocessing...")
 	list_imgs = sorted(os.listdir(craft_res_dir))
-	pool = mp.Pool(min(mp.cpu_count(), NUM_CORES))
-	for item in tqdm(pool.imap(addBox, list_imgs), total=len(sorted(os.listdir(craft_res_dir)))):
+	for fname in list_imgs:
+		item = addBox(fname)
 		if item: boxes.update(item)
-	pool.close()
-	pool.join()
-	print("\nBoxes dictionary filled.\n")
+	print("Boxes dictionary filled.\n")
 
 	# get the original images to crop them
 	print("Getting original images...")
@@ -75,7 +76,7 @@ def get_imgsAndBoxes():
 		imgs.update(item)
 	pool.close()
 	pool.join()
-	print("\nOriginal images obtained.\n")
+	print("Original images obtained.\n")
 
 	return boxes,imgs
 
@@ -208,23 +209,34 @@ def import_process_data():
 
 
 ### --------------------------------- Handwritting recognition --------------------------------- ###
-def handwritting_recognition(lines):
+def run_ocr(key, lines):
 	handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
 																rnn_layers=2, ctx=ctx, max_seq_len=160)
 	pretrained_params = "models/herb_line_trained_on_all.params"
 	handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
 	handwriting_line_recognition_net.hybridize()
 
-
 	line_image_size = (60, 800)
+	form_character_prob = []
+	for line_image in lines[key]:
+		line_image = handwriting_recognition_transform(line_image, line_image_size)
+		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
+		form_character_prob.append(line_character_prob)	
+	return {key: form_character_prob}
+
+def handwritting_recognition(lines):
 	character_probs = {}
-	for key, line_images in lines.items():
-		form_character_prob = []
-		for i, line_image in enumerate(line_images):
-			line_image = handwriting_recognition_transform(line_image, line_image_size)
-			line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
-			form_character_prob.append(line_character_prob)
-		character_probs[key]=form_character_prob
+
+	print("Running OCR on images...")
+	print("Starting multiprocessing...")
+	func = partial(run_ocr, lines=lines)
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(func, lines), total=len(lines)):
+		character_probs.update(item)
+	pool.close()
+	pool.join()
+	print("OCR complete.\n")
+
 	return character_probs
 
 
@@ -254,7 +266,7 @@ def probs_to_words(character_probs, lines):
 		# this_bs = []
 		
 		print("Processed img "+str(key)+" character prob")
-		for j, line_character_probs in enumerate(form_character_probs):
+		for line_character_probs in form_character_probs:
 			decoded_line_am = get_arg_max(line_character_probs)
 			# print("[AM]",decoded_line_am)
 			# decoded_line_bs = get_beam_search(line_character_probs)
@@ -264,12 +276,12 @@ def probs_to_words(character_probs, lines):
 			this_am.append(decoded_line_am)
 			# this_bs.append(decoded_line_bs)
 			
-			line_image = lines[int(key)][j]
+			# line_image = lines[int(key)][j]
 			# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
 			# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
 			# axs[j].axis('off')
 		# print()
-		all_decoded_am[key]=(this_am)
+		all_decoded_am[key]=this_am
 		# all_decoded_bs.append(this_bs)
 		
 		# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
@@ -282,22 +294,22 @@ def match_words_to_corpus(all_decoded_am, corpus):
 	from difflib import get_close_matches
 	cnt = 0
 	final = {}
-	for key,lines in all_decoded_am:
+	for key,lines in all_decoded_am.items():
 		matched = False
 		matches = []
 
-		for key, string in lines.items():
-			tmp = get_close_matches(string, corpus)
+		for s in lines:
+			tmp = get_close_matches(s, corpus)
 			if len(tmp) != 0:
-				matches[key]=tmp
+				matches.append(tmp)
 	#             print('am matched words img'+str(i)+':',tmp)
 				matched = True
 			else:
-				split = string.split(" ")
+				split = s.split(" ")
 				for s2 in split:
 					tmp = get_close_matches(s2, corpus)
 					if len(tmp) != 0:
-						matches[key]=tmp
+						matches.append(tmp)
 	#                     print("    img"+str(i)+":", tmp)
 						matched = True
 	#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
@@ -305,20 +317,22 @@ def match_words_to_corpus(all_decoded_am, corpus):
 		has_spaces = [label for strs in matches for label in strs if " " in label]
 		if len(has_spaces) > 0: 
 			# print('am matched words img'+str(i)+':',has_spaces)
-			final.append(has_spaces[0])
+			final[key]=has_spaces[0]
 		else: 
 			# print(print('am matched words img'+str(i)+':',matches))
-			final.append("-- "+str(key)+" --")
-
+			final[key]="-- "+str(key)+" --"
 		if matched: cnt+=1
-		return final
+
+	return final
 	
 # print("matched ", cnt, " out of ", len(imgs))
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 def determine_match(gt, final, fname):
-	f = open(fname+"_results.txt", "w")
+	if not os.path.exists(output_dir):
+		os.makedirs(output_dir)
+	f = open(output_dir+fname+"_results.txt", "w")
 	cnt = 0
 	if gt != None:
 		for key,gt in gt.items():
@@ -330,8 +344,8 @@ def determine_match(gt, final, fname):
 				print(key+": N/A")
 				f.write(key+": N/A\n")
 
-		print("acc: "+str(cnt)+"/"+str(len(gt)))
-		f.write("acc: "+str(cnt)+"/"+str(len(gt)))
+		print("\n"+fname+" acc: "+str(cnt)+"/"+str(len(gt)))
+		f.write(fname+" acc: "+str(cnt)+"/"+str(len(gt))+"\n")
 		f.close()
 	else:
 		for key,value in final.items():
