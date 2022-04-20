@@ -193,6 +193,8 @@ def scrape_occurrence(key, data):
         return_dict[key]["country"] = content["country"]
         return_dict[key]["genus"] = content["genus"]
         return_dict[key]["species"] = content["species"]
+        if return_dict[key]["genus"] in return_dict[key]["species"]:
+            return_dict[key]["species"] = return_dict[key]["species"][len(return_dict[key]["genus"])+1:]
     return return_dict
 
 
