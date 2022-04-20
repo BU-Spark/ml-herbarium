@@ -203,8 +203,9 @@ for key, image in imgs.items():
 # save cropped labels
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
-if not os.path.exists(save_dir):
-	os.makedirs(save_dir)
+if os.path.exists(save_dir):
+    os.remove(save_dir)
+os.makedirs(save_dir)
 
 for key, label in labels.items():
 	try:

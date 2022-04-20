@@ -64,8 +64,9 @@ image_list, _, _ = file_utils.get_files(args.test_folder)
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 result_folder = args.test_folder.replace('/scraped-data/', '/CRAFT-results/')
-if not os.path.isdir(result_folder):
-    os.mkdir(result_folder)
+if os.path.exists(result_folder):
+    os.remove(result_folder)
+os.makedirs(result_folder)
 
 def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, refine_net=None):
     cuda=True ## **************************************** ##

@@ -279,6 +279,8 @@ for i,lines in enumerate(all_decoded_am):
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
+if os.path.exists(output_dir):
+    os.remove(output_dir)
 f = open(output_dir+"results.txt", "w")
 cnt = 0
 if gt_txt != None:
