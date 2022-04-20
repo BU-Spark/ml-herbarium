@@ -125,9 +125,9 @@ def expand_boxes2(img_txt, xmarg, ymarg):
 		nc = []
 		for k, v in enumerate(coords):
 			if v[0] >= xavg:
-				nc.append(coords[k][0]+xmarg)
+				nc.append(coords[k][0]+xmarg+20)
 			elif v[0] < xavg:
-				nc.append(coords[k][0]-xmarg)
+				nc.append(coords[k][0]-xmarg-80)
 			if v[1] >= yavg:
 				nc.append(coords[k][1]+ymarg)
 			elif v[1] < yavg:
