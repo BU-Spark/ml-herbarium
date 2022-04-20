@@ -258,8 +258,8 @@ def download_images(data):
 # ### Export Geograpy Data
 
 # %%
-def export_geography_data(data):
-    with open(OUTPUT_PATH + "geograpy.txt", "w") as f:
+def export_geography_gt(data):
+    with open(OUTPUT_PATH + "geograpy_gt.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["country"] + "\n")
     print("Successfully wrote geograpy to file.")
@@ -273,8 +273,8 @@ def export_geography_corpus(data):
 # ### Export Taxon Data
 
 # %%
-def export_taxon_data(data):
-    with open(OUTPUT_PATH + "taxon.txt", "w") as f:
+def export_taxon_gt(data):
+    with open(OUTPUT_PATH + "taxon_gt.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["genus"] + " " + data[key]["species"] + "\n")
     print("Successfully wrote taxon to file.")
@@ -349,8 +349,8 @@ if __name__ == "__main__":
         data = export_gbif_ids(df, args)
         data = fetch_data(data)
         download_images(data)
-        export_taxon_data(data)
-        export_geography_data(data)
+        export_taxon_gt(data)
+        export_geography_gt(data)
         export_taxon_corpus(data)
         export_geography_corpus(data)
         print("Successfully exported data to output path. Done!")
@@ -363,8 +363,8 @@ if __name__ == "__main__":
         data = export_gbif_ids(df)
         data = fetch_data(data)
         download_images(data)
-        export_taxon_data(data)
-        export_geography_data(data)
+        export_taxon_gt(data)
+        export_geography_gt(data)
         export_taxon_corpus(data)
         export_geography_corpus(data)
         print("\nSuccessfully exported data to output path. Done!")
