@@ -259,13 +259,13 @@ def probs_to_words(character_probs, lines):
 	all_decoded_am = {} # arg max
 	# all_decoded_bs = [] # beam search
 
-	for key, form_character_probs in character_probs.items():
+	print("Processing image character probs...")
+	for key, form_character_probs in tqdm(character_probs.items(), total=len(character_probs)):
 		# fig, axs = plt.subplots(len(form_character_probs) + 1, 
 		#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
 		this_am = [] 
 		# this_bs = []
 		
-		print("Processed img "+str(key)+" character prob")
 		for line_character_probs in form_character_probs:
 			decoded_line_am = get_arg_max(line_character_probs)
 			# print("[AM]",decoded_line_am)
@@ -286,7 +286,7 @@ def probs_to_words(character_probs, lines):
 		
 		# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
 		# axs[-1].axis('off')
-		return all_decoded_am
+	return all_decoded_am
 
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
