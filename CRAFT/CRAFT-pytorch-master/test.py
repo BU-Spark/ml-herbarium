@@ -63,7 +63,7 @@ cuda=False   ## **************************************** ##
 image_list, _, _ = file_utils.get_files(args.test_folder)
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
-result_folder = args.test_folder.replace('/scraped-data/', '/CRAFT-results/')
+result_folder = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/'+timestr+'/'
 if not os.path.isdir(result_folder):
     os.mkdir(result_folder)
 

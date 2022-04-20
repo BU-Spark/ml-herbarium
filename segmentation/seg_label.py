@@ -8,10 +8,9 @@ from tqdm import tqdm
 
 NUM_CORES = min(mp.cpu_count(), 50)
 
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
-craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
-save_dir = org_img_dir.replace('/scraped-data/', '/seg-results/')
-
+# get the resulting images and text files
+craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212/"
+# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/result"
 boxes = {}
 # imgs = []
 
@@ -37,6 +36,7 @@ def fillBoxes():
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
 imgs = {}
 
 def addImg(fIdx):
@@ -203,6 +203,7 @@ for key, image in imgs.items():
 # save cropped labels
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
+save_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/seg-results/'+timestr+'/'
 if not os.path.exists(save_dir):
 	os.makedirs(save_dir)
 
