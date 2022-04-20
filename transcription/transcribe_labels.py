@@ -285,30 +285,48 @@ def match_words_to_corpus(all_decoded_am, corpus_words, name, corpus_phrases = N
 	for key,lines in tqdm(all_decoded_am.items(), total=len(all_decoded_am)):
 		matched = False
 		matches = []
+		guess = None
 
 		for s in lines:
-			tmp = get_close_matches(s, corpus_phrases)
-		if len(tmp) != 0:
-			matches.append(tmp)
-#             print('am matched words img'+str(i)+':',tmp)
-			matched = True
-		else:
-			split = s.split(" ")
-			for s2 in split:
-				tmp = get_close_matches(s2, corpus_phrases)
-				if len(tmp) != 0:
-					matches.append(tmp)
-#                     print("    img"+str(i)+":", tmp)
-					matched = True
-#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
+			if corpus_phrases:
+				tmp = get_close_matches(s, corpus_phrases)
+			else:
+				tmp = get_close_matches(s, corpus_words, cutoff=0.8)
+			if len(tmp) != 0:
+				matches.append(tmp)
+	#             print('am matched words img'+str(i)+':',tmp)
+				matched = True
+			else:
+				split = s.split(" ")
+				tmpstr = ""
+				for s2 in split:
+					t = get_close_matches(s2, corpus_words, n=1, cutoff=0.8)
+					if len(tmp) != 0:
+						tmpstr += t[0] + " "
+					else:
+						tmpstr += s2 + " "
+				tmpstr = tmpstr.strip()
+				if tmpstr != "":
+					tmp = get_close_matches(tmpstr, corpus_phrases)
+					if len(tmp) != 0:
+						matches.append(tmp)
+	#             print('am matched words img'+str(i)+':',tmp)
+						matched = True
+					else:
+						guess = tmpstr
+	#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
 
 		has_spaces = [label for strs in matches for label in strs if " " in label]
-		if len(has_spaces) > 0: 
+		if has_spaces:
+		# if matched:
 			# print('am matched words img'+str(i)+':',has_spaces)
-			final[key]=has_spaces[0]
+			final[key] = has_spaces[0]
+			# final[key]=match
 		else: 
-				# print(print('am matched words img'+str(i)+':',matches))
+			# print(print('am matched words img'+str(i)+':',matches))
 			final[key]="NO MATCH"
+			if guess:
+				final[key] = "GUESS: " + guess
 		if matched: cnt+=1
 	print("Done.\n")
 	return final
@@ -330,6 +348,12 @@ def determine_match(gt, final, fname):
 			else:
 				if final_val=="NO MATCH":
 					f.write(key+": "+final_val+"\n")
+				elif "GUESS" in final_val:
+					if gt[key] == final_val.split("GUESS: ")[1]:
+						f.write(key+"––"+final_val+"\n")
+						cnt+=1
+					else:
+						f.write(key+"––"+final_val+"––EXPECTED:"+gt[key]+"\n")
 				else:
 					f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
 
