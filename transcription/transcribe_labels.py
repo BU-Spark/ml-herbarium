@@ -80,38 +80,17 @@ def get_imgsAndBoxes():
 
 	return boxes,imgs
 
-def get_taxon_gt():
-	gt_dir = org_img_dir + "taxon_gt.txt"
-	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
-		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
+def get_gt(fname):
+	gt_dir = org_img_dir + fname + "_gt.txt"
+	if os.path.exists(gt_dir):
+		gt = open(gt_dir).read().split("\n")
 		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
 		return ground_truth
 
 	return None
 
-def get_geography_gt():
-	gt_dir = org_img_dir + "geography_gt.txt"
-	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
-		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
-		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
-		return ground_truth
-
-	return None
-
-def get_taxon_corpus():
-	corpus_dir = org_img_dir + "taxon_corpus.txt"
-	corpus = open(corpus_dir).read().split("\n")
-	corpus = [s.lower() for s in corpus]
-
-	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
-	corpus_fullname = list(set(corpus_fullname))
-
-	corpus_full = corpus_fullname + list(set(corpus))
-
-	return corpus_full
-
-def get_geography_corpus():
-	corpus_dir = org_img_dir + "geography_corpus.txt"
+def get_corpus(fname):
+	corpus_dir = org_img_dir + fname + "_corpus.txt"
 	corpus = open(corpus_dir).read().split("\n")
 	corpus = [s.lower() for s in corpus]
 
@@ -192,10 +171,10 @@ def crop_lines(boxes, imgs):
 ### --------------------------------- Import data & process --------------------------------- ###
 def import_process_data():
 	boxes,imgs = get_imgsAndBoxes()
-	taxon_corpus = get_taxon_corpus()
-	geography_corpus = get_geography_corpus()
-	taxon_gt_txt = get_taxon_gt()
-	geography_gt_txt = get_geography_gt()
+	taxon_corpus = get_corpus("taxon")
+	geography_corpus = get_corpus("geography")
+	taxon_gt_txt = get_gt("taxon")
+	geography_gt_txt = get_gt("geography")
 	
 	n_imgs = len(imgs)
 
@@ -286,6 +265,7 @@ def probs_to_words(character_probs, lines):
 		
 		# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
 		# axs[-1].axis('off')
+	print("Done.\n")
 	return all_decoded_am
 
 
@@ -294,7 +274,8 @@ def match_words_to_corpus(all_decoded_am, corpus):
 	from difflib import get_close_matches
 	cnt = 0
 	final = {}
-	for key,lines in all_decoded_am.items():
+	print("Matching words to corpus...")
+	for key,lines in tqdm(all_decoded_am.items(), total=len(all_decoded_am)):
 		matched = False
 		matches = []
 
@@ -322,7 +303,7 @@ def match_words_to_corpus(all_decoded_am, corpus):
 			# print(print('am matched words img'+str(i)+':',matches))
 			final[key]="-- "+str(key)+" --"
 		if matched: cnt+=1
-
+	print("Done.\n")
 	return final
 	
 # print("matched ", cnt, " out of ", len(imgs))
