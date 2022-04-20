@@ -124,17 +124,24 @@ def expand_boxes2(img_txt, xmarg, ymarg):
 			coords.append(val[1])
 		nc = []
 		for k, v in enumerate(coords):
-			if v[0] > xavg:
+			if v[0] >= xavg:
 				nc.append(coords[k][0]+xmarg)
-			elif v[0] <= xavg:
+			elif v[0] < xavg:
 				nc.append(coords[k][0]-xmarg)
-			if v[1] > yavg:
+			if v[1] >= yavg:
 				nc.append(coords[k][1]+ymarg)
-			elif v[1] <= yavg:
+			elif v[1] < yavg:
 				nc.append(coords[k][1]-ymarg)
 		boxes.append(nc)
-
-	return boxes
+	box = [[[0,0],[0,0],[0,0],[0,0]]] * len(boxes)
+	#print(box)
+	for i, b in enumerate(box):
+		#print(b)
+		box[i] = [[boxes[i][0],boxes[i][1]],[boxes[i][2],boxes[i][3]],[boxes[i][4],boxes[i][5]],[boxes[i][6],boxes[i][7]]]
+		# print(box[i])
+		# print(boxes[i])
+	
+	return box
 		
 # combines the expanded boxes into a large box (presumably the label)
 def combine_boxes(boxes):
@@ -220,9 +227,7 @@ def crop_lines(boxes, imgs):
 # segment the labels
 fillBoxes()
 getOrigImgs()
-boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
-for key, bxs in boxes_exp.items():
-	print(bxs)
+boxes_exp = {key: expand_boxes2(bxs, 40, 40) for key, bxs in boxes.items()} # expand boxes
 boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
 boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
 labels = {} # segment label
