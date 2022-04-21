@@ -42,10 +42,10 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = 50
-timestr = time.strftime("%Y%m%d-%H%M%S")
-craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220414-154031/"
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220414-143043/"
-output_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/transcription-results/"+timestr+"/"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
+output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
+
 
 def addBox(fname):
 	if ".jpg" in fname and "mask" not in fname:
@@ -336,9 +336,9 @@ def match_words_to_corpus(all_decoded_am, corpus_words, name, corpus_phrases = N
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 def determine_match(gt, final, fname):
-	if not os.path.exists(output_dir):
-		os.makedirs(output_dir)
-	f = open(output_dir+fname+"_results.txt", "w")
+	if os.path.exists(output_dir):
+		os.remove(output_dir)
+	f = open(output_dir+"results.txt", "w")
 	cnt = 0
 	if gt != None:
 		for key,final_val in final.items():
