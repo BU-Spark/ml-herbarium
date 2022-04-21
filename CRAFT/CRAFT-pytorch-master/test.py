@@ -4,6 +4,7 @@ MIT License
 """
 
 # -*- coding: utf-8 -*-
+import shutil
 import sys
 import os
 import time
@@ -65,7 +66,7 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 result_folder = args.test_folder.replace('/scraped-data/', '/CRAFT-results/')
 if os.path.exists(result_folder):
-    os.remove(result_folder)
+    shutil.rmtree(result_folder)
 os.makedirs(result_folder)
 
 def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, refine_net=None):
