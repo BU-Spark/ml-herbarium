@@ -261,16 +261,16 @@ def download_images(data):
 
 # %%
 def export_geography_gt(data):
-    with open(OUTPUT_PATH + "geograpy_gt.txt", "w") as f:
+    with open(OUTPUT_PATH + "geography_gt.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["country"] + "\n")
-    print("Successfully wrote geograpy to file.")
+    print("Successfully wrote geography to file.")
 
 def export_geography_corpus(data):
-    with open(OUTPUT_PATH + "geograpy_corpus.txt", "w") as f:
+    with open(OUTPUT_PATH + "geography_corpus.txt", "w") as f:
         for key in data:
             f.write(data[key]["country"] + "\n")
-    print("Successfully wrote geograpy  corpus to file.")
+    print("Successfully wrote geography  corpus to file.")
 # %% [markdown]
 # ### Export Taxon Data
 
