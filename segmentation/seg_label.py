@@ -1,3 +1,4 @@
+import shutil
 import time
 import numpy as np
 import cv2
@@ -204,7 +205,7 @@ for key, image in imgs.items():
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 if os.path.exists(save_dir):
-    os.remove(save_dir)
+    shutil.rmtree(save_dir)
 os.makedirs(save_dir)
 
 for key, label in labels.items():
