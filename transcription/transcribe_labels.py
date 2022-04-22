@@ -44,10 +44,11 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
+output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
 
 def get_imgsAndBoxes():
-	craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
-	org_img_dir = "../in_data/images/"
 	boxes = []
 	imgs = []
 	fnames = []
@@ -278,7 +279,9 @@ for i,lines in enumerate(all_decoded_am):
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-f = open("results.txt", "w")
+if os.path.exists(output_dir):
+    os.remove(output_dir)
+f = open(output_dir+"results.txt", "w")
 cnt = 0
 if gt_txt != None:
 	for i,t in enumerate(gt_txt):
