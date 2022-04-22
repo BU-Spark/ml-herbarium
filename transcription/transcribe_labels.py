@@ -4,6 +4,7 @@ from functools import partial
 import importlib
 import random
 import os
+import shutil
 import time
 import re
 
@@ -42,7 +43,7 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = 50
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220420-172248/"
 craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
 output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
 
@@ -91,12 +92,9 @@ def get_gt(fname):
 
 	return None
 
-def get_corpus(fname, words):
+def get_corpus(fname):
 	corpus_dir = org_img_dir + fname + "_corpus.txt"
-	if (words):
-		corpus = re.split("\n| ", open(corpus_dir).read())
-	else:
-		corpus = open(corpus_dir).read().split("\n")
+	corpus = re.split("\n| ", open(corpus_dir).read())
 	corpus = [s.lower() for s in corpus]
 
 	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
@@ -176,10 +174,8 @@ def crop_lines(boxes, imgs):
 ### --------------------------------- Import data & process --------------------------------- ###
 def import_process_data():
 	boxes,imgs = get_imgsAndBoxes()
-	taxon_corpus_phrases = get_corpus("taxon", False)
-	taxon_corpus_words = get_corpus("taxon", True)
-	geography_corpus_phrases = get_corpus("geography", False)
-	geography_corpus_words = get_corpus("geography", True)
+	taxon_corpus = get_corpus("taxon")
+	geography_corpus = get_corpus("geography")
 	taxon_gt_txt = get_gt("taxon")
 	geography_gt_txt = get_gt("geography")
 	
@@ -189,7 +185,7 @@ def import_process_data():
 	lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
 	lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
 	lines = crop_lines(lines, imgs)
-	return lines, taxon_corpus_phrases, taxon_corpus_words, geography_corpus_phrases, geography_corpus_words, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs
+	return lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs
 
 
 
@@ -277,7 +273,7 @@ def probs_to_words(character_probs, lines):
 
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
-def match_words_to_corpus(all_decoded_am, corpus_words, name, corpus_phrases = None):
+def match_words_to_corpus(all_decoded_am, name, corpus):
 	from difflib import get_close_matches
 	cnt = 0
 	final = {}
@@ -288,33 +284,18 @@ def match_words_to_corpus(all_decoded_am, corpus_words, name, corpus_phrases = N
 		guess = None
 
 		for s in lines:
-			if corpus_phrases:
-				tmp = get_close_matches(s, corpus_phrases)
-			else:
-				tmp = get_close_matches(s, corpus_words, cutoff=0.8)
+			tmp = get_close_matches(s, corpus)
 			if len(tmp) != 0:
 				matches.append(tmp)
 	#             print('am matched words img'+str(i)+':',tmp)
 				matched = True
-			else:
+			else:  ## if no match, try to match the words to the words in the corpus (this method caused more wrong matches, so I commented it out) ##FIXME: Make this better
 				split = s.split(" ")
-				tmpstr = ""
 				for s2 in split:
-					t = get_close_matches(s2, corpus_words, n=1, cutoff=0.8)
-					if len(tmp) != 0:
-						tmpstr += t[0] + " "
-					else:
-						tmpstr += s2 + " "
-				tmpstr = tmpstr.strip()
-				if tmpstr != "":
-					tmp = get_close_matches(tmpstr, corpus_phrases)
+					tmp = get_close_matches(s2, corpus)
 					if len(tmp) != 0:
 						matches.append(tmp)
-	#             print('am matched words img'+str(i)+':',tmp)
 						matched = True
-					else:
-						guess = tmpstr
-	#         print('bs matched words:',get_close_matches(all_decoded_bs[i][j], corpus_fullname))
 
 		has_spaces = [label for strs in matches for label in strs if " " in label]
 		if has_spaces:
@@ -336,10 +317,10 @@ def match_words_to_corpus(all_decoded_am, corpus_words, name, corpus_phrases = N
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 def determine_match(gt, final, fname):
-	if os.path.exists(output_dir):
-		os.remove(output_dir)
-	f = open(output_dir+"results.txt", "w")
+	f = open(output_dir+fname+"_results.txt", "w")
 	cnt = 0
+	wcnt = 0
+	ncnt = 0
 	if gt != None:
 		for key,final_val in final.items():
 			if gt[key] == final_val:
@@ -348,17 +329,23 @@ def determine_match(gt, final, fname):
 			else:
 				if final_val=="NO MATCH":
 					f.write(key+": "+final_val+"\n")
-				elif "GUESS" in final_val:
-					if gt[key] == final_val.split("GUESS: ")[1]:
-						f.write(key+"––"+final_val+"\n")
-						cnt+=1
-					else:
-						f.write(key+"––"+final_val+"––EXPECTED:"+gt[key]+"\n")
+					ncnt+=1
+				# elif "GUESS" in final_val:
+				# 	if gt[key] == final_val.split("GUESS: ")[1]:
+				# 		f.write(key+"––"+final_val+"\n")
+				# 		cnt+=1
+				# 	else:
+				# 		f.write(key+"––"+final_val+"––EXPECTED:"+gt[key]+"\n")
 				else:
 					f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
+					wcnt+=1
 
-		print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%"+"\n")
-		f.write("\n"+fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%"+"\n")
+		print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
+		print(fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
+		print(fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
+		f.write("\n"+fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
+		f.write("\n"+fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
+		f.write("\n"+fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
 		f.close()
 	else:
 		for key,value in final.items():
@@ -366,11 +353,14 @@ def determine_match(gt, final, fname):
 		f.close()
 
 def main():
-	lines, taxon_corpus_phrases, taxon_corpus_words, geography_corpus_phrases, geography_corpus_words, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
+	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
 	character_probs = handwritting_recognition(lines)
 	all_decoded_am = probs_to_words(character_probs, lines)
-	taxon_final = match_words_to_corpus(all_decoded_am, taxon_corpus_words, "taxon", taxon_corpus_phrases)
-	geography_final = match_words_to_corpus(all_decoded_am, geography_corpus_words, "geography", geography_corpus_phrases)
+	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
+	geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
+	if os.path.exists(output_dir):
+		shutil.rmtree(output_dir)
+	os.makedirs(output_dir)
 	determine_match(taxon_gt_txt, taxon_final, "taxon")
 	determine_match(geography_gt_txt, geography_final, "geography")
 
