@@ -303,7 +303,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 			else:  ## if no match, try to match the words to the words in the corpus (this method caused more wrong matches, so I commented it out) ##FIXME: Make this better
 				split = s.split(" ")
 				for s2 in split:
-					f.write("Close matches run on each word of OCR:\n")
+					f.write("Close matches run on "+s2+":\n")
 					tmp = get_close_matches(s2, corpus)
 					f.write(str(tmp)+"\n")
 					if len(tmp) != 0:
@@ -315,7 +315,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		# if matched:
 			# print('am matched words img'+str(i)+':',has_spaces)
 			final[key] = has_spaces[0]
-			f.write("Final match (first element of list):\n")
+			f.write("\n\n-------------------------\nFinal match (first element of list):\n")
 			f.write(str(has_spaces)+"\n")
 			# final[key]=match
 		else: 
