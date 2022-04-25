@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 NUM_CORES = min(mp.cpu_count(), 50)
 
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
 craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
 save_dir = org_img_dir.replace('/scraped-data/', '/seg-results/')
 
@@ -196,10 +196,10 @@ for key, image in imgs.items():
 		labels[key]=None
 		print("Error cropping label for image: ", key+".jpg")
 
-# # segment the lines of text (used to feed into models like mxnet)
-# lines = [get_lines(bxs) for bxs in boxes]
-# lines = [expand_boxes(bxs) for bxs in lines]
-# lines = crop_lines(lines, imgs)
+# segment the lines of text (used to feed into models like mxnet)
+lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
+lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
+lines = crop_lines(lines, imgs)
 
 # save cropped labels
 timestr = time.strftime("%Y%m%d-%H%M%S")

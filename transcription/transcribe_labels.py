@@ -43,7 +43,7 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = 50
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220420-172248/"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"
 craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
 output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
 
@@ -284,7 +284,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		guess = None
 		if not os.path.exists(output_dir+"/debug/"):
 			os.makedirs(output_dir+"/debug/")
-		f = open(output_dir+"/debug/"+name+key, "w")
+		f = open(output_dir+"/debug/"+name+key+".txt", "w")
 		for s in lines:
 			f.write("\n\nOCR output:\n")
 			f.write(str(s)+"\n")
@@ -362,12 +362,12 @@ def determine_match(gt, final, fname):
 		f.close()
 
 def main():
-	if os.path.exists(output_dir):
-		shutil.rmtree(output_dir)
-	os.makedirs(output_dir)
 	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
 	character_probs = handwritting_recognition(lines)
 	all_decoded_am = probs_to_words(character_probs, lines)
+	if os.path.exists(output_dir):
+		shutil.rmtree(output_dir)
+	os.makedirs(output_dir)
 	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
 	geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
 	determine_match(taxon_gt_txt, taxon_final, "taxon")
