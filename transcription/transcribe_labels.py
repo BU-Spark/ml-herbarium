@@ -292,7 +292,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		for s in lines:
 			f.write("\n\nOCR output:\n")
 			f.write(str(s)+"\n")
-			tmp = get_close_matches(s, corpus, cutoff=.7)
+			tmp = get_close_matches(s, corpus)
 			f.write("Close matches:\n")
 			f.write(str(tmp)+"\n")
 			if len(tmp) != 0:
