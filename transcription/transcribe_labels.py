@@ -286,19 +286,15 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		matched = False
 		matches = []
 		guess = None
-
 		if not os.path.exists(output_dir+"/debug/"):
 			os.makedirs(output_dir+"/debug/")
-		f = open(output_dir+"/debug/"+name+key+".txt", "w")
-
+		f = open(output_dir+"/debug/"+name+key, "w")
 		for s in lines:
 			f.write("\n\nOCR output:\n")
 			f.write(str(s)+"\n")
-
-			tmp = get_close_matches(s, corpus)
+			tmp = get_close_matches(s, corpus, cutoff=.7)
 			f.write("Close matches:\n")
 			f.write(str(tmp)+"\n")
-
 			if len(tmp) != 0:
 				matches.append(tmp)
 	#             print('am matched words img'+str(i)+':',tmp)
@@ -307,7 +303,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 			else:  ## if no match, try to match the words to the words in the corpus (this method caused more wrong matches, so I commented it out) ##FIXME: Make this better
 				split = s.split(" ")
 				for s2 in split:
-					f.write("Close matches run on "+s2+":\n")
+					f.write("Close matches run on each word of OCR:\n")
 					tmp = get_close_matches(s2, corpus)
 					f.write(str(tmp)+"\n")
 					if len(tmp) != 0:
@@ -319,9 +315,7 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		# if matched:
 			# print('am matched words img'+str(i)+':',has_spaces)
 			final[key] = has_spaces[0]
-			f.write("\n\n-------------------------\nLIST of Final match (first element of list):\n")
-			f.write(str(has_spaces))
-			f.write("\n\n-------------------------\nFinal match (first element of list):\n")
+			f.write("Final match (first element of list):\n")
 			f.write(str(has_spaces)+"\n")
 			# final[key]=match
 		else: 
@@ -391,14 +385,14 @@ def determine_match(gt, final, fname):
 		f.close()
 
 def main():
-	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
-	character_probs = handwritting_recognition(lines)
-	all_decoded_am = probs_to_words(character_probs, lines)
 	if os.path.exists(output_dir):
 		shutil.rmtree(output_dir)
 	os.makedirs(output_dir)
+	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
+	character_probs = handwritting_recognition(lines)
+	all_decoded_am = probs_to_words(character_probs, lines)
 	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
-	# geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
+	geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
 	determine_match(taxon_gt_txt, taxon_final, "taxon")
 	# determine_match(geography_gt_txt, geography_final, "geography")
 
