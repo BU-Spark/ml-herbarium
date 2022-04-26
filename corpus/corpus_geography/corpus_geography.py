@@ -4,6 +4,7 @@ import zipfile
 import os
 import pandas as pd
 import shutil
+from unidecode import unidecode
 
 
 ### globals
@@ -52,7 +53,7 @@ def process_geo(zip_file, txt_dir, csv):
     higherGeography = higherGeography.unique().tolist() # avoid duplicates
     geo_no_semi = []
     for i in range(len(higherGeography)): 
-        geo_no_semi.append(higherGeography[i].split(';')[:-1])
+        geo_no_semi.append(unidecode(higherGeography[i]).split(';')[:-1])
     total_cities.append(geo_no_semi)
 
 

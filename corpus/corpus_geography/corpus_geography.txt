@@ -590,7 +590,7 @@ Japan, Aomori
 French Polynesia, Societe, Iles de la, Tahiti
 China, Yunnan, Hekou
 Philippines, Davao Oriental
-China, Guangxi, Ling Yün Hsien
+China, Guangxi, Ling Yun Hsien
 China, Henan, Qinyang
 China, Yunnan, Yunlong
 Philippines, Ifugao
@@ -613,7 +613,7 @@ Russia, Magadan Oblast
 New Zealand, North Island, Northland
 Thailand, Chiang Mai, Mae Rim
 Nepal, Western, Kaski
-French Polynesia, Gambier, Îles
+French Polynesia, Gambier, Iles
 Vanuatu, Efate
 Thailand, Prachuap Khiri Khan, Kui Buri
 China, Taiwan, Taichung
@@ -1507,7 +1507,7 @@ United States of America, New Hampshire, Rockingham County
 United States of America, Massachusetts, Franklin County
 United States of America, California, Mariposa County
 United States of America, Maine, Penobscot County
-Mexico, Puebla, Tehuacán
+Mexico, Puebla, Tehuacan
 United States of America, Maine, Cumberland County
 United States of America, Massachusetts
 United States of America, Nevada, Washoe County
@@ -1583,7 +1583,7 @@ Cuba, Pinar del Rio
 United States of America, Kentucky, Whitley County
 United States of America, Illinois
 United States of America, California, Mono County
-Dominican Republic, Samaná
+Dominican Republic, Samana
 United States of America, Oregon, Malheur County
 United States of America, Tennessee, Hamilton County
 Canada, Nova Scotia
@@ -1593,7 +1593,7 @@ United States of America, Wyoming
 United States of America, Massachusetts, Essex County
 United States of America, Wyoming, Park County
 United States of America, Alabama, Colbert County
-Honduras, Francisco Morazán
+Honduras, Francisco Morazan
 United States of America, Arizona, Graham County
 United States of America, Arizona, Yuma County
 United States of America, Michigan, Wayne County
@@ -1656,11 +1656,11 @@ United States of America, Virginia, Charles City County
 United States of America, Massachusetts, Berkshire County
 United States of America, Oregon, Jefferson County
 United States of America, New York, Tompkins County
-Mexico, Guerrero, Petatlán
+Mexico, Guerrero, Petatlan
 United States of America, Washington
 United States of America, Maine, Knox County
 United States of America, Connecticut, New London County
-Mexico, México
+Mexico, Mexico
 United States of America, New Mexico, Colfax County
 United States of America, Kentucky
 United States of America, California, Nevada County
@@ -1677,7 +1677,7 @@ Dominican Republic
 Cuba
 United States of America, Louisiana, Allen County
 United States of America, Arkansas, Pike County
-Cuba, Camagüey
+Cuba, Camaguey
 United States of America, Maine, Washington County
 United States of America, Texas, Matagordo County
 United States of America, California, Monterey County
@@ -1719,7 +1719,7 @@ United States of America, Virginia, Prince George County
 United States of America, Colorado, Clear Creek County
 United States of America, Virginia, Middlesex County
 United States of America, Rhode Island, Newport County
-Costa Rica, San José
+Costa Rica, San Jose
 United States of America, Georgia, Gilmer County
 United States of America, New Jersey
 United States of America, North Carolina, Nash County
@@ -1771,7 +1771,7 @@ United States of America, Alaska, Lake and Peninsula Borough
 United States of America, Alaska, Kodiak Island Borough
 United States of America, Texas, Borden County
 United States of America, Pennsylvania, Bucks County
-Mexico, Michoacán
+Mexico, Michoacan
 United States of America, Virginia, Smyth County
 United States of America, Nevada, Esmeralda County
 United States of America, North Carolina, Polk County
@@ -1799,7 +1799,7 @@ United States of America, Iowa, Decatur County
 United States of America, Idaho, Nez Perce County
 United States of America, Ohio, Washington County
 United States of America, Nevada, White Pine County
-Mexico, San Luis Potosí
+Mexico, San Luis Potosi
 United States of America, Virginia
 United States of America, Georgia, Muscogee County
 United States of America, New Mexico
@@ -1828,7 +1828,7 @@ United States of America, Delaware
 United States of America, Montana, Park County
 United States of America, California, Solano County
 United States of America, Georgia, Dougherty County
-Canada, Quebec Province, La Matapédia, MRC
+Canada, Quebec Province, La Matapedia, MRC
 United States of America, Alaska, Sitka County
 United States of America, Missouri, Vernon County
 United States of America, California, Napa County
@@ -1969,7 +1969,7 @@ United States of America, Arizona, Maricopa County
 United States of America, Montana, Flathead County
 United States of America, Florida, Polk County
 United States of America, Kansas, Sheridan County
-Canada, Quebec Province, Communauté maritime des Îles-de-la-Madeleine agglomération
+Canada, Quebec Province, Communaute maritime des Iles-de-la-Madeleine agglomeration
 United States of America, California, Fresno County
 United States of America, Virginia, Norfolk County
 United States of America, Pennsylvania, Delaware County
@@ -1980,16 +1980,16 @@ United States of America, West Virginia
 United States of America, Arkansas, Phillips County
 United States of America, Iowa, Davis County
 United States of America, Indiana, Whitley County
-Mexico, Nuevo León, Monterrey
+Mexico, Nuevo Leon, Monterrey
 United States of America, Indiana, Wells County
 United States of America, Pennsylvania, Pike County
 United States of America, Colorado, Costilla County
 United States of America, Pennsylvania, Carbon County
 United States of America, Nebraska, Cass County
-Panama, Colón
+Panama, Colon
 United States of America, New Mexico, Eddy County
 United States of America, Arkansas, Crawford County
-Canada, Quebec Province, La Côte-de-Gaspé, MRC (Quebec)
+Canada, Quebec Province, La Cote-de-Gaspe, MRC (Quebec)
 United States of America, Virginia, James City County
 Cuba, Santiago de Cuba
 United States of America, Ohio, Portage County
@@ -2073,7 +2073,7 @@ United States of America, New Mexico, Santa Fe County
 United States of America, New York, Monroe County
 Canada, Quebec Province, Les Etchemins, MRC
 United States of America, New York, Lewis County
-Mexico, Nuevo León
+Mexico, Nuevo Leon
 United States of America, Virginia, Bedford County
 United States of America, Florida, Lee County
 United States of America, Illinois, Jackson County
@@ -2143,7 +2143,7 @@ United States of America, Tennessee, Sumner County
 United States of America, Nevada, Humboldt County
 United States of America, Texas, Pecos County
 United States of America, Kansas, Osage County
-Mexico, Michoacán, Morelia
+Mexico, Michoacan, Morelia
 Canada, Quebec Province, Brome
 United States of America, Louisiana, Madison County
 United States of America, Florida, Collier County
@@ -2204,7 +2204,7 @@ United States of America, Arkansas, Desha County
 United States of America, Montana, Beaverhead County
 United States of America, California, Imperial County
 United States of America, Missouri, Shannon County
-Mexico, Guerrero, Zirándaro
+Mexico, Guerrero, Zirandaro
 United States of America, Oklahoma, Choctaw County
 United States of America, Alaska, Haines Borough
 United States of America, Louisiana, West Feliciana County
@@ -2294,7 +2294,7 @@ United States of America, Connecticut, Tolland County
 United States of America, Ohio, Erie County
 United States of America, Texas, Reeves County
 United States of America, New Mexico, Union County
-Panama, Coclé
+Panama, Cocle
 Canada, Nova Scotia, Pictou County (Nova Scotia)
 United States of America, Minnesota, Houston County
 Bahamas, Andros
@@ -2348,7 +2348,7 @@ United States of America, Wisconsin, Outagamie County
 United States of America, Washington, Whatcom County
 Guatemala, Izabal
 United States of America, Connecticut, Middlesex County
-Panama, Darién, Chepyana
+Panama, Darien, Chepyana
 United States of America, Montana, Gallatin County
 United States of America, Wyoming, Albany County
 United States of America, Texas, Llano County
@@ -2426,7 +2426,7 @@ United States of America, Missouri, Ozark County
 United States of America, Texas, La Salle County
 United States of America, South Carolina, Oconee County
 United States of America, Michigan, Sanilac County
-Mexico, México, Temascaltepec
+Mexico, Mexico, Temascaltepec
 United States of America, Mississippi, Scott County
 Canada, Nova Scotia, Guysborough County (Nova Scotia)
 United States of America, Tennessee, Johnson County
@@ -2466,7 +2466,7 @@ United States of America, Arkansas, Drew County
 Saint Vincent and the Grenadines
 United States of America, Iowa, Fayette County
 United States of America, Louisiana, Webster County
-Mexico, San Luis Potosí, Rayón
+Mexico, San Luis Potosi, Rayon
 Mexico, Jalisco, Guadalajara
 United States of America, Indiana, Steuben County
 United States of America, Missouri, Jackson County
@@ -2501,7 +2501,7 @@ United States of America, Alaska, Northwest Arctic County
 United States of America, Texas, Dimmit County
 United States of America, New Mexico, Harding County
 United States of America, Florida, Holmes County
-Honduras, El Paraíso
+Honduras, El Paraiso
 United States of America, Pennsylvania, Bedford County
 United States of America, Arkansas, Jefferson County
 United States of America, Georgia, Chatham County
@@ -2531,7 +2531,7 @@ United States of America, Mississippi, Lawrence County
 United States of America, Indiana, Allen County
 United States of America, Iowa, Lyon County
 United States of America, Iowa, Poweshiek County
-Canada, Quebec Province, Témiscouata, MRC
+Canada, Quebec Province, Temiscouata, MRC
 United States of America, Ohio, Ashtabula County
 United States of America, Indiana, Pulaski County
 United States of America, Missouri, Boone County
@@ -2608,7 +2608,7 @@ United States of America, West Virginia, Wetzel County
 United States of America, New Mexico, McKinley County
 United States of America, Texas, Presidio County
 United States of America, Georgia, Brantley County
-Honduras, Cortés
+Honduras, Cortes
 United States of America, Oregon, Clatsop County
 United States of America, Nebraska, Hayes County
 United States of America, Montana, Custer County
@@ -2629,12 +2629,12 @@ United States of America, Arkansas, Yell County
 United States of America, North Dakota, Benson County
 United States of America, Missouri, Dent County
 Canada, Nova Scotia, Shelburne County (Nova Scotia)
-El Salvador, Morazán
-Panama, Darién
+El Salvador, Morazan
+Panama, Darien
 United States of America, Florida, Sumter County
 United States of America, Louisiana, Saint Helena County
 United States of America, Texas, Edwards County
-Mexico, Querétaro
+Mexico, Queretaro
 United States of America, Oregon, Sherman County
 United States of America, Kansas, Logan County
 United States of America, Kansas, Geary County
@@ -2731,7 +2731,7 @@ United States of America, Indiana, Knox County
 United States of America, Oklahoma, Cherokee County
 United States of America, Iowa, Palo Alto County
 Canada, New Brunswick, Madawaska County (New Brunswick)
-Mexico, México, Luvianos
+Mexico, Mexico, Luvianos
 United States of America, Indiana, Orange County
 United States of America, Wisconsin, Milwaukee County
 United States of America, Wyoming, Platte County
@@ -2770,11 +2770,11 @@ United States of America, South Dakota, Brookings County
 Jamaica, Trelawny Parish
 United States of America, Minnesota, Beltrami County
 United States of America, South Carolina, Lancaster County
-Honduras, Atlántida
+Honduras, Atlantida
 Guatemala, Jutiapa
 United States of America, Minnesota, Itasca County (Minnesota)
 United States of America, Maryland, Worcester County
-Mexico, Sonora, Álamos
+Mexico, Sonora, Alamos
 United States of America, Alaska, Matanuska-Susitna Borough
 United States of America, South Carolina, Abbeville County
 United States of America, Arkansas, Little River County
@@ -2785,7 +2785,7 @@ United States of America, South Carolina, Georgetown County
 United States of America, Arkansas, Boone County
 United States of America, Virginia, Stafford County
 United States of America, Kentucky, Carter County
-Mexico, Yucatán
+Mexico, Yucatan
 United States of America, Indiana, White County
 United States of America, Maryland, Garrett County
 United States of America, Washington, Garfield County
@@ -2849,7 +2849,7 @@ United States of America, Washington, Pacific County
 United States of America, Louisiana, Lincoln County
 United States of America, New York, Niagara County
 United States of America, Pennsylvania, Snyder County
-Guatemala, Sacatepéquez
+Guatemala, Sacatepequez
 United States of America, North Carolina, Pitt County
 Canada, Quebec Province, Abitibi, MRC
 United States of America, Kentucky, Knox County
@@ -2872,7 +2872,7 @@ United States of America, North Carolina, Stanly County
 United States of America, Ohio, Putnam County
 United States of America, Pennsylvania, Wyoming County
 United States of America, Arizona, La Paz County
-Canada, Quebec Province, Memphrémagog, MRC
+Canada, Quebec Province, Memphremagog, MRC
 United States of America, Missouri, Sullivan County
 Jamaica, Kingston and St. Andrew Corporation, Kingston Parish
 United States of America, Oklahoma, Cleveland County
@@ -2949,7 +2949,7 @@ United States of America, Missouri, Ralls County
 United States of America, Utah, Iron County
 United States of America, Oregon, Crook County
 United States of America, Louisiana, Tensas County
-Cuba, Guantánamo Province
+Cuba, Guantanamo Province
 United States of America, Virginia, Chesterfield County
 United States of America, Texas, Dallam County
 United States of America, Michigan, Saint Joseph County
@@ -3067,7 +3067,7 @@ United States of America, Georgia, Hancock County
 United States of America, Texas, Martin County
 United States of America, Virginia, Pittsylvania County
 United States of America, Texas, Blanco County
-Mexico, Michoacán, Uruapan
+Mexico, Michoacan, Uruapan
 United States of America, Missouri, Warren County
 United States of America, Tennessee, Haywood County
 United States of America, Wyoming, Sweetwater County
@@ -3079,7 +3079,7 @@ United States of America, New York, Tioga County
 United States of America, Virginia, Madison County
 United States of America, Illinois, Calhoun County
 Honduras, Olancho
-Guatemala, Petén
+Guatemala, Peten
 United States of America, South Carolina, Greenwood County
 United States of America, Texas, Palo Pinto County
 United States of America, Pennsylvania, Cambria County
@@ -3152,11 +3152,11 @@ United States of America, Texas, Hidalgo County
 United States of America, Virginia, Warren County
 United States of America, Nebraska, Hamilton County
 Dominican Republic, Duarte
-Mexico, Oaxaca, San José Chiltepec
+Mexico, Oaxaca, San Jose Chiltepec
 Nicaragua, Chontales
 United States of America, Georgia, Screven County
 United States of America, Montana, Sheridan County
-Costa Rica, Limón
+Costa Rica, Limon
 United States of America, Indiana, Saint Joseph County
 United States of America, Illinois, Henderson County
 United States of America, North Carolina, Montgomery County
@@ -3230,11 +3230,11 @@ Canada, Ontario, County of Simcoe
 United States of America, Tennessee, Lawrence County
 United States of America, Indiana, Fountain County
 United States of America, Louisiana, Lafourche County
-Mexico, Sinaloa, Culiacán
+Mexico, Sinaloa, Culiacan
 United States of America, South Dakota, Marshall County
 United States of America, Oklahoma, Nowata County
 United States of America, Texas, Orange County
-Canada, Quebec Province, Agglomération de Longueuil
+Canada, Quebec Province, Agglomeration de Longueuil
 United States of America, Wisconsin, Jefferson County
 United States of America, Georgia, Candler County
 United States of America, Idaho, Washington County
@@ -3327,7 +3327,7 @@ United States of America, Kansas, Rice County
 Cuba, Matanzas
 United States of America, Oklahoma, Haskell County
 Canada, Quebec Province, Argenteuil, MRC
-Guatemala, Suchitepéquez
+Guatemala, Suchitepequez
 United States of America, New York, Genesee County
 United States of America, Wisconsin, Pepin County
 United States of America, Illinois, Ogle County
@@ -3342,7 +3342,7 @@ United States of America, Indiana, Parke County
 United States of America, Wisconsin, Shawano County
 United States of America, Texas, Dickens County
 United States of America, North Carolina, Warren County
-Canada, Quebec Province, Le Rocher-Percé (Gaspésie)
+Canada, Quebec Province, Le Rocher-Perce (Gaspesie)
 United States of America, Iowa, Boone County
 United States of America, Florida, Madison County
 United States of America, Minnesota, Redwood County
@@ -3354,13 +3354,13 @@ United States of America, Minnesota, St. Louis County (Minnesota)
 United States of America, Missouri, Texas County
 United States of America, Missouri, Morgan County
 United States of America, Illinois, Jo Daviess County
-Mexico, Michoacán, Coalcomán
+Mexico, Michoacan, Coalcoman
 United States of America, Oklahoma, Dewey County
 United States of America, Michigan, Genesee County
 Canada, Ontario, York County
 United States of America, Illinois, Pike County
 United States of America, Pennsylvania, Warren County
-Guatemala, Sololá
+Guatemala, Solola
 United States of America, Texas, Caldwell County
 United States of America, Wyoming, Weston County
 United States of America, Minnesota, Hubbard County
@@ -3425,7 +3425,7 @@ United States of America, Kansas, Crawford County
 United States of America, Missouri, Oregon County
 United States of America, Indiana, Grant County
 United States of America, South Carolina, Florence County
-Mexico, Veracruz, Córdoba
+Mexico, Veracruz, Cordoba
 United States of America, Kansas, Marshall County
 United States of America, Oklahoma, Major County
 Bahamas, Inagua
@@ -3525,7 +3525,7 @@ United States of America, Kansas, Kiowa County
 United States of America, Indiana, Greene County
 United States of America, Oklahoma, Washington County
 United States of America, Kentucky, Woodford County
-Mexico, México, Toluca
+Mexico, Mexico, Toluca
 United States of America, Georgia, Coffee County
 United States of America, West Virginia, Mercer County
 United States of America, Texas, Waller County
@@ -3544,7 +3544,7 @@ United States of America, South Dakota, Minnehaha County
 United States of America, Kentucky, Allen County
 Mexico, Puebla, Esperanza
 United States of America, Louisiana, East Carroll County
-Canada, Quebec Province, Témiscamingue, MRC
+Canada, Quebec Province, Temiscamingue, MRC
 United States of America, Louisiana, Natchitoches County
 United States of America, Oklahoma, Love County
 United States of America, Tennessee, Cannon County
@@ -3562,7 +3562,7 @@ United States of America, Wisconsin, Dunn County
 Mexico, Colima, Colima
 United States of America, Alaska, Anchorage Borough
 United States of America, Kansas, Harvey County
-Mexico, Michoacán, Pátzcuaro
+Mexico, Michoacan, Patzcuaro
 United States of America, West Virginia, Jefferson County
 United States of America, Wisconsin, Bayfield County
 Canada, New Brunswick, Restigouche County (New Brunswick)
@@ -3608,7 +3608,7 @@ United States of America, North Carolina, Camden County
 United States of America, North Carolina, Yadkin County
 United States of America, Nebraska, Richardson County
 United States of America, Iowa, Emmet County
-Mexico, Guerrero, Coyuca de Catalán
+Mexico, Guerrero, Coyuca de Catalan
 United States of America, Alabama, Houston County
 United States of America, Kentucky, Lyon County
 United States of America, Minnesota, Chisago County
@@ -3622,13 +3622,13 @@ United States of America, Missouri, Atchison County
 United States of America, North Dakota, Richland County
 United States of America, South Dakota, Clay County
 Mexico, Chiapas, La Trinitaria
-Canada, Quebec Province, Rivière du Loup, MRC
+Canada, Quebec Province, Riviere du Loup, MRC
 United States of America, North Carolina, Vance County
 United States of America, Kansas, Saline County
 United States of America, Louisiana, Bienville County
 United States of America, Florida, Gulf County
 United States of America, North Dakota, Golden Valley County
-Canada, Quebec Province, Lotbinière, MRC
+Canada, Quebec Province, Lotbiniere, MRC
 United States of America, Ohio, Mahoning County
 United States of America, Missouri, Andrew County
 United States of America, Texas, Menard County
@@ -3673,13 +3673,13 @@ United States of America, North Carolina, Caswell County
 United States of America, Utah, Piute County
 United States of America, Oklahoma, Osage County
 United States of America, Oregon, Coos County
-Canada, Quebec Province, Agglomération de Québec
+Canada, Quebec Province, Agglomeration de Quebec
 Nicaragua, Matagalpa
 United States of America, Illinois, Brown County
 United States of America, Texas, Wharton County
 St. Martin
 United States of America, Texas, Mills County
-Mexico, Sonora, Nácori Chico
+Mexico, Sonora, Nacori Chico
 United States of America, Texas, Mason County
 United States of America, Wisconsin, Fond du Lac County
 United States of America, North Carolina, Alexander County
@@ -3716,7 +3716,7 @@ United States of America, South Dakota, Harding County
 United States of America, Georgia, Bacon County
 United States of America, Tennessee, Stewart County
 United States of America, Georgia, Laurens County
-Mexico, Tamaulipas, Gómez Farías
+Mexico, Tamaulipas, Gomez Farias
 United States of America, Georgia, Crisp County
 Mexico, Hidalgo, Zacualtipan
 United States of America, Alabama, Choctaw County
@@ -3736,7 +3736,7 @@ Mexico, Durango, Durango
 United States of America, Illinois, Stark County
 United States of America, Texas, Bell County
 United States of America, South Dakota, Walworth County
-Mexico, Yucatán, Mérida
+Mexico, Yucatan, Merida
 United States of America, Texas, Schleicher County
 United States of America, West Virginia, Upshur County
 United States of America, Texas, Atascosa County
@@ -3788,12 +3788,12 @@ United States of America, Georgia, Wilkes County
 United States of America, Louisiana, Evangeline County
 Canada, Quebec Province, Montmagny, MRC
 United States of America, Washington, Wahkiakum County
-Mexico, México, Tejupilco
+Mexico, Mexico, Tejupilco
 United States of America, North Carolina, Moore County
 United States of America, Kentucky, Breathitt County
 United States of America, Georgia, Glynn County
 United States of America, Texas, Hemphill County
-Mexico, Jalisco, Santa María de los Angeles
+Mexico, Jalisco, Santa Maria de los Angeles
 United States of America, Missouri, Clay County
 United States of America, Texas, Potter County
 United States of America, Kansas, Bourbon County
@@ -3821,7 +3821,7 @@ United States of America, Mississippi, Pike County
 United States of America, Kentucky, Pike County
 United States of America, South Dakota, Butte County
 United States of America, Kentucky, Fayette County
-El Salvador, Ahuachapán
+El Salvador, Ahuachapan
 United States of America, Minnesota, Kittson County
 United States of America, North Carolina, Catawba County
 United States of America, Georgia, Long County
@@ -3852,7 +3852,7 @@ United States of America, Texas, Scurry County
 United States of America, Georgia, Lanier County
 United States of America, Illinois, Rock Island County
 United States of America, Indiana, Crawford County
-Mexico, Chiapas, San Cristóbal de las Casas
+Mexico, Chiapas, San Cristobal de las Casas
 United States of America, Mississippi, Lamar County
 United States of America, Michigan, Allegan County
 United States of America, Iowa, Webster County
@@ -3887,10 +3887,10 @@ United States of America, North Carolina, Rockingham County
 United States of America, Tennessee, Hancock County
 United States of America, Texas, Wise County
 United States of America, Kansas, Ellsworth County
-Mexico, Yucatán, Izamal
+Mexico, Yucatan, Izamal
 Cuba, Isla de la Juventud
 United States of America, North Carolina, Bertie County
-Mexico, Michoacán, Aquila
+Mexico, Michoacan, Aquila
 United States of America, Kansas, Pratt County
 United States of America, Alabama, Sumter County
 United States of America, Tennessee, Sequatchie County
@@ -3910,7 +3910,7 @@ United States of America, Georgia, Worth County
 United States of America, Pennsylvania, Somerset County
 Guatemala, San Marcos
 United States of America, South Carolina, Newberry County
-Mexico, Coahuila, Cuatrociénegas
+Mexico, Coahuila, Cuatrocienegas
 United States of America, South Carolina, Edgefield County
 United States of America, Colorado, Teller County
 United States of America, Wisconsin, Juneau County
@@ -3931,7 +3931,7 @@ United States of America, Texas, Reagan County
 United States of America, Missouri, Webster County
 United States of America, Indiana, Clay County
 United States of America, Illinois, Franklin County
-Dominican Republic, San Cristóbal
+Dominican Republic, San Cristobal
 United States of America, Texas, Collin County
 United States of America, Illinois, Will County
 United States of America, Nebraska, Morrill County
@@ -3960,7 +3960,7 @@ United States of America, Washington, Cowlitz County
 United States of America, Texas, Motley County
 Canada, Saskatchewan, Moose Jaw No. 161
 United States of America, Missouri, Douglas County
-Canada, Quebec Province, L'Île-d'Orléans, MRC
+Canada, Quebec Province, L'Ile-d'Orleans, MRC
 Canada, Quebec Province, Minganie, MRC
 United States of America, Montana, Pondera County
 United States of America, Texas, De Witt County
@@ -3980,7 +3980,7 @@ United States of America, Kansas, Leavenworth County
 United States of America, Kansas, Republic County
 Mexico, Guerrero, Mina
 United States of America, North Carolina, Randolph County
-Mexico, Nuevo León, Galeana
+Mexico, Nuevo Leon, Galeana
 United States of America, Texas, Hansford County
 United States of America, Oklahoma, Noble County
 United States of America, Texas, Hamilton County
@@ -4029,7 +4029,7 @@ United States of America, Georgia, Taliaferro County
 United States of America, Pennsylvania, Cumberland County
 United States of America, Michigan, Iosco County
 United States of America, Georgia, Clay County
-Mexico, Michoacán, Zitácuaro
+Mexico, Michoacan, Zitacuaro
 United States of America, Texas, Navarro County
 United States of America, Alabama, Geneva County
 United States of America, Michigan, Monroe County
@@ -4107,8 +4107,8 @@ United States of America, Iowa, Clay County
 Saint Kitts and Nevis, Saint Kitts
 Mexico, Guanajuato, Guanajuato
 United States of America, Oklahoma, Stephens County
-Mexico, Michoacán, Chinicuila
-El Salvador, La Unión
+Mexico, Michoacan, Chinicuila
+El Salvador, La Union
 United States of America, Wisconsin, Chippewa County
 Guatemala, El Progreso
 United States of America, Iowa, Pocahontas County
@@ -4151,7 +4151,7 @@ United States of America, Iowa, Chickasaw County
 United States of America, Georgia, Dooly County
 United States of America, Michigan, Oscoda County
 United States of America, Georgia, Jefferson County
-Honduras, Copán
+Honduras, Copan
 United States of America, North Carolina, Gaston County
 United States of America, North Dakota, McKenzie County
 United States of America, Missouri, Johnson County
@@ -4160,7 +4160,7 @@ United States of America, Minnesota, McLeod County
 United States of America, Pennsylvania, Forest County
 United States of America, Kentucky, Muhlenberg County
 United States of America, Texas, Clay County
-Mexico, San Luis Potosí, San Luis Potosí (San Luis Potosí, Mexico)
+Mexico, San Luis Potosi, San Luis Potosi (San Luis Potosi, Mexico)
 United States of America, Kansas, Harper County
 United States of America, Texas, Houston County
 United States of America, Georgia, Jasper County
@@ -4178,7 +4178,7 @@ United States of America, Kansas, Jackson County
 United States of America, Virginia, Patrick County
 United States of America, Tennessee, Bledsoe County
 United States of America, Tennessee, Giles County
-Honduras, Colón
+Honduras, Colon
 United States of America, Texas, Coleman County
 United States of America, Arkansas, Sharp County
 United States of America, Mississippi, Jones County
@@ -4222,7 +4222,7 @@ United States of America, Tennessee, Hardin County
 United States of America, Tennessee, Humphreys County
 United States of America, Texas, Childress County
 United States of America, Alabama, Covington County
-Canada, Quebec Province, La Côte-de-Beaupré, MRC
+Canada, Quebec Province, La Cote-de-Beaupre, MRC
 El Salvador, La Libertad
 United States of America, Iowa, Page County
 Canada, Saskatchewan, Swift Current No. 137
@@ -4259,12 +4259,12 @@ United States of America, South Carolina, Calhoun County
 United States of America, Missouri, Cape Girardeau County
 United States of America, Georgia, Coweta County
 United States of America, South Carolina, Marlboro County
-Mexico, Puebla, Coxcatlán
+Mexico, Puebla, Coxcatlan
 United States of America, Virginia, Pulaski County
 Dominican Republic, Peravia
 United States of America, Illinois, Cass County
 United States of America, Michigan, Grand Traverse County
-Mexico, Hidalgo, Zimapán
+Mexico, Hidalgo, Zimapan
 United States of America, West Virginia, McDowell County
 United States of America, Kentucky, Nelson County
 United States of America, North Carolina, Greene County
@@ -4276,7 +4276,7 @@ United States of America, Michigan, Benzie County
 United States of America, North Carolina, Surry County
 United States of America, Mississippi, Lafayette County
 United States of America, Indiana, Morgan County
-Mexico, Tabasco, Balancán
+Mexico, Tabasco, Balancan
 Canada, Quebec Province, Chambly [do not use]
 United States of America, North Dakota, McLean County
 United States of America, Missouri, Saint Clair County
@@ -4285,7 +4285,7 @@ Mexico, Chiapas, Ocosingo
 United States of America, Wisconsin, Waushara County
 Jamaica, Saint James Parish
 Saint Kitts and Nevis, Saint Kitts, Trinity Palmetto Point
-Mexico, Oaxaca, Eloxochitlán de Flores Magón
+Mexico, Oaxaca, Eloxochitlan de Flores Magon
 United States of America, Georgia, Fannin County
 United States of America, Minnesota, Pine County
 Mexico, Baja California Sur, Loreto
@@ -4324,7 +4324,7 @@ United States of America, Iowa, Louisa County
 Mexico, Oaxaca, San Pedro Huamelula
 United States of America, South Carolina, Sumter County
 United States of America, Kansas, Jefferson County
-Dominican Republic, Dajabón
+Dominican Republic, Dajabon
 Nicaragua, Managua
 United States of America, Arkansas, Poinsett County
 United States of America, Florida, Hendry County
@@ -4339,7 +4339,7 @@ United States of America, Kansas, Ford County
 Turks and Caicos Islands
 United States of America, Texas, Stephens County
 United States of America, Indiana, Boone County
-Mexico, Yucatán, Sotuta
+Mexico, Yucatan, Sotuta
 United States of America, Kentucky, Russell County
 United States of America, Kansas, Jewell County
 Cuba, Isle of Pines
@@ -4357,7 +4357,7 @@ United States of America, Texas, Briscoe County
 United States of America, Iowa, Mitchell County
 United States of America, Montana, Wheatland County
 United States of America, Kentucky, Bourbon County
-Mexico, Chiapas, Pueblo Nuevo Solistahuacán
+Mexico, Chiapas, Pueblo Nuevo Solistahuacan
 United States of America, Alabama, Dale County
 Canada, Manitoba, Ellice-Archie, Rural Municipality of
 United States of America, Nebraska, Adams County
@@ -4375,7 +4375,7 @@ United States of America, Kansas, Sumner County
 United States of America, Minnesota, Chippewa County
 United States of America, Illinois, McLean County
 United States of America, Minnesota, Steele County
-Mexico, Guerrero, Cutzamala de Pinzón
+Mexico, Guerrero, Cutzamala de Pinzon
 United States of America, New Mexico, San Doval
 United States of America, Illinois, De Kalb County
 United States of America, Mississippi, Chickasaw County
@@ -4395,7 +4395,7 @@ United States of America, Iowa, Howard County
 United States of America, Arkansas, Chicot County
 United States of America, Georgia, Johnson County
 United States of America, Georgia, Forsyth County
-Canada, Quebec Province, La Haute-Gaspésie, MRC (Gaspésie)
+Canada, Quebec Province, La Haute-Gaspesie, MRC (Gaspesie)
 United States of America, Idaho, Bingham County
 Canada, Nunavut, Kitikmeot Region (Nunavut)
 United States of America, Nebraska, Sarpy County
@@ -4463,7 +4463,7 @@ United States of America, Kentucky, Mason County
 El Salvador, Chalatenango
 United States of America, West Virginia, Wood County
 United States of America, Mississippi, Attala County
-Mexico, Guerrero, La Unión de Isidoro Montes de Oca
+Mexico, Guerrero, La Union de Isidoro Montes de Oca
 United States of America, Ohio, Columbiana County
 Mexico, Chiapas, Huixtla
 United States of America, Georgia, Brooks County
@@ -4483,30 +4483,30 @@ United States of America, Iowa, Polk County
 United States of America, Texas, Moore County
 United States of America, Texas, Baylor County
 United States of America, Texas, Coke County
-Mexico, Quintana Roo, Othón P. Blanco
+Mexico, Quintana Roo, Othon P. Blanco
 United States of America, Missouri, Montgomery County
 Canada, Quebec Province, Deux-Montagnes, MRC
 United States of America, Kansas, Cloud County
 United States of America, Nebraska, Cheyenne County
 United States of America, Illinois, Knox County
 United States of America, Michigan, Manistee County
-Mexico, Baja California Sur, Mulegé
+Mexico, Baja California Sur, Mulege
 United States of America, Iowa, Tama County
 United States of America, Iowa, Jones County
 United States of America, Nebraska, Nemaha County
 United States of America, Pennsylvania, Union County
 United States of America, Michigan, Saginaw County
 United States of America, Texas, Hunt County
-Honduras, Santa Bárbara
+Honduras, Santa Barbara
 Mexico, Nayarit, San Blas
 Mexico, Oaxaca, Santiago Yaveo
 Mexico, Guerrero, Zihuatanejo de Azueta
 United States of America, Texas, Delta County
-Mexico, Michoacán, Aguililla
+Mexico, Michoacan, Aguililla
 United States of America, South Dakota, Haakon County
 United States of America, Virginia, Hanover County
 United States of America, Missouri, Gasconade County
-Guatemala, Totonicapán
+Guatemala, Totonicapan
 United States of America, Idaho, Power County
 Mexico, Tabasco, Jalapa
 United States of America, South Dakota, McCook County
@@ -4520,9 +4520,9 @@ United States of America, Mississippi, Issaquena County
 United States of America, Iowa, Marshall County
 United States of America, Kansas, Sherman County
 United States of America, South Dakota, Perkins County
-Mexico, Chiapas, Berriozábal
+Mexico, Chiapas, Berriozabal
 United States of America, Georgia, Glascock County
-Mexico, Quintana Roo, José María Morelos
+Mexico, Quintana Roo, Jose Maria Morelos
 United States of America, Mississippi, Marshall County
 United States of America, Illinois, Edgar County
 Dominica, Saint George
@@ -4562,7 +4562,7 @@ United States of America, Nebraska, Buffalo County
 United States of America, Virginia, Prince Edward County
 United States of America, Georgia, Houston County
 Canada, Quebec Province, Le Haut-Richelieu, MRC
-Saint Barthélemy
+Saint Barthelemy
 United States of America, Kentucky, Owen County
 United States of America, Kansas, Hodgeman County
 United States of America, Kansas, Pawnee County
@@ -4605,7 +4605,7 @@ United States of America, West Virginia, Wyoming County
 United States of America, Georgia, White County
 United States of America, Montana, Judith Basin County
 United States of America, Mississippi, Marion County
-Mexico, Jalisco, San Sebastián del Oeste
+Mexico, Jalisco, San Sebastian del Oeste
 United States of America, Kansas, Miami County
 United States of America, Tennessee, Jefferson County
 Mexico, Chiapas, Tenejapa
@@ -4640,7 +4640,7 @@ Canada, Ontario, County of Haliburton
 United States of America, Kentucky, Todd County
 United States of America, Kentucky, Knott County
 United States of America, Michigan, Roscommon County
-Mexico, Michoacán, Tancítaro
+Mexico, Michoacan, Tancitaro
 United States of America, Oklahoma, Wagoner County
 United States of America, Iowa, Monona County
 United States of America, Georgia, Wilcox County
@@ -4652,7 +4652,7 @@ United States of America, Virginia, King and Queen County
 United States of America, Illinois, Stephenson County
 United States of America, Virginia, Fluvanna County
 Mexico, Nayarit, Acaponeta
-Haiti, Artibonite, Gonaïves
+Haiti, Artibonite, Gonaives
 United States of America, Virginia, Powhatan County
 United States of America, Tennessee, Claiborne County
 United States of America, Tennessee, Overton County
@@ -4661,7 +4661,7 @@ United States of America, Texas, Gray County
 United States of America, Missouri, Audrain County
 United States of America, Wisconsin, Sheboygan County
 United States of America, Virginia, Culpeper County
-Mexico, Chiapas, Unión Juárez
+Mexico, Chiapas, Union Juarez
 United States of America, Wisconsin, Washington County
 United States of America, Louisiana, Saint Bernard County
 United States of America, Ohio, Mercer County
@@ -4677,7 +4677,7 @@ United States of America, New Mexico, De Baca County
 United States of America, Illinois, Clay County
 Mexico, Sonora, Granados
 United States of America, South Dakota, Yankton County
-Mexico, Guerrero, Tecpán de Galeana
+Mexico, Guerrero, Tecpan de Galeana
 United States of America, Ohio, Coshocton County
 United States of America, Indiana, Wayne County
 Mexico, Chiapas, Frontera Comalapa
@@ -4687,7 +4687,7 @@ United States of America, Iowa, Butler County
 Canada, Quebec Province, Papineau, MRC de
 United States of America, Georgia, Crawford County
 United States of America, Alabama, Tallapoosa County
-Honduras, Intibucá
+Honduras, Intibuca
 Saint Vincent and the Grenadines, Saint Patrick
 United States of America, West Virginia, Roane County
 United States of America, South Carolina, Dillon County
@@ -4699,8 +4699,8 @@ United States of America, Kansas, Stafford County
 United States of America, Kansas, Butler County
 United States of America, North Dakota, Williams County
 United States of America, Nebraska, Gosper County
-Canada, Quebec Province, Sept-Rivières, MRC
-Mexico, Jalisco, Zapotlán el Grande
+Canada, Quebec Province, Sept-Rivieres, MRC
+Mexico, Jalisco, Zapotlan el Grande
 Saint Vincent and the Grenadines, Charlotte
 Mexico, Aguascalientes
 United States of America, South Dakota, Hamlin County
@@ -4726,7 +4726,7 @@ United States of America, New Mexico, Lea County
 United States of America, Nebraska, Keya Paha County
 United States of America, Minnesota, Freeborn County
 United States of America, Iowa, Iowa County
-Mexico, Sonora, Huásabas
+Mexico, Sonora, Huasabas
 Virgin Islands (U.K.), Virgin Gorda
 United States of America, Kansas, Morris County
 United States of America, Georgia, Gordon County
@@ -4740,7 +4740,7 @@ Canada, Ontario, Regional Municipality of Peel
 United States of America, Minnesota, Red Lake County
 United States of America, Iowa, Madison County
 United States of America, Mississippi, Webster County
-Mexico, Tabasco, Cárdenas
+Mexico, Tabasco, Cardenas
 United States of America, Minnesota, Stevens County
 United States of America, Minnesota, Todd County
 United States of America, Missouri, Hickory County
@@ -4751,8 +4751,8 @@ United States of America, Louisiana, Iberville County
 United States of America, Iowa, Wayne County
 United States of America, Illinois, Williamson County
 Mexico, Veracruz, Santiago Tuxtla
-Mexico, Campeche, Calkiní
-Mexico, México, Valle de Bravo
+Mexico, Campeche, Calkini
+Mexico, Mexico, Valle de Bravo
 United States of America, Indiana, De Kalb County
 Canada, Manitoba, Saint Clements, Rural Municipality of
 United States of America, Ohio, Shelby County
@@ -4787,7 +4787,7 @@ United States of America, Kansas, Kearny County
 United States of America, Iowa, Osceola County
 United States of America, Georgia, Twiggs County
 United States of America, North Dakota, Mercer County
-Mexico, Guerrero, Ajuchitlán del Progreso
+Mexico, Guerrero, Ajuchitlan del Progreso
 United States of America, Kentucky, Robertson County
 Nicaragua, Masaya
 United States of America, Georgia, Toombs County
@@ -4798,7 +4798,7 @@ United States of America, Wisconsin, Florence County
 Canada, Manitoba, Brenda-Waskada, Rural Municipality of
 United States of America, South Dakota, Shannon County
 United States of America, South Dakota, Hutchinson County
-Mexico, Michoacán, Tepalcatepec
+Mexico, Michoacan, Tepalcatepec
 Canada, Manitoba, Reynolds, Rural Municipality of
 Mexico, Sonora, Agua Prieta
 United States of America, Georgia, Chattahoochee County
@@ -4819,9 +4819,9 @@ Canada, Manitoba, Prairie Lakes, Rural Municipality of
 United States of America, Nebraska, Chase County
 Canada, Manitoba, Piney, Rural Municipality of
 United States of America, Michigan, Hillsdale County
-Mexico, Quintana Roo, Lázaro Cárdenas
+Mexico, Quintana Roo, Lazaro Cardenas
 United States of America, Indiana, Daviess County
-Canada, Quebec Province, Maskinongé, MRC
+Canada, Quebec Province, Maskinonge, MRC
 United States of America, Mississippi, Amite County
 United States of America, Arkansas, Mississippi County
 Mexico, Tabasco, Macuspana
@@ -4831,7 +4831,7 @@ United States of America, Kansas, Dickinson County
 Virgin Islands (United States of America), Saint John
 Mexico, Chiapas, Motozintla
 United States of America, Indiana, Fayette County
-Mexico, Michoacán, Apatzingan
+Mexico, Michoacan, Apatzingan
 United States of America, Louisiana, Saint James County
 Grenada, Saint Andrew
 Cuba, Villa Clara
@@ -4862,9 +4862,9 @@ United States of America, Alabama, Coosa County
 United States of America, Kansas, Decatur County
 United States of America, Illinois, Macoupin County
 United States of America, Kentucky, Carlisle County
-Canada, Quebec Province, La Vallée-du-Richelieu, MRC
+Canada, Quebec Province, La Vallee-du-Richelieu, MRC
 Mexico, Tamaulipas, San Fernando
-Mexico, Nuevo León, Santiago
+Mexico, Nuevo Leon, Santiago
 United States of America, Virginia, King George County
 United States of America, Missouri, Chariton County
 United States of America, North Dakota, Ransom County
@@ -4883,14 +4883,14 @@ United States of America, Tennessee, Robertson County
 Canada, Manitoba, Montcalm, Rural Municipality of
 United States of America, Montana, Musselshell County
 United States of America, Kansas, Ness County
-Mexico, Oaxaca, Concepción Pápalo
+Mexico, Oaxaca, Concepcion Papalo
 United States of America, Tennessee, Lewis County
 United States of America, South Dakota, Hand County
 Canada, Quebec Province, Les Appalaches, MRC
-Canada, Quebec Province, La Haute-Côte-Nord, MRC
+Canada, Quebec Province, La Haute-Cote-Nord, MRC
 Dominica, Saint Peter
 Dominica, Saint Paul
-Mexico, Oaxaca, San Jerónimo Sosola
+Mexico, Oaxaca, San Jeronimo Sosola
 United States of America, Missouri, Buchanan County
 Canada, Manitoba, Rockwood, Rural Municipality of
 United States of America, South Dakota, Charles Mix County
@@ -4916,15 +4916,15 @@ Mexico, Guerrero, Arcelia
 Mexico, Tamaulipas, San Carlos
 United States of America, Iowa, Calhoun County
 Jamaica, Saint Mary Parish
-Mexico, México, San Simón de Guerrero
+Mexico, Mexico, San Simon de Guerrero
 Mexico, Chiapas, Ocozocoautla de Espinosa
 Mexico, Aguascalientes, Aguascalientes
 United States of America, Virginia, Dickenson County
 Canada, British Columbia, Peace River Regional District
 Dominica, Saint David
-Mexico, Jalisco, Bolaños
+Mexico, Jalisco, Bolanos
 United States of America, Nebraska, Boyd County
-Canada, Quebec Province, La Vallée-de-l'Or, MRC
+Canada, Quebec Province, La Vallee-de-l'Or, MRC
 United States of America, Kentucky, Leslie County
 United States of America, Mississippi, Holmes County
 United States of America, Illinois, Douglas County
@@ -4955,8 +4955,8 @@ United States of America, Iowa, Henry County
 Mexico, Sonora, Moctezuma
 United States of America, Iowa, Carroll County
 United States of America, Idaho, Payette County
-Mexico, Sonora, San Luis Río Colorado
-Mexico, Yucatán, Valladolid
+Mexico, Sonora, San Luis Rio Colorado
+Mexico, Yucatan, Valladolid
 United States of America, Iowa, Grundy County
 United States of America, Georgia, Treutlen County
 United States of America, Oklahoma, Okmulgee County
@@ -4987,7 +4987,7 @@ United States of America, Alabama, Lamar County
 Honduras, Valle
 Nicaragua, Esteli
 Mexico, Sinaloa, Badiraguato
-Mexico, Sonora, Nacozari de García
+Mexico, Sonora, Nacozari de Garcia
 Canada, Manitoba, Stanley, Rural Municipality of
 United States of America, South Dakota, Corson County
 United States of America, Kentucky, Metcalfe County
@@ -5000,28 +5000,28 @@ United States of America, Kentucky, Boone County
 United States of America, South Dakota, Lincoln County
 United States of America, Nebraska, Butler County
 United States of America, Georgia, Webster County
-Mexico, Oaxaca, Teotitlán de Flores Magón
-Mexico, Veracruz, Fortín
+Mexico, Oaxaca, Teotitlan de Flores Magon
+Mexico, Veracruz, Fortin
 United States of America, Georgia, Barrow County
 Canada, Manitoba, Springfield, Rural Municipality of
 United States of America, Nebraska, Wheeler County
 Mexico, Tamaulipas, Tula
 United States of America, Kentucky, Gallatin County
 Mexico, Sonora, Navojoa
-Mexico, San Luis Potosí, Tamazunchale
+Mexico, San Luis Potosi, Tamazunchale
 United States of America, Nebraska, Thayer County
 United States of America, Kansas, Stevens County
 Mexico, Oaxaca, San Pablo Huitzo
 United States of America, Virginia, Bland County
 Honduras, Choluteca
-Mexico, Oaxaca, San Jerónimo Coatlán
+Mexico, Oaxaca, San Jeronimo Coatlan
 Mexico, Tamaulipas, Reynosa
 United States of America, Georgia, Warren County
-Dominican Republic, Maria Trinidad Sánchez
+Dominican Republic, Maria Trinidad Sanchez
 United States of America, Kentucky, Washington County
 Antigua and Barbuda
 Bahamas, San Salvador (or Watlings Island)
-Mexico, Oaxaca, San Sebastián Coatlán
+Mexico, Oaxaca, San Sebastian Coatlan
 Canada, Quebec Province, Soulanges
 United States of America, Iowa, Audubon County
 United States of America, Georgia, Paulding County
@@ -5030,7 +5030,7 @@ Bahamas, Long Island
 Saint Lucia, Soufriere
 Mexico, Tamaulipas, Bustamante
 United States of America, Mississippi, Jefferson Davis County
-Mexico, Veracruz, Chocamán
+Mexico, Veracruz, Chocaman
 Mexico, Jalisco, La Huerta
 United States of America, Kansas, Thomas County
 United States of America, Indiana, Henry County
@@ -5046,12 +5046,12 @@ United States of America, Mississippi, Smith County
 Cuba, Granma
 United States of America, Louisiana, Assumption County
 United States of America, North Dakota, Nelson County
-Mexico, Michoacán, Zamora
+Mexico, Michoacan, Zamora
 Canada, Manitoba, Grahamdale, Rural Municipality of
 United States of America, Georgia, Wheeler County
-Mexico, Oaxaca, Santa María Yalina
+Mexico, Oaxaca, Santa Maria Yalina
 Canada, Saskatchewan, Rosthern No. 403
-Mexico, Veracruz, San Andrés Tuxtla
+Mexico, Veracruz, San Andres Tuxtla
 United States of America, Illinois, Clark County
 United States of America, Michigan, Antrim County
 Mexico, Oaxaca, San Juan del Estado
@@ -5067,11 +5067,11 @@ United States of America, North Dakota, Logan County
 United States of America, Iowa, Mills County
 United States of America, Ohio, Monroe County
 Canada, Quebec Province, Robert-Cliche, MRC
-Mexico, Campeche, Champotón
+Mexico, Campeche, Champoton
 United States of America, North Dakota, McIntosh County
 United States of America, Georgia, Terrell County
 Canada, Manitoba, Grey, Rural Municipality of
-Mexico, Quintana Roo, Benito Juárez
+Mexico, Quintana Roo, Benito Juarez
 United States of America, Kentucky, Magoffin County
 Mexico, Jalisco, Tuxpan
 United States of America, Iowa, Clarke County
@@ -5101,20 +5101,20 @@ Mexico, Guerrero, General Heliodoro Castillo
 United States of America, West Virginia, Marshall County
 United States of America, South Dakota, Jones County
 Canada, Manitoba, Bifrost-Riverton, Rural Municipality of
-Mexico, Veracruz, Cuitláhuac
+Mexico, Veracruz, Cuitlahuac
 Canada, Saskatchewan, Prince Albert No. 461
 Mexico, Coahuila, Monclova
-Nicaragua, León
+Nicaragua, Leon
 United States of America, Wisconsin, Portage County
 United States of America, Nebraska, Saline County
-Mexico, Campeche, Hopelchén
+Mexico, Campeche, Hopelchen
 United States of America, Ohio, Wyandot County
 United States of America, Tennessee, Bradley County
 United States of America, Nebraska, Fillmore County
 Mexico, Tamaulipas, Hidalgo
-Mexico, México, Amatepec
+Mexico, Mexico, Amatepec
 United States of America, New York, New York County
-Mexico, Coahuila, Castaños
+Mexico, Coahuila, Castanos
 Mexico, Chiapas, La Independencia
 Mexico, Veracruz, Naolinco
 United States of America, Iowa, Scott County
@@ -5139,9 +5139,9 @@ United States of America, South Dakota, Campbell County
 Mexico, Sonora, San Pedro de la Cueva
 United States of America, Iowa, Ringgold County
 Mexico, Zacatecas, Zacatecas
-Mexico, Yucatán, Progreso
+Mexico, Yucatan, Progreso
 United States of America, Mississippi, Pontotoc County
-Mexico, Guanajuato, León
+Mexico, Guanajuato, Leon
 United States of America, Nebraska, Sheridan County
 United States of America, Illinois, Cumberland County
 Mexico, Veracruz, Coatepec
@@ -5157,12 +5157,12 @@ United States of America, Minnesota, Nobles County
 Canada, Quebec Province, Coaticook, MRC
 United States of America, New Mexico, Los Alamos County
 Mexico, Chihuahua, Ojinaga
-Canada, Manitoba, Taché, Rural Municipality of
+Canada, Manitoba, Tache, Rural Municipality of
 Mexico, Tamaulipas, Altamira
 United States of America, Virginia, Wise County
 Canada, Quebec Province, Vaudreuil-Soulanges, MRC
 United States of America, North Dakota, Towner County
-Mexico, Colima, Ixtlahuacán
+Mexico, Colima, Ixtlahuacan
 United States of America, Nebraska, Box Butte County
 United States of America, Iowa, Washington County
 United States of America, Texas, Camp County
@@ -5181,9 +5181,9 @@ Mexico, Baja California Norte, Tijuana
 Canada, Nunavut, Keewatin Region (Nunavut)
 United States of America, Illinois, Jasper County
 United States of America, Wisconsin, Dodge County
-Mexico, Morelos, Tetela del Volcán
+Mexico, Morelos, Tetela del Volcan
 United States of America, Illinois, Monroe County
-Mexico, Chiapas, Tecpatán
+Mexico, Chiapas, Tecpatan
 Canada, Manitoba, Brokenhead, Rural Municipality of
 United States of America, West Virginia, Clay County
 United States of America, Montana, Treasure County
@@ -5191,7 +5191,7 @@ United States of America, Minnesota, Brown County
 United States of America, Mississippi, Itawamba County
 United States of America, Montana, McCone County
 United States of America, Kentucky, Simpson County
-Mexico, Yucatán, Calotmul
+Mexico, Yucatan, Calotmul
 United States of America, Mississippi, Leflore County
 United States of America, Colorado, Crowley County
 United States of America, Nebraska, Valley County
@@ -5205,7 +5205,7 @@ Mexico, Oaxaca, San Juan Lalana
 United States of America, Georgia, Haralson County
 Canada, Manitoba, Riding Mountain West, Rural Municipality of
 Mexico, Campeche, Palizada
-Mexico, Chiapas, Cacahoatán
+Mexico, Chiapas, Cacahoatan
 Cuba, Las Tunas
 United States of America, Indiana, Rush County
 Canada, Quebec Province, La Haute-Yamaska, MRC
@@ -5230,12 +5230,12 @@ United States of America, Texas, King County
 United States of America, Nebraska, Phelps County
 United States of America, West Virginia, Lewis County
 Canada, Quebec Province, Eeyou Istchee Baie-James
-Mexico, Oaxaca, Santo Domingo Tonalá
+Mexico, Oaxaca, Santo Domingo Tonala
 United States of America, Texas, Bosque County
 United States of America, Georgia, Schley County
 Canada, Quebec Province, La Nouvelle-Beauce, MRC
-Dominican Republic, Santiago Rodríguez
-Mexico, Sonora, Yécora
+Dominican Republic, Santiago Rodriguez
+Mexico, Sonora, Yecora
 Mexico, Chiapas, Pantepec
 United States of America, North Dakota, Grant County
 Canada, Manitoba, Victoria, Rural Municipality of
@@ -5243,13 +5243,13 @@ United States of America, North Dakota, Walsh County
 United States of America, South Dakota, Moody County
 United States of America, Nebraska, Howard County
 United States of America, Missouri, Monroe County
-Mexico, Michoacán, Buenavista
+Mexico, Michoacan, Buenavista
 United States of America, Michigan, Bay County
 United States of America, Minnesota, Swift County
 Canada, Saskatchewan, Duck Lake No. 463
 Antigua and Barbuda, Redonda Island
 Mexico, Zacatecas, Villa Hidalgo
-Mexico, San Luis Potosí, Tamasopo
+Mexico, San Luis Potosi, Tamasopo
 United States of America, Iowa, Warren County
 United States of America, New Mexico, Cibola County
 Mexico, Sonora, Rosario de Tesopaco
@@ -5265,7 +5265,7 @@ United States of America, Kentucky, Trimble County
 Canada, Saskatchewan, Carmichael No. 109
 Canada, Manitoba, Saint Andrews, Rural Municipality of
 Saint Lucia, Vieux-Fort
-Mexico, Michoacán, San Lucas
+Mexico, Michoacan, San Lucas
 United States of America, Nebraska, Johnson County
 United States of America, Virginia, Cumberland County
 United States of America, West Virginia, Logan County
@@ -5276,7 +5276,7 @@ Mexico, Chiapas, Totolapa
 United States of America, Kentucky, Harrison County
 Mexico, Sonora, Altar
 United States of America, South Dakota, Hughes County
-Mexico, Yucatán, Tizimín
+Mexico, Yucatan, Tizimin
 United States of America, Ohio, Henry County
 United States of America, Ohio, Paulding County
 United States of America, Kentucky, Adair County
@@ -5290,7 +5290,7 @@ United States of America, Kentucky, Clay County
 Mexico, Colima, Comala
 Canada, Quebec Province, Le Domaine-du-Roy, MRC
 United States of America, Ohio, Carroll County
-Panama, Panamá Oeste (Panama)
+Panama, Panama Oeste (Panama)
 Mexico, Hidalgo, San Salvador
 United States of America, Iowa, Cedar County
 United States of America, Kentucky, McLean County
@@ -5299,28 +5299,28 @@ United States of America, Kentucky, Morgan County
 Mexico, Campeche, Calakmul
 Saint Lucia, Dauphin
 Canada, Ontario, Glengarry County
-Mexico, Chiapas, Yajalón
+Mexico, Chiapas, Yajalon
 Canada, Manitoba, Swan Valley West, Rural Municipality of
 Canada, Alberta, Lac La Biche County
 Panama, Kuna Yala
-Mexico, Chiapas, Tuxtla Gutiérrez
+Mexico, Chiapas, Tuxtla Gutierrez
 Mexico, Sonora, Huachinera
-Mexico, Tamaulipas, Güémez
+Mexico, Tamaulipas, Guemez
 United States of America, Texas, Falls County
 Mexico, Veracruz, Nogales
 United States of America, Nebraska, McPherson County
 United States of America, Iowa, Marion County
 United States of America, Texas, Hale County
-Mexico, Coahuila, Acuña
+Mexico, Coahuila, Acuna
 United States of America, Montana, Wibaux County
 Mexico, Veracruz, Xico
 Mexico, Oaxaca, San Pedro Huilotepec
-Mexico, Morelos, Tepoztlán
+Mexico, Morelos, Tepoztlan
 United States of America, South Dakota, Aurora County
 United States of America, Virginia, Orange County
 United States of America, Illinois, Montgomery County
 United States of America, Michigan, Branch County
-El Salvador, Usulatán
+El Salvador, Usulatan
 Canada, Manitoba, Hillsburg-Roblin-Shell River, Rural Municipality of
 Canada, Saskatchewan, Chicken No. 224
 United States of America, Nebraska, Saunders County
@@ -5334,11 +5334,11 @@ Saint Eustatius
 Mexico, Veracruz, Zacualpan
 United States of America, Virginia, Lancaster County
 Mexico, Oaxaca, Putla Villa de Guerrero
-Mexico, Oaxaca, Santa María Ixcatlán
+Mexico, Oaxaca, Santa Maria Ixcatlan
 United States of America, Mississippi, Grenada County
 United States of America, Idaho, Jerome County
 United States of America, Georgia, Lamar County
-Mexico, Veracruz, Miahuatlán
+Mexico, Veracruz, Miahuatlan
 United States of America, Ohio, Seneca County
 Mexico, Veracruz, Puente Nacional
 Nicaragua, Carazo
@@ -5347,9 +5347,9 @@ Mexico, Coahuila, Matamoros
 Mexico, Chiapas, La Libertad
 United States of America, Virginia, Lunenburg County
 United States of America, North Dakota, Foster County
-Mexico, Sonora, Plutarco Elías Calles
+Mexico, Sonora, Plutarco Elias Calles
 United States of America, Virginia, Westmoreland County
-Mexico, Nuevo León, Iturbide
+Mexico, Nuevo Leon, Iturbide
 Mexico, Sonora, Cumpas
 Dominica, Saint Mark
 Mexico, Sonora, Villa Pesqueira
@@ -5364,14 +5364,14 @@ United States of America, Ohio, Van Wert County
 United States of America, Nebraska, Stanton County
 Mexico, Oaxaca, San Antonio Huitepec
 Mexico, Chiapas, Chanal
-Dominican Republic, Sánchez Ramírez
+Dominican Republic, Sanchez Ramirez
 United States of America, Illinois, Perry County
 Mexico, Chiapas, Acacoyagua
 United States of America, Kentucky, Floyd County
 Mexico, Veracruz, Xalapa
 United States of America, Mississippi, Montgomery County
-Mexico, Sonora, Puerto Peñasco
-Mexico, Sonora, Baviácora
+Mexico, Sonora, Puerto Penasco
+Mexico, Sonora, Baviacora
 United States of America, Nebraska, Gage County
 Panama, Chiriqui, Bugaba
 United States of America, Illinois, Scott County
@@ -5384,23 +5384,23 @@ Canada, Manitoba, Rosedale, Rural Municipality of
 Brazil, Distrito Federal
 Peru, Cusco, Quispicanchi
 Colombia, Santander
-Peru, Huánuco
-Argentina, Tucumán, Tafi
+Peru, Huanuco
+Argentina, Tucuman, Tafi
 Brazil, Rio Grande do Sul
-Colombia, Vaupés
-Brazil, Paraná
+Colombia, Vaupes
+Brazil, Parana
 Colombia, Norte de Santander
 Venezuela, Amazonas
 Brazil
 Brazil, Minas Gerais
 Colombia, Cauca
 Ecuador, Esmeraldas
-Peru, Amazonas, Bongará
+Peru, Amazonas, Bongara
 Ecuador, Cotopaxi
 Ecuador, Carchi
 Colombia
-Colombia, Boyacá
-Brazil, São Paulo
+Colombia, Boyaca
+Brazil, Sao Paulo
 Colombia, Magdalena
 Colombia, Cundinamarca
 Ecuador, Los Rios
@@ -5414,15 +5414,15 @@ Argentina, Salta
 Venezuela
 Ecuador, Morona-Santiago
 Bolivia
-Argentina, Tucumán, Burruyacu
+Argentina, Tucuman, Burruyacu
 Ecuador, Pastaza
 Colombia, Caldas
 Argentina, La Rioja
-Colombia, Nariño
+Colombia, Narino
 Ecuador, Tungurahua
-Argentina, Salta, Orán
+Argentina, Salta, Oran
 Ecuador, Azuay
-Argentina, Córdoba
+Argentina, Cordoba
 Bolivia, La Paz, Eliodoro Camacho
 Venezuela, Miranda
 Peru, Lima
@@ -5431,47 +5431,47 @@ Ecuador, Chimborazo
 Bolivia, Santa Cruz
 Colombia, Valle del Cauca
 Venezuela, Trujillo
-Argentina, Tucumán, Capital
+Argentina, Tucuman, Capital
 Brazil, Santa Catarina
 Peru, Cusco, Convencion
-Paraguay, Asunción
-Peru, San Martín
-Peru, Huánuco, Huánuco
-Ecuador, Cañar
+Paraguay, Asuncion
+Peru, San Martin
+Peru, Huanuco, Huanuco
+Ecuador, Canar
 Peru, Cusco, Paucartambo
 Venezuela, Yaracuy
 Bolivia, Santa Cruz, Sara
 Argentina, Catamarca
 Colombia, Putumayo
-Brazil, Pará
+Brazil, Para
 Ecuador, Pichincha
 Guyana
-Venezuela, Falcón
-Peru, Junín, Tarma
-Peru, San Martín, Mariscal Caceres
+Venezuela, Falcon
+Peru, Junin, Tarma
+Peru, San Martin, Mariscal Caceres
 Paraguay
 Brazil, Pernambuco
 Venezuela, Distrito Federal
-Colombia, Chocó
+Colombia, Choco
 Venezuela, Aragua
 Argentina, Jujuy
 Colombia, Huila
 Argentina, Catamarca, Andalgala
 Ecuador, Guayas
-Argentina, Tucumán, Famaillá
+Argentina, Tucuman, Famailla
 Peru, Loreto
-Venezuela, Bolívar
-Venezuela, Táchira
+Venezuela, Bolivar
+Venezuela, Tachira
 Ecuador, Zamora-Chinchipe
-Brazil, Ceará
+Brazil, Ceara
 Paraguay, Amambay
 Peru, Cajamarca, Celendin
 Colombia, Tolima
 Bolivia, La Paz, Nor Yungas
 Colombia, Antioquia
 Bolivia, Cochabamba, Chapare
-Paraguay, Alto Paraná
-Peru, Junín
+Paraguay, Alto Parana
+Peru, Junin
 Colombia, Amazonas
 Venezuela, Monagas
 Germany, Berlin (State), Berlin (District)
@@ -5480,7 +5480,7 @@ Peru, Amazonas, Chachapoyas
 Brazil, Roraima (Terr.)
 Bolivia, Cochabamba
 Peru, Ayacucho, Huanta
-Venezuela, Mérida
+Venezuela, Merida
 Brazil, Minas Gerais, Carangola
 Ecuador, Imbabura
 Peru, Cusco, Urubamba
@@ -5489,12 +5489,12 @@ Bolivia, Tarija
 Surinam
 Peru, Lambayeque, Chiclayo
 Brazil, Amazonas
-Brazil, Goiás
-Paraguay, Caaguazú
+Brazil, Goias
+Paraguay, Caaguazu
 Paraguay, Alta Paraguay
 Brazil, Mato Grosso
 Ecuador, Napo
-Peru, San Martín, Huallaga
+Peru, San Martin, Huallaga
 Bolivia, La Paz
 Brazil, Rondonia (Terr.)
 Peru, La Libertad
@@ -5515,18 +5515,18 @@ Venezuela, Carabobo
 Venezuela, Sucre
 Cameroon
 Guyana, Cuyuni-Mazaruni
-Paraguay, Concepción
+Paraguay, Concepcion
 Peru, La Libertad, Otuzco
 United Kingdom
 Peru, Puno, Carabaya
 Venezuela, Amazonas, Atures
-Venezuela, Anzoátegui
-Peru, Huánuco, Pachitea
+Venezuela, Anzoategui
+Peru, Huanuco, Pachitea
 Peru, Cajamarca, Cutervo
 Argentina, Corrientes, Provincia de, Empedrado
-Argentina, Tucumán
+Argentina, Tucuman
 Uruguay, Rivera
-Colombia, Córdoba
+Colombia, Cordoba
 Guyana, Pomeroon-Supenaam
 Guyana, Potaro-Siparuni
 United Kingdom, England
@@ -5535,15 +5535,15 @@ Germany, Hamburg
 Bolivia, La Paz, Larecaja
 Surinam, Commewijne
 Venezuela, Zulia
-Peru, Apurímac, Abancay
-Brazil, Amapá (Terr.)
-Argentina, Tucumán, Chicligasta
+Peru, Apurimac, Abancay
+Brazil, Amapa (Terr.)
+Argentina, Tucuman, Chicligasta
 Peru, Huancavelica, Tayacaja
 United Kingdom, England, Surrey
 Surinam, Sipaliwini
 Venezuela, Nueva Esparta
 United Kingdom, England, Greater London
-Peru, Apurímac
+Peru, Apurimac
 Guinea
 Sierra Leone
 Colombia, Vichada
@@ -5551,17 +5551,17 @@ Argentina, Misiones
 
 Venezuela, Lara
 Guyana, Barima-Waini
-Colombia, Guainía
+Colombia, Guainia
 Chile, Antofagasta
 Paraguay, Central
 Argentina, Jujuy, Ledesma
 Uruguay, Colonia
-Argentina, Misiones, Apóstoles
+Argentina, Misiones, Apostoles
 Peru, Loreto, Maynas
-Argentina, Córdoba, San Alberto
+Argentina, Cordoba, San Alberto
 Argentina, Corrientes, Provincia de, Mercedes
 Argentina
-Paraguay, Paraguarí
+Paraguay, Paraguari
 Central African Republic
 Brazil, Acre
 Argentina, Formosa
@@ -5571,28 +5571,28 @@ Argentina, Misiones, Candelaria
 Argentina, Buenos Aires
 Paraguay, Misiones
 Uruguay, Canelones
-Paraguay, Guairá
+Paraguay, Guaira
 Colombia, Caqueta
 Brazil, Espirito Santo
 Liberia
 Senegal
-Chile, Magallanes y Antártica Chilena
+Chile, Magallanes y Antartica Chilena
 Congo, Democratic Republic of the
-Côte d'Ivoire
+Cote d'Ivoire
 Gabon
 Liberia, Bong
 Colombia, Antioquia, Frontino
-Gabon, Moyen-Ogooué
+Gabon, Moyen-Ogooue
 Dahomey
 Brazil, Mato Grosso do Sul
 Guyana, Upper Takutu-Upper Essequibo
-Colombia, Bolívar
+Colombia, Bolivar
 Malawi
 Cameroon, Sud-Ouest
 Tanzania
 Angola
 Ecuador, Pastaza, Pastaza
-Peru, San Martín, Tocache
+Peru, San Martin, Tocache
 Equatorial Guinea
 Peru, Cuzco
 United Kingdom, England, Surrey, Richmond upon Thames
@@ -5607,16 +5607,16 @@ Peru, Loreto, Alto Amazonas
 Gabon, Woleu-Ntem
 Nigeria
 Mauritius
-Côte d'Ivoire, Abidjan
+Cote d'Ivoire, Abidjan
 Togo
 Peru, Madre de Dios
-Peru, Huánuco, Leoncio Prado
-France, Île-de-France, Paris, Ville-de
+Peru, Huanuco, Leoncio Prado
+France, Ile-de-France, Paris, Ville-de
 South Africa, Transvaal Province
 Surinam, Paramaribo
 Argentina, Corrientes, Provincia de, Mburucuya
 Argentina, Chaco
-Argentina, Río Negro
+Argentina, Rio Negro
 Germany, Sachsen
 Peru, Piura
 Switzerland
@@ -5644,12 +5644,12 @@ Sweden
 Switzerland, Geneva
 United Kingdom, England, Cambridgeshire
 Austria, Tirol
-France, Auvergne-Rhône-Alpes, Isère
+France, Auvergne-Rhone-Alpes, Isere
 Burundi
-Sweden, Skåne
+Sweden, Skane
 Ukraine
 Serbia
-Equatorial Guinea, Bioko (Fernando Póo), Fernando Póo
+Equatorial Guinea, Bioko (Fernando Poo), Fernando Poo
 Hungary
 France, Normandie, Calvados
 Poland
@@ -5663,12 +5663,12 @@ Zimbabwe
 Guinea, Mamou
 Cameroon, Est
 Ghana
-Peru, San Martín, Lamas
+Peru, San Martin, Lamas
 Venezuela, Portuguesa
 Ecuador, Galapagos Province
 Surinam, Saramacca
 
-Peru, La Libertad, Patáz
+Peru, La Libertad, Pataz
 Italy, Friuli-Venezia Giulia, Trieste
 Bolivia, El Beni
 Norway
@@ -5699,7 +5699,7 @@ Congo, Democratic Republic of the, Nord-Kivu
 Madagascar, Toliary
 United Kingdom, Wales
 Bolivia, Santa Cruz, Ichilu
-Argentina, Corrientes, Provincia de, Santo Tomé
+Argentina, Corrientes, Provincia de, Santo Tome
 Paraguay, San Pedro
 Spain
 Colombia, Cesar
@@ -5712,10 +5712,10 @@ Netherlands
 Chile, Llanquihue
 Chile, Valdivia
 Chile, Cautin
-Saint-Paul, Île
+Saint-Paul, Ile
 Chile, Talca
 Mozambique
-Venezuela, Guárico
+Venezuela, Guarico
 United Kingdom, Scotland, Lothian County
 Congo, Democratic Republic of the, Orientale
 Peru, Amazonas, Luya
@@ -5727,19 +5727,19 @@ United Kingdom, England, Hertfordshire
 Bolivia, La Paz, Inquisivi
 Peru, Pasco, Oxapampa
 Ecuador, Manabi
-Ecuador, Bolívar
+Ecuador, Bolivar
 Peru, Cajamarca, Jaen
 Peru, Loreto, Requena
-France, Provence-Alpes-Côte d'Azur, Alpes-Maritimes
+France, Provence-Alpes-Cote d'Azur, Alpes-Maritimes
 Peru, Cusco, Calca
 France, Grand Est, Bas-Rhin
 Liberia, Monrovia Commonwealth District
-Peru, San Martín, San Martin
+Peru, San Martin, San Martin
 Argentina, Misiones, San Javier
 Ukraine, Kherson Oblast
 Namibia
 Bolivia, Chuquisaca, Oropeza
-Paraguay, Nueva Asunción
+Paraguay, Nueva Asuncion
 Turkey
 Yemen
 South Africa, Gauteng Province
@@ -5748,7 +5748,7 @@ Surinam, Marowijne
 Peru, Piura, Ayabaca
 Venezuela, Barinas
 South Africa, KwaZulu-Natal Province
-Argentina, Tucumán, Trancas
+Argentina, Tucuman, Trancas
 Turkey, Izmir
 Argentina, Mendoza
 Paraguay, Cordillera
@@ -5761,15 +5761,15 @@ Burkina Faso
 Iran, Khorasan
 Argentina, Entre Rios
 Peru, Puno
-Peru, Junín, Chanchamayo
+Peru, Junin, Chanchamayo
 Ecuador, El Oro
 Argentina, Santiago del Estero
 Peru, Lambayeque, Lambayeque
 Bulgaria
 Saudi Arabia, `Asir
-Peru, Cajamarca, Contumazá
-Ecuador, Sucumbíos
-Paraguay, Boquerón
+Peru, Cajamarca, Contumaza
+Ecuador, Sucumbios
+Paraguay, Boqueron
 Italy, Veneto
 Spain, Santa Cruz de Tenerife
 Bolivia, La Paz, Pedro Domingo Murillo
@@ -5790,16 +5790,16 @@ Argentina, Bongara
 Palmer Archipelago
 Peru, Ucayali, Coronel Portillo
 Argentina, Salta, Guachipas
-Germany, Baden-Württemberg
+Germany, Baden-Wurttemberg
 Austria
 Switzerland, Jura
 Norway, Oppland
 Czech Republic
 Greece, Ionian Islands, Corfu
 Peru, Ancash
-France, Auvergne-Rhône-Alpes, Haute-Savoie
+France, Auvergne-Rhone-Alpes, Haute-Savoie
 Uruguay, Montevideo
-Venezuela, Bolívar, Piar
+Venezuela, Bolivar, Piar
 Finland, Lapland
 Kenya, Coast, Kilifi
 Chile, Coquimbo, Ovalle
@@ -5815,16 +5815,16 @@ France, Grand Est, Moselle
 Germany, Thuringia
 Luxembourg
 South Africa, Limpopo Province
-Uruguay, San José
+Uruguay, San Jose
 Uruguay, Florida
 Argentina, Misiones, San Pedro
-France, Provence-Alpes-Côte d'Azur, Hautes-Alpes
+France, Provence-Alpes-Cote d'Azur, Hautes-Alpes
 Romania
 Sweden, Varmland
 Brazil, Santa Catarina, Mafra
 Slovenia
 Sweden, Vastmanlands
-France, Provence-Alpes-Côte d'Azur, Var
+France, Provence-Alpes-Cote d'Azur, Var
 Colombia, Sucre
 Chile, Malleco
 Ireland, Connacht, Galway
@@ -5832,7 +5832,7 @@ France, Grand Est, Vosges
 South Africa, Western Cape Province
 France, Grand Est, Marne
 Cyprus
-Chile, Valparaíso Region, Valparaíso Province
+Chile, Valparaiso Region, Valparaiso Province
 Georgia
 France, Grand Est, Ardennes
 Greece, Central Greece and Euboea, Attica
@@ -5840,33 +5840,33 @@ Chile, Colchagua
 Chile, Cachapoal
 Moldova
 Italy, Sicilia
-France, Provence-Alpes-Côte d'Azur, Vaucluse
+France, Provence-Alpes-Cote d'Azur, Vaucluse
 Peru, Ancash, Bolognesi
 Iran, Chahar Mahall va Bakhtiari
-Argentina, Neuquén
+Argentina, Neuquen
 Peru, Cajamarca, Cajamarca
 Nigeria, Lagos
-France, Auvergne-Rhône-Alpes, Ain
-Chile, Valparaíso Region
+France, Auvergne-Rhone-Alpes, Ain
+Chile, Valparaiso Region
 Italy, Veneto, Padova
 Iceland
 Falkland Islands
-Chile, Magallanes-Antártica
-Chile, Curicó
+Chile, Magallanes-Antartica
+Chile, Curico
 Germany, North Rhine-Westphalia
 Sudan
 Poland, Gdansk
 Italy, Veneto, Treviso
 Sudan, Kurdufan
 Lithuania
-Chile, Concepción
-France, Bourgogne-Franche-Comté, Doubs
-Colombia, Mérida
+Chile, Concepcion
+France, Bourgogne-Franche-Comte, Doubs
+Colombia, Merida
 United Kingdom, England, Buckinghamshire
 Switzerland, Vaud
 Italy, Toscana, Firenze
 Italy, Emilia-Romagna, Modena
-Chile, Bío-Bío
+Chile, Bio-Bio
 United Kingdom, England, Devon
 South Sudan
 Poland, Slaskie
@@ -5879,7 +5879,7 @@ Greece
 Austria, Vorarlberg
 Chile, Arauco
 Ireland, Leinster, Westmeath
-Finland, Kanta-Häme
+Finland, Kanta-Hame
 Surinam, Para
 France, Centre-Val de Loire, Loir-et-Cher
 Netherlands, Friesland
@@ -5889,14 +5889,14 @@ Lesotho
 Belarus
 Lebanon
 Uruguay, Soriano
-Spain, Jaén
+Spain, Jaen
 Uruguay, Cerro Largo
 Argentina, Tierra del Fuego
-France, Auvergne-Rhône-Alpes, Rhône
+France, Auvergne-Rhone-Alpes, Rhone
 Guyana, Upper Demerara-Berbice
-Chile, Aisén
+Chile, Aisen
 Greece, Aegean Islands, Chios
-Spain, Cádiz
+Spain, Cadiz
 Italy, Friuli-Venezia Giulia
 Algeria
 Iran
@@ -5911,24 +5911,24 @@ Argentina, San Luis
 Argentina, Chubut
 Chile, Aconcagua
 Peru, Tacna, Tacna
-Chile, Magallanes-Antártica, Magallanes
-Equatorial Guinea, Bioko (Fernando Póo), Annobón
+Chile, Magallanes-Antartica, Magallanes
+Equatorial Guinea, Bioko (Fernando Poo), Annobon
 Poland, Wroclaw
 Peru, Lima, Huaral
 Ireland, Leinster, Kilkenney
 Italy, Lombardia, Como
 France, Pays de la Loire, Sarthe
 Nigeria, Cross River
-Switzerland, Graubünden
+Switzerland, Graubunden
 Germany, Brandenburg
-France, Auvergne-Rhône-Alpes, Cantal
+France, Auvergne-Rhone-Alpes, Cantal
 Ireland, Munster, Kerry
 Nigeria, Oyo
 Chile, Santiago
 Israel
 Congo
 Ireland, Leinster, Kildare
-France, Occitanie, Hautes-Pyrénées
+France, Occitanie, Hautes-Pyrenees
 Syria
 Norway, Hordaland
 Peru, Lima, Huarochiri
@@ -5939,10 +5939,10 @@ Switzerland, Neuchatel
 Uruguay, Rio Negro
 Romania, Cluj
 Austria, Karnten
-France, Bourgogne-Franche-Comté
+France, Bourgogne-Franche-Comte
 Netherlands, Utrecht
 Italy, Piedmonte, Cuneo
-France, Auvergne-Rhône-Alpes, Savoie
+France, Auvergne-Rhone-Alpes, Savoie
 Norway, Akershus
 France, Normandie, Orne
 Germany, Rhineland-Palatinate
@@ -5950,17 +5950,17 @@ Ireland, Munster, Clare
 France, Centre-Val de Loire, Cher
 Norway, More og Romsdal
 Switzerland, Fribourg
-France, Provence-Alpes-Côte d'Azur, Bouches-du-Rhône
+France, Provence-Alpes-Cote d'Azur, Bouches-du-Rhone
 France, Grand Est, Meurthe-et-Moselle
 Portugal, Madeira
-France, Provence-Alpes-Côte d'Azur, Alpes-de-Haute Provence
+France, Provence-Alpes-Cote d'Azur, Alpes-de-Haute Provence
 United Kingdom, Northern Ireland
 Egypt
 Austria, Steiermark
-Chile, Ñnuble
+Chile, Nnuble
 France, Normandie
-Bolivia, Potosí
-Peru, Junín, Yauli
+Bolivia, Potosi
+Peru, Junin, Yauli
 Poland, Lublin
 Iceland, Borgarfjaroarsysla
 Italy, Toscana, Pisa
@@ -5976,16 +5976,16 @@ France, Grand Est, Aube
 Austria, Oberosterreich
 France, Nouvelle-Aquitaine, Gironde
 South Africa, Northern Cape Province
-Paraguay, Itapúa
+Paraguay, Itapua
 Latvia
 Greece, Crete
 Romania, Tulcea
 France, Corsica
 Iraq
 Madagascar, Mahajanga
-Côte d'Ivoire, Guiglo
+Cote d'Ivoire, Guiglo
 Italy, Sicilia, Palermo
-Chile, Chiloé
+Chile, Chiloe
 Morocco
 Italy, Sardinia
 Ireland, Leinster, Wicklow
@@ -5996,18 +5996,18 @@ Tunisia
 Algeria, Alger
 Comoros
 Montenegro
-Equatorial Guinea, Bioko (Fernando Póo)
+Equatorial Guinea, Bioko (Fernando Poo)
 Poland, Radom
 Bosnia and Herzegovina
 Norway, Troms
 France, Centre-Val de Loire, Loiret
 Ireland, Leinster, Meath
-Côte d'Ivoire, Agboville
+Cote d'Ivoire, Agboville
 Italy, Emilia-Romagna, Bologna
-France, Île-de-France, Seine-et-Marne
+France, Ile-de-France, Seine-et-Marne
 France, Occitanie, Haute-Garrone
 Italy, Liguria
-Czech Republic, Olomoucký Kraj
+Czech Republic, Olomoucky Kraj
 Georgia, Abkhazia
 Italy, Veneto, Verona
 Spain, Gerona
@@ -6020,12 +6020,12 @@ Tunisia, Tunis
 United Kingdom, Scotland, Fife County
 Yugoslavia
 United Kingdom, Northern Ireland, Antrim
-France, Bourgogne-Franche-Comté, Haute-Saône
+France, Bourgogne-Franche-Comte, Haute-Saone
 Italy, Sicilia, Messina
 Finland, Ahvenanmaa
 Spain, Guadalajara
 Turkey, Hatay
-France, Bourgogne-Franche-Comté, Jura
+France, Bourgogne-Franche-Comte, Jura
 Italy, Calabria
 Italy, Toscana, Massa-Carrara
 Italy, Sicilia, Siracusa
@@ -6034,7 +6034,7 @@ Congo, Democratic Republic of the, Equateur
 Peru, Tumbes, Zarumilla
 Botswana
 Saudi Arabia
-Uruguay, Paysandú
+Uruguay, Paysandu
 Guinea-Bissau
 Bolivia, Santa Cruz, Jose Miguel de Velasco
 Guyana, Demerara-Mahaica
@@ -6042,23 +6042,23 @@ Germany, Schleswig-Holstein
 Brazil, Santa Catharina
 Chile, Antofagasta, Taltal
 Peru, Callao
-Uruguay, Tacuarembó
+Uruguay, Tacuarembo
 Peru, Cajamarca, San Marcos
 Bolivia, Santa Cruz, Florida
 Tristan da Cunha
 Peru, Arequipa
 Bolivia, Cochabamba, Quillacollo
-Peru, Arequipa, Camaná
-Peru, Junín, Huancayo
-Peru, Apurímac, Andahuaylas
+Peru, Arequipa, Camana
+Peru, Junin, Huancayo
+Peru, Apurimac, Andahuaylas
 Argentina, Salta, San Martin
 Liechtenstein
 Bolivia, Santa Cruz, Vallegrande
 Peru, Tumbes, Tumbes
 Argentina, Entre Rios, Concordia
 Chile, Antofagasta, Antofagasta
-Gabon, Ogooué-Ivindo
-Colombia, Atlántico
+Gabon, Ogooue-Ivindo
+Colombia, Atlantico
 Peru, Arequipa, Arequipa
 San Marino
 Chile, Antofagasta, Tocopilla
@@ -6069,30 +6069,30 @@ Chile, Atacama, Copiapo
 Guinea, Conakry
 Spain, Valencia
 Mozambique, Maputo
-Argentina, Catamarca, Belén
-Argentina, Santa Fé
+Argentina, Catamarca, Belen
+Argentina, Santa Fe
 Peru, Arequipa, Islay
 Switzerland, Valais
-Chile, Tarapacá, Tarapacá
-Chile, Atacama, Chañaral
+Chile, Tarapaca, Tarapaca
+Chile, Atacama, Chanaral
 Bolivia, La Paz, Pacajes
 Peru, Ica
 Peru, Huancavelica, Huancavelica
 Chile, Atacama
 Peru, Ayacucho, Huamanga
 Uruguay, Salto
-Brazil, Paraíba
+Brazil, Paraiba
 Angola, Luanda
 United Kingdom, England, Dorset
 Cameroon, Centre
-Czech Republic, Jihomoravský
+Czech Republic, Jihomoravsky
 Sweden, Uppsala
 Romania, Harghita
 Morocco, Souss-Massa, Agadir-Ida ou Tanane
 Italy, Trentino-Alto Adige
 Iran, Kerman
 Italy, Liguria, Genova
-France, Nouvelle-Aquitaine, Pyrénnés-Atlantiques
+France, Nouvelle-Aquitaine, Pyrennes-Atlantiques
 Egypt, Red Sea
 Italy, Umbria, Perugia
 Italy, Puglia, Foggia
@@ -6107,9 +6107,9 @@ Chile, Los Lagos
 Algeria, Oran
 Uganda, Masaka
 Germany, Brandenburg, Frankfurt
-Spain, Málaga
+Spain, Malaga
 Uruguay, Lavalleja
-France, Bretagne, Finistère
+France, Bretagne, Finistere
 Italy, Piedmonte, Vercelli
 Ethiopia, Tigre
 Italy, Marche
@@ -6133,39 +6133,39 @@ Rwanda, Cyangugu
 Congo, Democratic Republic of the, Sud-Kivu, Idjwi
 Italy, Toscana
 Hungary, Tolna
-Île Saint-Paul
+Ile Saint-Paul
 Victoria Land, Ross Island
-Chile, Bío-Bío, Ñuble
+Chile, Bio-Bio, Nuble
 Italy, Emilia-Romagna
 Hungary, Csongrad
-Chile, Magallanes-Antártica, Tierra del Fuego
+Chile, Magallanes-Antartica, Tierra del Fuego
 Italy, Campania, Salerno
 Italy, Trentino-Alto Adige, Trento
 Somalia
 Italy, Piedmonte, Novara
 Saint Paul, Ile
 Germany, Baden-Wurttemberg
-Paraguay, Caazapá
-France, Occitanie, Hérault
+Paraguay, Caazapa
+France, Occitanie, Herault
 Iran, Gilan
 Netherlands, Noord-Brabant
 Colombia, Cundimarca
 Madagascar, Antsiranana, Faritany d'
 Yugoslavia, Serbia
 United Kingdom, England, Cumbria
-France, Nouvelle-Aquitaine, Deux-Sèvres
+France, Nouvelle-Aquitaine, Deux-Sevres
 Hungary, Pest
 Ireland, Ulster, Donegal
 France, Bretagne, Morbihan
-France, Auvergne-Rhône-Alpes, Puy-de-Dôme
+France, Auvergne-Rhone-Alpes, Puy-de-Dome
 Sudan, Kordofan
 Tanzania, Morogoro
 Peru, Tumbes
 Albania
-France, Bourgogne-Franche-Comté, Côte-d'Or
+France, Bourgogne-Franche-Comte, Cote-d'Or
 Italy, Lombardia, Milano
 Germany, Arnsberg
-Czech Republic, Severo?eský
+Czech Republic, Severo?esky
 Peru, Huancavelica, Angaraes
 Uganda, Ankole
 Paraguay, Chaco
@@ -6180,10 +6180,10 @@ Equatorial Guinea, Rio Muni
 France, Pays de la Loire, Maine-et-Loire
 Namibia, Namaland
 Italy, Emilia-Romagna, Parma
-Chile, Tarapacá
+Chile, Tarapaca
 Iraq, Ninawa
 United Kingdom, England, Derbyshire
-France, Auvergne-Rhône-Alpes, Loire
+France, Auvergne-Rhone-Alpes, Loire
 Spain, Granada
 Ireland, Leinster
 Italy, Piedmonte
@@ -6207,11 +6207,11 @@ Italy, Trentino-Alto Adige, Bolzano
 Congo, Democratic Republic of the, Kivu
 Uruguay, Durazno
 Sweden, Hallands
-Peru, Apurímac, Grau
+Peru, Apurimac, Grau
 Germany, Nordrhein-Westfalen
 Senegal, Casamance
 Uruguay, Treinta y Tres
-Norway, Nord-Trondelag, Snåsa
+Norway, Nord-Trondelag, Snasa
 Angola, Moxico
 Ethiopia, Gojam
 South Africa, Free State Province
@@ -6219,12 +6219,12 @@ Kenya, Coast
 Germany, Rheinland-Pfalz
 Norway, Buskerud, Gol
 United Kingdom, England, Staffordshire
-France, Occitanie, Pyrénnés-Orientales
+France, Occitanie, Pyrennes-Orientales
 Argentina, La Rioja, Famatina
 Turkey, Icel
 Tanzania, Kilimanjaro
 Angola, Malange
-Guinée
+Guinee
 Madagascar, Fianarantsoa
 Spain, Almeria
 Syria, Ar Raqqah
@@ -6235,21 +6235,21 @@ Norway, Nordland
 Zambia, Southern
 France, Hauts-de-France, Oise
 Argentina, Salta, Santa Victoria
-Norway, Buskerud, Flå
+Norway, Buskerud, Fla
 Peru, Moquegua
-Algeria, Saïda
+Algeria, Saida
 Brazil, Sta. Catharina
 Bolivia, La Paz, Franz Tamayo
 South Shetland Islands, Deception Island
 Portugal, Coimbra
 Ellsworth Land
-Peru, Huánuco, Huamalíes
+Peru, Huanuco, Huamalies
 France, Corsica, Corse-du-Sud
 Sweden, Vasternorrlands
 Netherlands, Noord-Holland
 Norway, Finnmark
 Ireland, Munster
-Sao Tomé and Príncipe
+Sao Tome and Principe
 Croatia, Croatia
 France, Pays de la Loire, Loire-Atlantique
 United Kingdom, Saint Helena
@@ -6258,10 +6258,10 @@ Congo, Democratic Republic of the, Kongo Central, Lukula
 Congo, Democratic Republic of the, Shaba
 Poland, Zachodniopomorskie
 French Guinea
-Sao Tomé and Príncipe, Sao Tomé
+Sao Tome and Principe, Sao Tome
 Peru, Ancash, Pallasca
 Egypt, Sinai
-Albania, Kukës, Has
+Albania, Kukes, Has
 Chile, Atacama, Vallenar
 Ukraine, Krym (Crimea) Oblast
 Greece, Ionian Islands, Cephalonia
@@ -6270,9 +6270,9 @@ Argentina, Jujuy, Santa Catalina
 Hungary, Bacs-Kiskun
 Tunisia, Kasserine
 Romania, Timis
-France, Occitanie, Ariège
+France, Occitanie, Ariege
 Rwanda, Western
-Argentina, Tucumán, Leales
+Argentina, Tucuman, Leales
 Namibia, Ohangwena, Oshikango
 France, Bretagne, Ille-et-Vilaine
 Peru, Ancash, Recuay
@@ -6287,33 +6287,33 @@ Germany, Niedersachsen
 Poland, Mazowieckie
 Greece, Peloponnese
 Cameroon, Nord
-Albania, Kukës, Lumas
+Albania, Kukes, Lumas
 Argentina, Mendoza, Lavalle
 Italy, Lombardia, Varese
 Ethiopia, Gonder
 Peru, Huancavelica, Castrovirreyna
 Egypt, Port Said
 Italy, Lombardia
-Chile, Aysén
+Chile, Aysen
 Madagascar, Toliara
 Peru, Tacna
 Peru, Moquegua, Mariscal Nieto
 Bolivia, Santa Cruz, Chiquitos
 Germany, Mecklenburg-Vorpommern
-Argentina, Formosa, Pilagá
+Argentina, Formosa, Pilaga
 Greece, Thessaly, Larissa
 Switzerland, Lucerne
 South Africa, Cape Province
 Switzerland, Nidwalden
 Norvegia
-Peru, Huánuco, Lauricocha
+Peru, Huanuco, Lauricocha
 Germany, Sachsen-Anhalt
-Amsterdam, Île
+Amsterdam, Ile
 Rwanda
 Netherlands, Groningen
 Yugoslavia, Montenegro
 Italy, Campania
-Argentina, Mendoza, Tunuyán
+Argentina, Mendoza, Tunuyan
 Portugal, Porto
 United Kingdom, Scotland, Perth and Kinross
 Italy, Sicilia, Trapani
@@ -6330,11 +6330,11 @@ Turkey, Erzurum
 Austria, Vienna
 Cape Verde, Maio
 Norway, Buskerud
-Gabon, Ngounié
+Gabon, Ngounie
 Hungary, Hajdu-Bihar
 Spain, Las Palmas
 Norway, Akershus, Eidsvoll
-Uruguay, Artìgas
+Uruguay, Artigas
 Turkey, Aydin
 Argentina, La Rioja, Chilecito
 Tanzania, Ruvuma
@@ -6345,13 +6345,13 @@ Peru, Tacna, Tarata
 Tanzania, Manyara
 Portugal, Lisboa
 France, Grand Est, Haut-Rhin
-Germany, Thüringen
+Germany, Thuringen
 Norway, Ostfold
-Côte d'Ivoire, Sassandra
+Cote d'Ivoire, Sassandra
 Spain, Barcelona
 Namibia, Erongo, Karibib
 Bolivia, Chuquisaca, Luis Calvo
-Bolivia, Potosí, Sud Chichas
+Bolivia, Potosi, Sud Chichas
 Iran, Tehran
 Italy, Sicilia, Catania
 United Kingdom, England, Northumberland
@@ -6360,7 +6360,7 @@ Italy, Friuli-Venezia Giulia, Udine
 Senegal, Dakar, Rufisque
 Mali, Tombouctou Region
 United Kingdom, Scotland, Shetland County
-Sao Tomé and Príncipe, Príncipe
+Sao Tome and Principe, Principe
 Macedonia, Macedonia
 Argentina, Cochinoca
 Italy, Lombardia, Sondria
@@ -6374,10 +6374,10 @@ Finland, Kuopio
 Chile, Maipo
 Italy, Calabria, Cosenza
 Israel, Yerushalayim (Jerusalem)
-Peru, Junín, Jauja
+Peru, Junin, Jauja
 Oman
 Turkey, Cankiri
-Iceland, Múlasysla, Nordhur
+Iceland, Mulasysla, Nordhur
 Turkey, Nigde
 Venezuela, Cojedes
 Jordan, Al Karak
@@ -6389,10 +6389,10 @@ Argentina, Corrientes
 Greece, Aegean Islands, Dodecanese
 Hungary, Fejer
 Spain, Murcia
-Morocco, Fès-Meknès, Taza
+Morocco, Fes-Meknes, Taza
 Ukraine, Ivano-Frankovsk Oblast
 Iran, Mazandaran
-Chile, Valparaíso Region, Isla de Pascua
+Chile, Valparaiso Region, Isla de Pascua
 Italy, Abruzzi
 Turkey, Antalya
 Sweden, Orebro
@@ -6400,11 +6400,11 @@ Greece, Peloponnese, Achaea
 Chile, Atacama, Huasco
 Italy, Sicilia, Caltanissetta
 Romania, Brasov
-Gabon, Ogooué-Lolo
+Gabon, Ogooue-Lolo
 Tunisia, Jendouba
 United Kingdom, England, Worcestershire
 Greece, Macedonia
-Guinea, Nzérékoré
+Guinea, Nzerekore
 Cape Verde, Sao Tiago
 Guinea, Dalaba
 Spain, Alicante
@@ -6417,7 +6417,7 @@ Colombia, Risaralda
 Uganda, Kigezi
 Tanzania, Tanga, Pare
 Brazil, Sta. Catarina
-France, Bourgogne-Franche-Comté, Belfort, Territoire de
+France, Bourgogne-Franche-Comte, Belfort, Territoire de
 Guyana, Mazaruni-Potaro
 Spain, Lugo
 Hungary, Nograd
@@ -6426,19 +6426,19 @@ Romania, Mehedinti
 Turkey, Burdur
 Switzerland, Ticino
 Turkey, Denizli
-France, Pays de la Loire, Vendée
-France, Auvergne-Rhône-Alpes, Ardèche
+France, Pays de la Loire, Vendee
+France, Auvergne-Rhone-Alpes, Ardeche
 Morocco, Casablanca-Settat
 Burundi, Bururi
-Algeria, El Boulaïda
+Algeria, El Boulaida
 Algeria, Tlemcen
 Bolivia, La Paz, Los Andes
 Iran, Lorestan
-Turkey, Kütahya
+Turkey, Kutahya
 Romania, Dolj
 Uganda, West Mengo
 Ireland, Connacht, Mayo
-Gabon, Ogooué-Maritime
+Gabon, Ogooue-Maritime
 Congo, Democratic Republic of the, Orientale, Isangi
 Turkey, Eskisehir
 Turkey, Mus
@@ -6447,15 +6447,15 @@ Italy, Lombardia, Brescia
 Italy, Piedmonte, Torino
 Peru, Arequipa, Caylloma
 South Shetland Islands, Greenwich Island
-France, Île-de-France, Yvelines
+France, Ile-de-France, Yvelines
 Cameroon, Littoral
 Iran, Kordestan
-Turkey, Gümüshane
+Turkey, Gumushane
 Sweden, Kalmar
 Algeria, Constantine
 Turkey, Konya, Kadinkan
 Armenia, Erivan
-Peru, San Martín, Moyobamba
+Peru, San Martin, Moyobamba
 Italy, Sardegna, Cagliari
 Macedonia
 Iraq, Dahuk
@@ -6463,18 +6463,18 @@ Iran, Razavi Khorasan
 Congo, Democratic Republic of the, Sud-Kivu
 Belgium, Luxembourg
 Sweden, Varmland, Karlstad
-Peru, Apurímac, Aymaraes
-France, Île-de-France, Essonne
+Peru, Apurimac, Aymaraes
+France, Ile-de-France, Essonne
 Romania, Suceava
-Brazil, São Paulo, Itapecirica
+Brazil, Sao Paulo, Itapecirica
 Romania, Vilcea, Ocnele Mari
-Føroyar
+Foroyar
 Sweden, Blekinge
 Hungary, Baranya
-Germany, Baden-Württemberg, Wurttemberg
+Germany, Baden-Wurttemberg, Wurttemberg
 Greece, Peloponnese, Argolis
 Sweden, Jamtlands
-Peru, Puno, Huancané
+Peru, Puno, Huancane
 Liberia, Maryland
 Iran, Hamadan
 Liberia, Margibi
@@ -6501,7 +6501,7 @@ Slovenia, Slovenia
 Sierra Leone, Western Area
 Sudan, Bahr al Ghazal
 Tanzania, Pwani, Rufiji
-Guinea, Dubréka
+Guinea, Dubreka
 Italy, Emilia-Romagna, Ferrara
 Sweden, Skaraborgs
 Turkey, Ankara
@@ -6512,8 +6512,8 @@ Bolivia, Oruro, Carangas
 Argentina, La Rioja, San Martin
 South Shetland Islands, Cornwallis Island
 Sweden, Malmohus
-Czech Republic, St?edo?eský
-Angola, Bié
+Czech Republic, St?edo?esky
+Angola, Bie
 Eritrea, Eritrea
 Egypt, Aswan
 Turkey, Manisa
@@ -6536,7 +6536,7 @@ Belgium, Antwerpen
 Saudi Arabia, Makkah
 French Guiana, Saint-Laurent du Maroni
 Crozet Islands
-Argentina, Córdoba, Río Segundo
+Argentina, Cordoba, Rio Segundo
 Greece, Thessaly
 Bolivia, Cochabamba, Campero
 Kenya, Central
