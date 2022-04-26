@@ -47,7 +47,6 @@ def get_imgs(imgs, num_threads):
     imgs_out = {}
     failures = []
 
-    warnings.filterwarnings("error")
     print("Getting original images...")
     print("Starting multiprocessing...")
     pool = mp.Pool(num_threads)
@@ -60,7 +59,6 @@ def get_imgs(imgs, num_threads):
     for f in failures:
         print("Failed to get image: "+f)
     print("Original images obtained.\n")
-    warnings.filterwarnings("default")
 
     return imgs_out
 
@@ -68,7 +66,9 @@ def get_imgs(imgs, num_threads):
 def import_process_data(org_img_dir, num_threads):
     imgs = sorted(os.listdir(org_img_dir))
     imgs = [org_img_dir + img for img in imgs if img[-4:] == ".jpg"]
+    warnings.filterwarnings("error")
     imgs = get_imgs(imgs, num_threads)
+    warnings.filterwarnings("default")
     taxon_corpus = get_corpus("taxon", org_img_dir)
     geography_corpus = get_corpus("geography", org_img_dir)
     taxon_gt_txt = get_gt("taxon", org_img_dir)
@@ -106,25 +106,25 @@ def match_words_to_corpus(ocr_results, name, corpus, org_img_dir, output_dir, de
     final = {}
     print("Matching words to "+ name +" corpus...")
     if debug:
-            if not os.path.exists(output_dir+"/debug/"):
-                os.makedirs(output_dir+"/debug/")
-            f = open(output_dir+"/debug/"+name+img_name+".txt", "w")
+        if not os.path.exists(output_dir+"/debug/"):
+            os.makedirs(output_dir+"/debug/")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
         if debug:
-                for i in range(0, len(result["text"])):
-                    x = result["left"][i]
-                    y = result["top"][i]
-                    
-                    w = result["width"][i]
-                    h = results["height"][i]
-                    text = result["text"][i]
-                    conf = int(result["conf"][i])
-                    if conf > 70:
-                        text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-                        debug_image = cv2.imread(org_img_dir+img_name).copy()[y:y+h, x:x+w] = (0,0,255)
-                        cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        cv2.putText(debug_image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                        cv2.imwrite(output_dir+"/debug/"+name+img_name+"_"+str(i)+".png", debug_image)
+            f = open(output_dir+"/debug/"+name+img_name+".txt", "w")
+            for i in range(0, len(result["text"])):
+                x = result["left"][i]
+                y = result["top"][i]
+                
+                w = result["width"][i]
+                h = results["height"][i]
+                text = result["text"][i]
+                conf = int(result["conf"][i])
+                if conf > 70:
+                    text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+                    debug_image = cv2.imread(org_img_dir+img_name).copy()[y:y+h, x:x+w] = (0,0,255)
+                    cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                    cv2.putText(debug_image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                    cv2.imwrite(output_dir+"/debug/"+name+img_name+"_"+str(i)+".png", debug_image)
         matched = False
         matches = []
         for result in results:
@@ -196,7 +196,6 @@ def determine_match(gt, final, fname, output_dir):
         f.close()
 
 def main():
-    warnings.filterwarnings("default")
     org_img_dir = None
     output_dir = None
     num_threads = mp.cpu_count()
