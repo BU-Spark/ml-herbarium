@@ -20,7 +20,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/tess-test-copy",
+                "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/tess-test-small",
                 "-d"
             ]
         },
