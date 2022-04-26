@@ -199,14 +199,14 @@ def main():
     warnings.filterwarnings("default")
     org_img_dir = None
     output_dir = None
-    num_threads = 50
+    num_threads = mp.cpu_count()
     debug = False
     args = sys.argv[1:]
     if len(args) == 0:
         print("\nUsage: python3 transcribe_labels.py <org_img_dir> [OPTIONAL ARGUMENTS]")
         print("\nOPTIONAL ARGUMENTS:")
         print("\t-o <output_dir>, --output <output_dir>")
-        print("\t-n <num_threads>, --num-threads <num_threads> (Default: 50)")
+        print("\t-n <num_threads>, --num-threads <num_threads> (Default: "+str(num_threads)+")")
         print("\t-d, --debug\n")
         sys.exit(1)
     if len(args) > 0:
