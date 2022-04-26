@@ -1,369 +1,233 @@
-### Mostly taken from https://github.com/awslabs/handwritten-text-recognition-for-apache-mxnet/blob/master/0_handwriting_ocr.ipynb
-
 from functools import partial
-import importlib
-import random
 import os
-import shutil
-import time
 import re
-
+import shutil
+import sys
+from PIL import Image
 import cv2
-
+import pytesseract
+from pytesseract import Output
+import numpy as np
 import multiprocessing as mp
+
 from tqdm import tqdm
 
-random.seed(123)
+### --------------------------------- Helper Functions --------------------------------- ###
+def get_gt(fname, org_img_dir):
+    gt_dir = org_img_dir + fname + "_gt.txt"
+    if os.path.exists(gt_dir):
+        gt = open(gt_dir).read().split("\n")
+        gt = [i.lower() for i in gt if i]
+        ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
+        return ground_truth
 
-import mxnet as mx
+    return None
 
-# os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
-print(os.getcwd())
-# from ocr.utils.expand_bounding_box import expand_bounding_box
-# from ocr.utils.sclite_helper import ScliteHelper
-# from ocr.utils.word_to_line import sort_bbs_line_by_line, crop_line_images
-# from ocr.utils.iam_dataset import IAMDataset, resize_image, crop_image, crop_handwriting_page
-# from ocr.utils.encoder_decoder import ALPHABET, encode_char, decode_char, EOS, BOS
-# from ocr.utils.beam_search import ctcBeamSearch
+def get_corpus(fname, org_img_dir):
+    corpus_dir = org_img_dir + fname + "_corpus.txt"
+    corpus = re.split("\n| ", open(corpus_dir).read())
+    corpus = [s.lower() for s in corpus]
 
-# import ocr.utils.denoiser_utils
-import ocr.utils.beam_search
+    corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
+    corpus_fullname = list(set(corpus_fullname))
 
-# importlib.reload(ocr.utils.denoiser_utils)
-# from ocr.utils.denoiser_utils import SequenceGenerator
+    corpus_full = corpus_fullname + list(set(corpus))
 
-importlib.reload(ocr.utils.beam_search)
-# from ocr.utils.beam_search import ctcBeamSearch
+    return corpus_full
 
+def get_img(image_path):
+    try:
+        img = np.array(Image.open(image_path))
+    except:
+        print("Error opening image: "+image_path)
+        return {}
+    return {image_path.split("/")[-1]: img}
 
-# from ocr.paragraph_segmentation_dcnn import SegmentationNetwork, paragraph_segmentation_transform
-# from ocr.word_and_line_segmentation import SSD as WordSegmentationNet, predict_bounding_boxes
-from ocr.handwriting_line_recognition import Network as HandwritingRecognitionNet, handwriting_recognition_transform
-from ocr.handwriting_line_recognition import decode as decoder_handwriting, alphabet_encoding
+def get_imgs(imgs, num_threads):
+    imgs_out = {}
 
-ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
-NUM_CORES = 50
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220420-172248/"
-craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
-output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
+    print("Getting original images...")
+    print("Starting multiprocessing...")
+    pool = mp.Pool(num_threads)
+    for item in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
+        imgs_out.update(item)
+    pool.close()
+    pool.join()
+    print("Original images obtained.\n")
 
-
-def addBox(fname):
-	if ".jpg" in fname and "mask" not in fname:
-		# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
-		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
-		tmp_txt = [line.split(",") for line in tmp_txt]
-		tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-		return {fname[4:len(fname)-4]: tmp_bxs}
-
-def addImg(fIdx):
-	return {fIdx: cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"), cv2.IMREAD_GRAYSCALE)}
-
-def get_imgsAndBoxes():
-	boxes = {}
-	imgs = {}
-
-	print("\nFilling boxes dictionary...")
-	list_imgs = sorted(os.listdir(craft_res_dir))
-	for fname in list_imgs:
-		item = addBox(fname)
-		if item: boxes.update(item)
-	print("Boxes dictionary filled.\n")
-
-	# get the original images to crop them
-	print("Getting original images...")
-	print("Starting multiprocessing...")
-	pool = mp.Pool(min(mp.cpu_count(), NUM_CORES))
-	for item in tqdm(pool.imap(addImg, boxes), total=len(boxes)):
-		imgs.update(item)
-	pool.close()
-	pool.join()
-	print("Original images obtained.\n")
-
-	return boxes,imgs
-
-def get_gt(fname):
-	gt_dir = org_img_dir + fname + "_gt.txt"
-	if os.path.exists(gt_dir):
-		gt = open(gt_dir).read().split("\n")
-		gt = [i.lower() for i in gt if i]
-		ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
-		return ground_truth
-
-	return None
-
-def get_corpus(fname):
-	corpus_dir = org_img_dir + fname + "_corpus.txt"
-	corpus = re.split("\n| ", open(corpus_dir).read())
-	corpus = [s.lower() for s in corpus]
-
-	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
-	corpus_fullname = list(set(corpus_fullname))
-
-	corpus_full = corpus_fullname + list(set(corpus))
-
-	return corpus_full
-
-# expands boxes according to input margins
-def expand_boxes(boxes, diff_axes=False, mx=20, my=40, m=4):
-	if not diff_axes:
-		mx = m
-		my = m
-		
-	boxes_exp = []
-	for box in boxes:
-		tl, tr, br, bl = box
-		newtl = [tl[0]-mx, tl[1]-my]
-		newtr = [tr[0]+mx, tr[1]-my]
-		newbr = [br[0]+mx, br[1]+my]
-		newbl = [bl[0]-mx, bl[1]+my]
-		
-		boxes_exp.append([newtl, newtr, newbr, newbl])
-		
-	return boxes_exp
-
-# gets the lines of the image based on text boxes from craft
-def get_lines(boxes, vert_m=12):
-
-	newboxes = []
-	oldbox = []
-	i = 0
-
-	while len(boxes) > 0:
-		oldbox = boxes.pop(0)
-
-		tbox2 = boxes.copy()
-		for j,b2 in enumerate(boxes): 
-			otl, otr, obr, obl = oldbox
-			tl, tr, br, bl = b2
-
-			## testing for alignment to connect boxes
-			if otr[1]<=tr[1] and obr[1]>=br[1]: # vertically, new box is in range of old box
-				pass
-			elif otr[1]>=tr[1] and obr[1]<=br[1]: # old box in range of new box
-				pass
-			elif (abs(otr[1]-tr[1])<=vert_m) and (abs(obr[1]-br[1])<=vert_m): #and ((abs(otr[0]-tl[0])<=adj_m) or (abs(otl[0]-tr[0])<=adj_m)): # within range
-				pass
-			else:
-				continue
-
-			oldbox = [[min(otl[0],tl[0]),min(otl[1],tl[1])],[max(otr[0],tr[0]),min(otr[1],tr[1])],
-					  [max(obr[0],br[0]),max(obr[1],br[1])],[min(obl[0],bl[0]),max(obl[1],bl[1])]]
-
-			tbox2.remove(b2)
-		boxes = tbox2
-		newboxes.append(oldbox)
-		
-	return newboxes
-
-# crops out images of the lines 
-def crop_lines(boxes, imgs):
-	line_crops = {}
-	for key, bxs in boxes.items():
-		img_lines = []
-		for bx in bxs:
-			t1,t2,t3,t4 = bx
-			tmp_crop = imgs[key][t1[1]:t4[1],t1[0]:t2[0]]
-			if len(tmp_crop) > 0 and len(tmp_crop[0]) > 0:
-				img_lines.append(tmp_crop)
-		line_crops[key]=img_lines
-	return line_crops
-
-
+    return imgs_out
 
 ### --------------------------------- Import data & process --------------------------------- ###
-def import_process_data():
-	boxes,imgs = get_imgsAndBoxes()
-	taxon_corpus = get_corpus("taxon")
-	geography_corpus = get_corpus("geography")
-	taxon_gt_txt = get_gt("taxon")
-	geography_gt_txt = get_gt("geography")
-	
-	n_imgs = len(imgs)
-
-	# segment the lines of text (used to feed into models like mxnet)
-	lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
-	lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
-	lines = crop_lines(lines, imgs)
-	return lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs
+def import_process_data(org_img_dir, num_threads):
+    imgs = sorted(os.listdir(org_img_dir))
+    imgs = [org_img_dir + img for img in imgs if img[-4:] == ".jpg"]
+    imgs = get_imgs(imgs, num_threads)
+    taxon_corpus = get_corpus("taxon", org_img_dir)
+    geography_corpus = get_corpus("geography", org_img_dir)
+    taxon_gt_txt = get_gt("taxon", org_img_dir)
+    geography_gt_txt = get_gt("geography", org_img_dir)
+    
+    return imgs, geography_corpus, taxon_gt_txt, geography_gt_txt, taxon_corpus
 
 
+### --------------------------------- Optical character recognition --------------------------------- ###
+def run_ocr(img_name, imgs):
+    results = pytesseract.image_to_data(imgs[img_name], output_type=Output.DICT)
+    return {img_name: results}
 
+def ocr(imgs, num_threads):
+    ocr_results = {}
 
-### --------------------------------- Handwritting recognition --------------------------------- ###
-def run_ocr(key, lines):
-	handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
-																rnn_layers=2, ctx=ctx, max_seq_len=160)
-	pretrained_params = "models/herb_line_trained_on_all.params"
-	handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
-	handwriting_line_recognition_net.hybridize()
+    pytesseract.pytesseract.tesseract_cmd="$HOME/.local/bin/tesseract"
+    print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
+    print("Starting multiprocessing...")
+    pool = mp.Pool(num_threads)
+    func = partial(run_ocr, imgs=imgs)
+    for item in tqdm(pool.imap(func, imgs), total=len(imgs)):
+        ocr_results.update(item)
+    pool.close()
+    pool.join()
+    print("OCR complete.\n")
 
-	line_image_size = (60, 800)
-	form_character_prob = []
-	for line_image in lines[key]:
-		line_image = handwriting_recognition_transform(line_image, line_image_size)
-		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
-		form_character_prob.append(line_character_prob)	
-	return {key: form_character_prob}
-
-def handwritting_recognition(lines):
-	character_probs = {}
-
-	print("Running OCR on images...")
-	print("Starting multiprocessing...")
-	func = partial(run_ocr, lines=lines)
-	pool = mp.Pool(NUM_CORES)
-	for item in tqdm(pool.imap(func, lines), total=len(lines)):
-		character_probs.update(item)
-	pool.close()
-	pool.join()
-	print("OCR complete.\n")
-
-	return character_probs
-
-
-### --------------------------------- Probability to text funcs --------------------------------- ###
-def get_arg_max(prob):
-	'''
-	The greedy algorithm convert the output of the handwriting recognition network
-	into strings.
-	'''
-	arg_max = prob.topk(axis=2).asnumpy()
-	return decoder_handwriting(arg_max)[0]
-
-# def get_beam_search(prob, width=5):
-# 	possibilities = ctcBeamSearch(prob.softmax()[0].asnumpy(), alphabet_encoding, None, width)
-# 	return possibilities[0]
-
-
-### --------------------------------- Turn character probs into words --------------------------------- ###
-def probs_to_words(character_probs, lines):
-	all_decoded_am = {} # arg max
-	# all_decoded_bs = [] # beam search
-
-	print("Processing image character probs...")
-	for key, form_character_probs in tqdm(character_probs.items(), total=len(character_probs)):
-		# fig, axs = plt.subplots(len(form_character_probs) + 1, 
-		#                         figsize=(10, int(1 + 2.3 * len(form_character_probs))))
-		this_am = [] 
-		# this_bs = []
-		
-		for line_character_probs in form_character_probs:
-			decoded_line_am = get_arg_max(line_character_probs)
-			# print("[AM]",decoded_line_am)
-			# decoded_line_bs = get_beam_search(line_character_probs)
-			# decoded_line_denoiser = get_denoised(line_character_probs, ctc_bs=False)
-			# print("[D ]",decoded_line_denoiser)
-			
-			this_am.append(decoded_line_am)
-			# this_bs.append(decoded_line_bs)
-			
-			# line_image = lines[int(key)][j]
-			# axs[j].imshow(line_image.squeeze(), cmap='Greys_r')            
-			# axs[j].set_title("[AM]: {}\n[BS]: {}\n[D ]: {}\n\n".format(decoded_line_am, decoded_line_bs, decoded_line_denoiser), fontdict={"horizontalalignment":"left", "family":"monospace"}, x=0)
-			# axs[j].axis('off')
-		# print()
-		all_decoded_am[key]=this_am
-		# all_decoded_bs.append(this_bs)
-		
-		# axs[-1].imshow(np.zeros(shape=line_image_size), cmap='Greys_r')
-		# axs[-1].axis('off')
-	print("Done.\n")
-	return all_decoded_am
-
+    return ocr_results
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
-def match_words_to_corpus(all_decoded_am, name, corpus):
-	from difflib import get_close_matches
-	cnt = 0
-	final = {}
-	print("Matching words to "+ name +" corpus...")
-	for key,lines in tqdm(all_decoded_am.items(), total=len(all_decoded_am)):
-		matched = False
-		matches = []
-		guess = None
+def match_words_to_corpus(ocr_results, name, corpus, org_img_dir, output_dir, debug=False):
+    from difflib import get_close_matches
+    cnt = 0
+    final = {}
+    print("Matching words to "+ name +" corpus...")
+    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
+        matched = False
+        matches = []
+        if debug:
+            if not os.path.exists(output_dir+"/debug/"):
+                os.makedirs(output_dir+"/debug/")
+            f = open(output_dir+"/debug/"+name+img_name+".txt", "w")
+        for result in results:
+            if debug:
+                for i in range(0, len(result)):
+                    x = result["left"][i]
+                    y = result["top"][i]
+                    
+                    w = result["width"][i]
+                    h = results["height"][i]
+                    text = result["text"][i]
+                    conf = int(result["conf"][i])
+                    if conf > 70:
+                        text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+                        debug_image = cv2.imread(org_img_dir+img_name).copy()[y:y+h, x:x+w] = (0,0,255)
+                        cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                        cv2.putText(debug_image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                        cv2.imwrite(output_dir+"/debug/"+name+img_name+"_"+str(i)+".png", debug_image)
+            for text in result["text"]:
+                if debug:
+                    f.write("\n\nOCR output:\n")
+                    f.write(str(text)+"\n")
+                tmp = get_close_matches(text, corpus)
+                if debug:
+                    f.write("Close matches:\n")
+                    f.write(str(tmp)+"\n")
+                if len(tmp) != 0:
+                    matches.append(tmp)
+                    matched = True
+                else:
+                    split = text.split(" ")
+                    for s2 in split:
+                        if debug:
+                            f.write("Close matches run on "+s2+":\n")
+                        tmp = get_close_matches(s2, corpus)
+                        if debug:
+                            f.write(str(tmp)+"\n")
+                        if len(tmp) != 0:
+                            matches.append(tmp)
+                            matched = True
 
-		for s in lines:
-			tmp = get_close_matches(s, corpus)
-			if len(tmp) != 0:
-				matches.append(tmp)
-	#             print('am matched words img'+str(i)+':',tmp)
-				matched = True
-			else:  ## if no match, try to match the words to the words in the corpus (this method caused more wrong matches, so I commented it out) ##FIXME: Make this better
-				split = s.split(" ")
-				for s2 in split:
-					tmp = get_close_matches(s2, corpus)
-					if len(tmp) != 0:
-						matches.append(tmp)
-						matched = True
-
-		has_spaces = [label for strs in matches for label in strs if " " in label]
-		if has_spaces:
-		# if matched:
-			# print('am matched words img'+str(i)+':',has_spaces)
-			final[key] = has_spaces[0]
-			# final[key]=match
-		else: 
-			# print(print('am matched words img'+str(i)+':',matches))
-			final[key]="NO MATCH"
-			if guess:
-				final[key] = "GUESS: " + guess
-		if matched: cnt+=1
-	print("Done.\n")
-	return final
-	
-# print("matched ", cnt, " out of ", len(imgs))
-
+        has_spaces = [label for strs in matches for label in strs if " " in label]
+        if has_spaces:
+            final[img_name] = has_spaces[0]
+            if debug:
+                f.write("\n\n-------------------------\nFinal match (first element of list):\n")
+                f.write(str(has_spaces)+"\n")
+        else: 
+            final[img_name]="NO MATCH"
+        if matched: cnt+=1
+    print("Done.\n")
+    return final
+    
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-def determine_match(gt, final, fname):
-	f = open(output_dir+fname+"_results.txt", "w")
-	cnt = 0
-	wcnt = 0
-	ncnt = 0
-	if gt != None:
-		for key,final_val in final.items():
-			if gt[key] == final_val:
-				f.write(key+": "+final_val+"\n")
-				cnt+=1
-			else:
-				if final_val=="NO MATCH":
-					f.write(key+": "+final_val+"\n")
-					ncnt+=1
-				# elif "GUESS" in final_val:
-				# 	if gt[key] == final_val.split("GUESS: ")[1]:
-				# 		f.write(key+"––"+final_val+"\n")
-				# 		cnt+=1
-				# 	else:
-				# 		f.write(key+"––"+final_val+"––EXPECTED:"+gt[key]+"\n")
-				else:
-					f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
-					wcnt+=1
+def determine_match(gt, final, fname, output_dir):
+    f = open(output_dir+fname+"_results.txt", "w")
+    cnt = 0
+    wcnt = 0
+    ncnt = 0
+    if gt != None:
+        for key,final_val in final.items():
+            if gt[key] == final_val:
+                f.write(key+": "+final_val+"\n")
+                cnt+=1
+            else:
+                if final_val=="NO MATCH":
+                    f.write(key+": "+final_val+"\n")
+                    ncnt+=1
+                else:
+                    f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
+                    wcnt+=1
 
-		print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
-		print(fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
-		print(fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
-		f.write("\n"+fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
-		f.write("\n"+fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
-		f.write("\n"+fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
-		f.close()
-	else:
-		for key,value in final.items():
-			f.write(key+": "+value)
-		f.close()
+        print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
+        print(fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
+        print(fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
+        f.write("\n"+fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
+        f.write("\n"+fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
+        f.write("\n"+fname+" wrong: "+str(wcnt)+"/"+str(len(final))+" = "+str((wcnt/len(final))*100)+"%"+"\n")
+        f.close()
+    else:
+        for key,value in final.items():
+            f.write(key+": "+value)
+        f.close()
 
 def main():
-	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
-	character_probs = handwritting_recognition(lines)
-	all_decoded_am = probs_to_words(character_probs, lines)
-	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
-	geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
-	if os.path.exists(output_dir):
-		shutil.rmtree(output_dir)
-	os.makedirs(output_dir)
-	determine_match(taxon_gt_txt, taxon_final, "taxon")
-	determine_match(geography_gt_txt, geography_final, "geography")
-
+    org_img_dir = None
+    output_dir = None
+    num_threads = 50
+    debug = False
+    args = sys.argv[1:]
+    if len(args) == 0:
+        print("\nUsage: python3 transcribe_labels.py <org_img_dir> [OPTIONAL ARGUMENTS]")
+        print("\nOPTIONAL ARGUMENTS:")
+        print("\t-o <output_dir>, --output <output_dir>")
+        print("\t-n <num_threads>, --num-threads <num_threads> (Default: 50)")
+        print("\t-d, --debug\n")
+        sys.exit(1)
+    if len(args) > 0:
+        org_img_dir = args[0]
+        if args.count("-o") > 0:
+            output_dir = args[args.index("-o")+1]
+        if args.count("--output") > 0:
+            output_dir = args[args.index("--output")+1]
+        if args.count("-n") > 0:
+            num_threads = int(args[args.index("-n")+1])
+        if args.count("--num-threads") > 0:
+            num_threads = int(args[args.index("--num-threads")+1])
+        if args.count("-d") > 0 or args.count("--debug") > 0:
+            debug = True
+    if org_img_dir[-1] != "/":
+        org_img_dir += "/"
+    if output_dir == None:
+        if "/scraped-data/" in org_img_dir:
+            output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
+        else:
+            output_dir = org_img_dir+"results/"
+    imgs, geography_corpus, taxon_gt_txt, geography_gt_txt, taxon_corpus = import_process_data(org_img_dir, num_threads)
+    ocr_results = ocr(imgs, num_threads)
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir)
+    taxon_final = match_words_to_corpus(ocr_results, "taxon", taxon_corpus, org_img_dir, output_dir, debug)
+    geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus, org_img_dir, output_dir, debug)
+    determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir)
+    determine_match(geography_gt_txt, geography_final, "geography", output_dir)
 
 if __name__ == "__main__":
-	main()
+    main()
