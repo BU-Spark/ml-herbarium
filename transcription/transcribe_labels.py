@@ -196,6 +196,7 @@ def determine_match(gt, final, fname, output_dir):
         f.close()
 
 def main():
+    warnings.filterwarnings("default")
     org_img_dir = None
     output_dir = None
     num_threads = 50
