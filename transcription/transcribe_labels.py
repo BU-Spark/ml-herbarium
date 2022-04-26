@@ -46,8 +46,8 @@ def get_img(image_path):
 def get_imgs(imgs, num_threads):
     imgs_out = {}
     failures = []
-    warnings.filterwarnings("error")
 
+    warnings.filterwarnings("error")
     print("Getting original images...")
     print("Starting multiprocessing...")
     pool = mp.Pool(num_threads)
@@ -60,6 +60,7 @@ def get_imgs(imgs, num_threads):
     for f in failures:
         print("Failed to get image: "+f)
     print("Original images obtained.\n")
+    warnings.filterwarnings("default")
 
     return imgs_out
 
