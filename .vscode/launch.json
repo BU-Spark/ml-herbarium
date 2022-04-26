@@ -13,10 +13,10 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Transcription",
+            "name": "Transcription",
             "type": "python",
             "request": "launch",
-            "program": "transcribe_labels.py",
+            "program": "transcription/transcribe_labels.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
@@ -25,10 +25,10 @@
             ]
         },
         {
-            "name": "Python: Dataset Scraping",
+            "name": "Dataset Scraping",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "scraping/dataset/datasetcraping.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
