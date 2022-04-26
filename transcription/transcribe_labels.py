@@ -26,7 +26,9 @@ def get_gt(fname, org_img_dir):
 
 def get_corpus(fname, org_img_dir):
     corpus_dir = org_img_dir + fname + "_corpus.txt"
-    corpus = re.split("\n| ", open(corpus_dir).read())
+    # FIXME: This is a hack to get around the fact our matching looks for phrases, not words. We need to improve the match_words_to_corpus() function.
+    # corpus = re.split("\n| ", open(corpus_dir).read()) # split on newline or space
+    corpus = re.split("\n", open(corpus_dir).read()) # split on newline
     corpus = [s.lower() for s in corpus]
 
     corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
@@ -100,57 +102,68 @@ def ocr(imgs, num_threads):
 
     return ocr_results
 
+### --------------------------------- OCR debug output --------------------------------- ###
+def ocr_debug(ocr_results, output_dir, imgs):
+    if not os.path.exists(output_dir+"/debug/"):
+        os.makedirs(output_dir+"/debug/")
+    print("Generating debug outputs...")
+    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
+        debug_image = imgs[img_name]
+        for i in range(0, len(results["text"])):
+            x = results["left"][i]
+            y = results["top"][i]
+            
+            w = results["width"][i]
+            h = results["height"][i]
+            text = results["text"][i]
+            conf = int(results["conf"][i])
+            if conf > 0:
+                text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+                cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+        cv2.imwrite(output_dir+"/debug/"+img_name+".png", debug_image)
+    print("Debug outputs generated.\n")
+
+
 ### --------------------------------- Match words to corpus --------------------------------- ###
-def match_words_to_corpus(ocr_results, name, corpus, org_img_dir, output_dir, imgs, debug=False):
+def match_words_to_corpus(ocr_results, name, corpus, output_dir, debug=False):
     from difflib import get_close_matches
     cnt = 0
     final = {}
     print("Matching words to "+ name +" corpus...")
-    if debug:
-        if not os.path.exists(output_dir+"/debug/"):
-            os.makedirs(output_dir+"/debug/")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
         if debug:
-            debug_image = imgs[img_name]
-            f = open(output_dir+"/debug/"+name+img_name+".txt", "w")
-            for i in range(0, len(results["text"])):
-                x = results["left"][i]
-                y = results["top"][i]
-                
-                w = results["width"][i]
-                h = results["height"][i]
-                text = results["text"][i]
-                conf = int(results["conf"][i])
-                if conf > 0:
-                    text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-                    cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                    cv2.putText(debug_image, text + "\n(Conf: "+str(conf)+")", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-            cv2.imwrite(output_dir+"/debug/"+name+img_name+"_"+str(i)+".png", debug_image)
+            f = open(output_dir+"/debug/"+img_name+"_"+name+".txt", "w")
         matched = False
         matches = []
-        for text in results["text"]:
-            if debug:
-                f.write("\n\nOCR output:\n")
-                f.write(str(text)+"\n")
-            tmp = get_close_matches(text, corpus)
-            if debug:
-                f.write("Close matches:\n")
-                f.write(str(tmp)+"\n")
-            if len(tmp) != 0:
-                matches.append(tmp)
-                matched = True
-            else:
-                split = text.split(" ")
-                for s2 in split:
-                    if debug:
-                        f.write("Close matches run on "+s2+":\n")
-                    tmp = get_close_matches(s2, corpus)
-                    if debug:
-                        f.write(str(tmp)+"\n")
-                    if len(tmp) != 0:
-                        matches.append(tmp)
-                        matched = True
-
+        for i in range(len(results["text"])):
+            text = results["text"][i]
+            conf = int(results["conf"][i])
+            if conf > 0:    
+                if debug:
+                    f.write("\n\nOCR output:\n")
+                    f.write(str(text)+"\n")
+                    f.write("Confidence: "+str(conf)+"\n")
+                tmp = get_close_matches(text, corpus)
+                if debug:
+                    f.write("Close matches:\n")
+                    f.write(str(tmp)+"\n")
+                if len(tmp) != 0:
+                    matches.append(tmp)
+                    matched = True
+                else:
+                    split = text.split(" ")
+                    for s2 in split:
+                        if debug:
+                            f.write("Close matches run on "+s2+":\n")
+                        tmp = get_close_matches(s2, corpus)
+                        if debug:
+                            f.write(str(tmp)+"\n")
+                        if len(tmp) != 0:
+                            matches.append(tmp)
+                            matched = True
+        #FIXME: This is a hack, and it would be better to try testing combinations of nearby individual words, then seaching for a match
         has_spaces = [label for strs in matches for label in strs if " " in label]
         if has_spaces:
             final[img_name] = has_spaces[0]
@@ -232,8 +245,10 @@ def main():
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
-    taxon_final = match_words_to_corpus(ocr_results, "taxon", taxon_corpus, org_img_dir, output_dir, imgs, debug)
-    geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus, org_img_dir, output_dir, imgs, debug)
+    if debug:
+        ocr_debug(ocr_results, output_dir, imgs)
+    taxon_final = match_words_to_corpus(ocr_results, "taxon", taxon_corpus, output_dir, debug)
+    geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus, output_dir, debug)
     determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir)
     determine_match(geography_gt_txt, geography_final, "geography", output_dir)
 
