@@ -25,6 +25,15 @@ ctrl+x then return to save and exit
 ## Note for VS Code
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
 
+## Install Leptonica
+In your home directory, run:
+`git clone https://github.com/DanBloomberg/leptonica.git --depth 1`
+`cd leptonica`
+`./autogen.sh`
+`./configure --prefix=$HOME/.local --disable-shared`
+`make`
+`make install`
+
 ## Install Tesseract
 In your home directory, run:
 `wget https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz -O tesseract-4.0.0.tar.gz`
