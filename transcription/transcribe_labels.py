@@ -9,6 +9,7 @@ import pytesseract
 from pytesseract import Output
 import numpy as np
 import multiprocessing as mp
+import warnings
 
 from tqdm import tqdm
 
@@ -39,20 +40,25 @@ def get_img(image_path):
     try:
         img = np.array(Image.open(image_path))
     except:
-        print("Error opening image: "+image_path)
-        return {}
-    return {image_path.split("/")[-1]: img}
+        return {}, image_path
+    return {image_path.split("/")[-1]: img}, None
 
 def get_imgs(imgs, num_threads):
     imgs_out = {}
+    failures = []
+    warnings.filterwarnings("error")
 
     print("Getting original images...")
     print("Starting multiprocessing...")
     pool = mp.Pool(num_threads)
-    for item in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
+    for item, error in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
         imgs_out.update(item)
+        if error:
+            failures.append(error)
     pool.close()
     pool.join()
+    for f in failures:
+        print("Failed to get image: "+f)
     print("Original images obtained.\n")
 
     return imgs_out
@@ -78,7 +84,8 @@ def run_ocr(img_name, imgs):
 def ocr(imgs, num_threads):
     ocr_results = {}
 
-    pytesseract.pytesseract.tesseract_cmd="$HOME/.local/bin/tesseract"
+    tesspath = os.path.expanduser("~/.local/bin/tesseract")
+    pytesseract.pytesseract.tesseract_cmd=tesspath
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
     pool = mp.Pool(num_threads)
@@ -97,16 +104,13 @@ def match_words_to_corpus(ocr_results, name, corpus, org_img_dir, output_dir, de
     cnt = 0
     final = {}
     print("Matching words to "+ name +" corpus...")
-    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
-        matched = False
-        matches = []
-        if debug:
+    if debug:
             if not os.path.exists(output_dir+"/debug/"):
                 os.makedirs(output_dir+"/debug/")
             f = open(output_dir+"/debug/"+name+img_name+".txt", "w")
-        for result in results:
-            if debug:
-                for i in range(0, len(result)):
+    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
+        if debug:
+                for i in range(0, len(result["text"])):
                     x = result["left"][i]
                     y = result["top"][i]
                     
@@ -120,6 +124,9 @@ def match_words_to_corpus(ocr_results, name, corpus, org_img_dir, output_dir, de
                         cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
                         cv2.putText(debug_image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
                         cv2.imwrite(output_dir+"/debug/"+name+img_name+"_"+str(i)+".png", debug_image)
+        matched = False
+        matches = []
+        for result in results:
             for text in result["text"]:
                 if debug:
                     f.write("\n\nOCR output:\n")
