@@ -25,6 +25,18 @@ ctrl+x then return to save and exit
 ## Note for VS Code
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
 
+## Install Tesseract
+In your home directory, run:
+`wget https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz -O tesseract-4.0.0.tar.gz`
+`tar zxvf tesseract-4.0.0.tar.gz`
+`export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig`
+`./autogen.sh`
+`./configure --prefix=$HOME/.local --disable-shared`
+`make`
+`make install`
+`cd ~/.local/share/tessdata`
+`wget https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main/eng.traineddata`
+
 <br />
 
 ## Allocate GPU for Training on SCC
