@@ -10,8 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": ["/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/tess-test-copy", "-d"]
+            "justMyCode": true
         },
         {
             "name": "Python: Transcription",
@@ -23,6 +22,18 @@
             "args": [
                 "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/tess-test-copy",
                 "-d"
+            ]
+        },
+        {
+            "name": "Python: Dataset Scraping",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "csv",
+                "-k"
             ]
         }
     ]
