@@ -14,3 +14,5 @@ with open("ground_truth.txt", "r") as f:
         with open("gt/" + split[0] + ".gt.txt", "w") as f2:
             out = " ".join(split[8:])
             f2.write(out)
+        # Copy training image
+        shutil.copy("images/" + split[0] + ".png", "gt/" + split[0] + ".png")
