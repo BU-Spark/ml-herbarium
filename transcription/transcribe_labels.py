@@ -41,6 +41,13 @@ def get_img(image_path):
     warnings.filterwarnings("error")
     try:
         img = np.array(Image.open(image_path))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        kernel = np.ones((1, 1), np.uint8)
+        img = cv2.dilate(img, kernel, iterations=1)
+        img = cv2.erode(img, kernel, iterations=1)
+        img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,31,8)
+        # img = cv2.bitwise_not(img)
+        img = np.array(img)
     except:
         warnings.filterwarnings("default")
         return {}, image_path
@@ -51,9 +58,9 @@ def get_imgs(imgs, num_threads):
     imgs_out = {}
     failures = []
 
-    print("\nGetting original images...")
+    print("\nGetting original images and preprocessing...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(num_threads)
+    pool = mp.Pool(min(num_threads, len(imgs)))
     for item, error in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
         imgs_out.update(item)
         if error:
@@ -62,7 +69,7 @@ def get_imgs(imgs, num_threads):
     pool.join()
     for f in failures:
         print("Failed to get image: "+f)
-    print("Original images obtained.\n")
+    print("Original images obtained and preprocessing complete.\n")
 
     return imgs_out
 
@@ -138,7 +145,7 @@ def ocr(imgs, num_threads):
     pytesseract.pytesseract.tesseract_cmd=tesspath
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(num_threads)
+    pool = mp.Pool(min(num_threads, len(imgs)))
     func = partial(run_ocr, imgs=imgs)
     for item in tqdm(pool.imap(func, imgs), total=len(imgs)):
         ocr_results.update(item)
@@ -149,12 +156,14 @@ def ocr(imgs, num_threads):
     return ocr_results
 
 ### --------------------------------- OCR debug output --------------------------------- ###
-def ocr_debug(ocr_results, output_dir, imgs):
+def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
     if not os.path.exists(output_dir+"/debug/"):
         os.makedirs(output_dir+"/debug/")
     print("Generating debug outputs...")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
         debug_image = imgs[img_name]
+        debug_image = cv2.cvtColor(debug_image, cv2.COLOR_GRAY2RGB)
+        orig_image = cv2.imread(org_img_dir+img_name+".jpg")
         for i in range(0, len(results["text"])):
             x = results["left"][i]
             y = results["top"][i]
@@ -168,12 +177,17 @@ def ocr_debug(ocr_results, output_dir, imgs):
                 cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
                 cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
             elif conf > 0:
                 text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
                 cv2.rectangle(debug_image, (x, y), (x + w, y + h), (255, 150, 0), 2)
                 cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
                 cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+                cv2.putText(orig_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
         cv2.imwrite(output_dir+"/debug/"+img_name+".png", debug_image)
+        cv2.imwrite(output_dir+"/debug/"+img_name+"_orig"+".png", orig_image)
     print("Debug outputs generated.\n")
 
 
@@ -210,7 +224,7 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
         matched_pairs = []
         matched_pairs_matched = False
         for m1 in matches.values():
-            for m2 in matches:
+            for m2 in matches.values():
                 if m1 != m2:
                     tmp = get_close_matches(m1+" "+m2, corpus_full, n=1, cutoff=0.9)
                     if len(tmp) != 0:
@@ -229,11 +243,11 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
         elif matched:
             guesses = []
             for i, m in matches.items():
-                guess_idx = find_idx_right_text(results, img_name, i)
+                guess_idx = find_idx_right_text(ocr_results, img_name, i)
                 if guess_idx != None:
-                    guesses.append("GUESS: "+ m + results[guess_idx]["text"])
+                    guesses.append("GUESS: "+ m + ocr_results[img_name]["text"][guess_idx])
             if len(guesses) != 0:
-                final[img_name] = guesses
+                final[img_name] = guesses[0]
                 if debug:
                     f.write("\n\n-------------------------\nGuesses:\n")
                     f.write(str(guesses))
@@ -263,6 +277,7 @@ def determine_match(gt, final, fname, output_dir):
                         cnt+=1
                     else:
                         f.write(img_name+"––"+final_val+"––EXPECTED:"+gt[img_name]+"\n")
+                        ncnt+=1
             else:
                 if final_val=="NO MATCH":
                     f.write(img_name+": "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
@@ -321,7 +336,7 @@ def main():
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
     if debug:
-        ocr_debug(ocr_results, output_dir, imgs)
+        ocr_debug(ocr_results, output_dir, imgs, org_img_dir)
     taxon_final = match_words_to_corpus(ocr_results, "taxon", taxon_corpus_words, taxon_corpus_full, output_dir, debug)
     geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
     determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir)
