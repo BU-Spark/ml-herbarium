@@ -74,6 +74,43 @@ def has_y_overlap(y1, y2, h1, h2):
     else:
         return False
 
+def find_idx_right_text(ocr_results, img_name, result_idx):
+    results = ocr_results[img_name]
+    text = results["text"][result_idx]
+    x = results["left"][result_idx]
+    y = results["top"][result_idx]
+    w = results["width"][result_idx]
+    h = results["height"][result_idx]
+    xmargin = 3*(w/len(text))
+    for i in range(len(results["text"])):
+        if i != result_idx:
+            x2 = results["left"][i]
+            y2 = results["top"][i]
+            h2 = results["height"][i]
+            if has_y_overlap(y, y2, h, h2) and (x+xmargin+w) > x2:
+                return i
+    return None
+
+def words_to_lines(ocr_results, x_margin):
+    lines = {}
+    for img_name,results in ocr_results.items():
+        lines[img_name] = []
+        for i in range(0, len(results["text"])):
+            x = results["left"][i]
+            y = results["top"][i]
+            w = results["width"][i]
+            h = results["height"][i]
+            for j in range(0, len(results["text"])):
+                if i != j:
+                    x2 = results["left"][j]
+                    y2 = results["top"][j]
+                    w2 = results["width"][j]
+                    h2 = results["height"][j]
+                    if has_y_overlap(y, y2, h, h2) and ((x+x_margin+w) > x2 or (x2+x_margin+w2) > x):
+                        lines[img_name].append([i, j])
+    return lines # Returns a dictionary of lines, where each line is a list of indices of words in the image from the ocr_results dictionary
+    
+
 ### --------------------------------- Import data & process --------------------------------- ###
 def import_process_data(org_img_dir, num_threads):
     imgs = sorted(os.listdir(org_img_dir))
@@ -139,27 +176,6 @@ def ocr_debug(ocr_results, output_dir, imgs):
         cv2.imwrite(output_dir+"/debug/"+img_name+".png", debug_image)
     print("Debug outputs generated.\n")
 
-### --------------------------------- Words to lines --------------------------------- ###
-def words_to_lines(ocr_results, x_margin):
-    lines = {}
-    for img_name,results in ocr_results.items():
-        lines[img_name] = []
-        for i in range(0, len(results["text"])):
-            x = results["left"][i]
-            y = results["top"][i]
-            w = results["width"][i]
-            h = results["height"][i]
-            for j in range(0, len(results["text"])):
-                if i != j:
-                    x2 = results["left"][j]
-                    y2 = results["top"][j]
-                    w2 = results["width"][j]
-                    h2 = results["height"][j]
-                    if has_y_overlap(y, y2, h, h2) and ((x+x_margin+w) > x2 or (x2+x_margin+w2) > x):
-                        lines[img_name].append([i, j])
-    return lines # Returns a dictionary of lines, where each line is a list of indices of words in the image from the ocr_results dictionary
-
-
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
 def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_dir, debug=False):
@@ -171,7 +187,7 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
         if debug:
             f = open(output_dir+"/debug/"+img_name+"_"+name+".txt", "w")
         matched = False
-        matches = []
+        matches = {}
         for i in range(len(results["text"])):
             text = results["text"][i].lower()
             conf = int(results["conf"][i])
@@ -180,12 +196,12 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
                     f.write("\n\nOCR output:\n")
                     f.write(str(text)+"\n")
                     f.write("Confidence: "+str(conf)+"\n")
-                tmp = get_close_matches(text, corpus_words, n=1, cutoff=0.7)
+                tmp = get_close_matches(text, corpus_words, n=1, cutoff=0.8)
                 if debug:
                     f.write("Close matches:\n")
                     f.write(str(tmp)+"\n")
                 if len(tmp) != 0:
-                    matches.extend(tmp)
+                    matches[i]=tmp[0]
                     matched = True
         if debug:
             f.write("\n\nMatched words:\n")
@@ -193,7 +209,7 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
 
         matched_pairs = []
         matched_pairs_matched = False
-        for m1 in matches:
+        for m1 in matches.values():
             for m2 in matches:
                 if m1 != m2:
                     tmp = get_close_matches(m1+" "+m2, corpus_full, n=1, cutoff=0.9)
@@ -210,6 +226,19 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
                 f.write("\n\n-------------------------\nFinal match (first element of list):\n")
                 f.write(str(matched_pairs))
                 f.write("\n-------------------------\n")
+        elif matched:
+            guesses = []
+            for i, m in matches.items():
+                guess_idx = find_idx_right_text(results, img_name, i)
+                if guess_idx != None:
+                    guesses.append("GUESS: "+ m + results[guess_idx]["text"])
+            if len(guesses) != 0:
+                final[img_name] = guesses
+                if debug:
+                    f.write("\n\n-------------------------\nGuesses:\n")
+                    f.write(str(guesses))
+                    f.write("\n-------------------------\n")
+
         else: 
             final[img_name]="NO MATCH"
         if matched: cnt+=1
@@ -228,6 +257,12 @@ def determine_match(gt, final, fname, output_dir):
             if gt[img_name] == final_val:
                 f.write(img_name+": "+final_val+"\n")
                 cnt+=1
+            elif "GUESS" in final_val:
+                    if gt[img_name] == final_val.split("GUESS: ")[1]:
+                        f.write(img_name+"––"+final_val+"\n")
+                        cnt+=1
+                    else:
+                        f.write(img_name+"––"+final_val+"––EXPECTED:"+gt[img_name]+"\n")
             else:
                 if final_val=="NO MATCH":
                     f.write(img_name+": "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
