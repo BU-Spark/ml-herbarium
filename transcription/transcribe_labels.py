@@ -24,6 +24,22 @@ def get_gt(fname, org_img_dir):
 
     return None
 
+def get_corpus_taxon(org_img_dir):
+    corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+
+    corpus_full = open(corpus_dir).read().split("\n")
+    corpus_full = [s.lower() for s in corpus_full]
+    corpus_full = [s for s in corpus_full if s != ""]
+
+    corpus_genus = [s.split(" ")[0] for s in corpus_full]
+    corpus_species = [s.split(" ")[1] for s in corpus_full]
+    
+    corpus_full = list(set(corpus_full))
+    corpus_genus = list(set(corpus_genus))
+    corpus_species = list(set(corpus_species))
+
+    return corpus_full, corpus_genus, corpus_species
+
 def get_corpus(fname, org_img_dir, words = True):
     corpus_dir = org_img_dir + fname + "_corpus.txt"
 
@@ -60,7 +76,7 @@ def get_imgs(imgs, num_threads):
 
     print("\nGetting original images and preprocessing...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(min(num_threads, len(imgs)))
+    pool = mp.Pool(min(num_threads, len(imgs))-1)
     for item, error in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
         imgs_out.update(item)
         if error:
@@ -81,20 +97,21 @@ def has_y_overlap(y1, y2, h1, h2):
     else:
         return False
 
-def find_idx_right_text(ocr_results, img_name, result_idx):
+def find_idx_nearby_text(ocr_results, img_name, result_idx):
     results = ocr_results[img_name]
     text = results["text"][result_idx]
     x = results["left"][result_idx]
     y = results["top"][result_idx]
     w = results["width"][result_idx]
     h = results["height"][result_idx]
-    xmargin = 3*(w/len(text))
+    xmargin = 4*(w/len(text))
     for i in range(len(results["text"])):
         if i != result_idx:
             x2 = results["left"][i]
             y2 = results["top"][i]
+            w2 = results["width"][i]
             h2 = results["height"][i]
-            if has_y_overlap(y, y2, h, h2) and (x+xmargin+w) > x2:
+            if has_y_overlap(y, y2, h, h2) and ((x+xmargin+w) > x2 or (x2+xmargin+w2) > x):
                 return i
     return None
 
@@ -123,14 +140,13 @@ def import_process_data(org_img_dir, num_threads):
     imgs = sorted(os.listdir(org_img_dir))
     imgs = [org_img_dir + img for img in imgs if img[-4:] == ".jpg"]
     imgs = get_imgs(imgs, num_threads)
-    taxon_corpus_words = get_corpus("taxon", org_img_dir, words = True)
-    taxon_corpus_full = get_corpus("taxon", org_img_dir, words = False)
+    taxon_corpus_full, corpus_genus, corpus_species = get_corpus_taxon(org_img_dir)
     geography_corpus_words = get_corpus("geography", org_img_dir, words = True)
     geography_corpus_full = get_corpus("geography", org_img_dir, words = False)
     taxon_gt_txt = get_gt("taxon", org_img_dir)
     geography_gt_txt = get_gt("geography", org_img_dir)
     
-    return imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_words, taxon_corpus_full
+    return imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full, corpus_genus, corpus_species
 
 
 ### --------------------------------- Optical character recognition --------------------------------- ###
@@ -145,7 +161,7 @@ def ocr(imgs, num_threads):
     pytesseract.pytesseract.tesseract_cmd=tesspath
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(min(num_threads, len(imgs)))
+    pool = mp.Pool(min(num_threads, len(imgs))-1)
     func = partial(run_ocr, imgs=imgs)
     for item in tqdm(pool.imap(func, imgs), total=len(imgs)):
         ocr_results.update(item)
@@ -243,7 +259,7 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
         elif matched:
             guesses = []
             for i, m in matches.items():
-                guess_idx = find_idx_right_text(ocr_results, img_name, i)
+                guess_idx = find_idx_nearby_text(ocr_results, img_name, i)
                 if guess_idx != None:
                     guesses.append("GUESS: "+ m + ocr_results[img_name]["text"][guess_idx])
             if len(guesses) != 0:
@@ -259,11 +275,86 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
     print("Done.\n")
     return final
     
+### --------------------------------- Match taxon to corpus --------------------------------- ###
+def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug=False):
+    from difflib import get_close_matches
+    cnt = 0
+    final = {}
+    print("Matching words to taxon corpus...")
+    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
+        if debug:
+            f = open(output_dir+"/debug/"+img_name+"_taxon.txt", "w")
+        matches_genus = []
+        matches_species = []
+        for i in range(len(results["text"])):
+            text = results["text"][i].lower()
+            conf = int(results["conf"][i])
+            if conf > 30:    
+                if debug:
+                    f.write("\n\nOCR output:\n")
+                    f.write(str(text)+"\n")
+                    f.write("Confidence: "+str(conf)+"\n")
+                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.8)
+                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.8)
+                if debug:
+                    f.write("Close matches:\n")
+                    f.write("genus: "+str(tmp_genus)+"\n")
+                    f.write("species: "+str(tmp_species)+"\n")
+                if len(tmp_genus) != 0:
+                    matches_genus.extend(tmp_genus)
+                if len(tmp_species) != 0:
+                    matches_species.extend(tmp_species)
+        if debug:
+            f.write("\n\nMatched genera:\n")
+            f.write(str(matches_genus)+"\n")
+            f.write("\n\nMatched species:\n")
+            f.write(str(matches_species)+"\n")
+
+        if len(matches_genus) == 1 and len(matches_species) == 1:
+            final[img_name] = matches_genus[0]+" "+matches_species[0]
+        elif len(matches_genus) == 1 and len(matches_species) > 1:
+            possibilities = [i for i in range(len(corpus_genus)) if corpus_genus[i] == matches_genus[0]]
+            possibilities = [corpus_species[i] for i in possibilities]
+            possibilities = [x for x in possibilities if x in matches_species]
+            if len(possibilities) == 1:
+                final[img_name] = matches_genus[0]+" "+possibilities[0]
+            elif len(possibilities) > 1:
+                final[img_name] = matches_genus[0]+"[MULTIPLE MATCHES FOR SPECIES]"
+            else:
+                final[img_name] = matches_genus[0]+"[NO MATCH FOR SPECIES]"
+        elif len(matches_genus) > 1 and len(matches_species) == 1:
+            possibilities = [i for i in range(len(corpus_species)) if corpus_species[i] == matches_species[0]]
+            possibilities = [corpus_genus[i] for i in possibilities]
+            possibilities = [x for x in possibilities if x in matches_genus]
+            if len(possibilities) == 1:
+                final[img_name] = possibilities[0]+" "+matches_species[0]
+            elif len(possibilities) > 1:
+                final[img_name] = "[MULTIPLE MATCHES FOR GENUS]" + matches_species[0]
+            else:
+                final[img_name] = "[NO MATCH FOR GENUS]" + matches_species[0]
+        elif len(matches_genus) > 1 and len(matches_species) > 1:
+            possibilities = [x+" "+y for x in matches_genus for y in matches_species]
+            possibilities = [x for x in possibilities if x in taxon_corpus_full]
+            if len(possibilities) == 1:
+                final[img_name] = possibilities[0]
+            elif len(possibilities) > 1:
+                final[img_name] = "[MULTIPLE MATCHES FOR GENUS AND SPECIES]"
+            else:
+                final[img_name] = "[GENUS/SPECIES MISMATCH]"
+        elif len(matches_genus) == 1 and len(matches_species) == 0:
+            final[img_name] = matches_genus[0]+"[NO MATCH FOR SPECIES]"
+        elif len(matches_genus) == 0 and len(matches_species) == 1:
+            final[img_name] = "[NO MATCH FOR GENUS]"+matches_species[0]
+        else:
+            final[img_name] = "NO MATCH"
+    print("Done.\n")
+    return final
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 def determine_match(gt, final, fname, output_dir):
     f = open(output_dir+fname+"_results.txt", "w")
     cnt = 0
+    pcnt = 0
     wcnt = 0
     ncnt = 0
     if gt != None:
@@ -278,6 +369,9 @@ def determine_match(gt, final, fname, output_dir):
                     else:
                         f.write(img_name+"––"+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                         ncnt+=1
+            elif "[" in final_val:
+                f.write(img_name+"––PARTIAL MATCH: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
+                pcnt+=1
             else:
                 if final_val=="NO MATCH":
                     f.write(img_name+": "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
@@ -330,14 +424,14 @@ def main():
             output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
         else:
             output_dir = org_img_dir+"results/"
-    imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_words, taxon_corpus_full = import_process_data(org_img_dir, num_threads)
+    imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full, corpus_genus, corpus_species = import_process_data(org_img_dir, num_threads)
     ocr_results = ocr(imgs, num_threads)
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
     if debug:
         ocr_debug(ocr_results, output_dir, imgs, org_img_dir)
-    taxon_final = match_words_to_corpus(ocr_results, "taxon", taxon_corpus_words, taxon_corpus_full, output_dir, debug)
+    taxon_final = match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug)
     geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
     determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir)
     determine_match(geography_gt_txt, geography_final, "geography", output_dir)
