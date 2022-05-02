@@ -20,7 +20,7 @@ python3 generate_training_data.py
 Then run the training (for SCC):
 
 ``` bash
-make training MODEL_NAME=handwriting-eng START_MODEL=eng DATA_DIR=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/data GROUND_TRUTH_DIR=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/gt PSM=7 TESSDATA=/share/pkg.7/tesseract/4.1.3/src/tessdata
+make training MODEL_NAME=handwriting-eng START_MODEL=eng DATA_DIR=/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/tesseract-training GROUND_TRUTH_DIR=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/gt PSM=7 TESSDATA=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/tessdata
 ```
 
 The options for make training are:
