@@ -61,8 +61,7 @@ def get_img(image_path):
         kernel = np.ones((1, 1), np.uint8)
         img = cv2.dilate(img, kernel, iterations=1)
         img = cv2.erode(img, kernel, iterations=1)
-        img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,31,8)
-        # img = cv2.bitwise_not(img)
+        img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,51,14)
         img = np.array(img)
     except:
         warnings.filterwarnings("default")
@@ -76,7 +75,7 @@ def get_imgs(imgs, num_threads):
 
     print("\nGetting original images and preprocessing...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(min(num_threads, len(imgs))-1)
+    pool = mp.Pool(min(num_threads, len(imgs)))
     for item, error in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
         imgs_out.update(item)
         if error:
@@ -150,19 +149,20 @@ def import_process_data(org_img_dir, num_threads):
 
 
 ### --------------------------------- Optical character recognition --------------------------------- ###
-def run_ocr(img_name, imgs):
-    results = pytesseract.image_to_data(imgs[img_name], output_type=Output.DICT)
+def run_ocr(img_name, imgs, config):
+    results = pytesseract.image_to_data(imgs[img_name], output_type=Output.DICT, config=config, lang="eng")
     return {img_name: results}
 
 def ocr(imgs, num_threads):
     ocr_results = {}
-
     tesspath = os.path.expanduser("~/.local/bin/tesseract")
+    tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
+    tessdata_dir_config = r'--tessdata-dir "{}"'.format(tessdatapath)
     pytesseract.pytesseract.tesseract_cmd=tesspath
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
-    pool = mp.Pool(min(num_threads, len(imgs))-1)
-    func = partial(run_ocr, imgs=imgs)
+    pool = mp.Pool(min(num_threads, len(imgs)))
+    func = partial(run_ocr, imgs=imgs, config=tessdata_dir_config)
     for item in tqdm(pool.imap(func, imgs), total=len(imgs)):
         ocr_results.update(item)
     pool.close()
@@ -172,38 +172,51 @@ def ocr(imgs, num_threads):
     return ocr_results
 
 ### --------------------------------- OCR debug output --------------------------------- ###
+def generate_debug_output(img_name, ocr_results, imgs, org_img_dir, output_dir):
+    results = ocr_results[img_name]
+    debug_image = imgs[img_name]
+    debug_image = cv2.cvtColor(debug_image, cv2.COLOR_GRAY2RGB)
+    orig_image = cv2.imread(org_img_dir+img_name+".jpg")
+    for i in range(0, len(results["text"])):
+        x = results["left"][i]
+        y = results["top"][i]
+        
+        w = results["width"][i]
+        h = results["height"][i]
+        text = results["text"][i]
+        conf = int(results["conf"][i])
+        if conf > 30:
+            text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+            cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.rectangle(orig_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.putText(orig_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            
+        elif conf > 0:
+            text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
+            cv2.rectangle(debug_image, (x, y), (x + w, y + h), (255, 150, 0), 2)
+            cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.rectangle(orig_image, (x, y), (x + w, y + h), (255, 150, 0), 2)
+            cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            cv2.putText(orig_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
+            
+    cv2.imwrite(output_dir+"/debug/"+img_name+".png", debug_image)
+    cv2.imwrite(output_dir+"/debug/"+img_name+"_orig"+".png", orig_image)
+
 def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
     if not os.path.exists(output_dir+"/debug/"):
         os.makedirs(output_dir+"/debug/")
     print("Generating debug outputs...")
-    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
-        debug_image = imgs[img_name]
-        debug_image = cv2.cvtColor(debug_image, cv2.COLOR_GRAY2RGB)
-        orig_image = cv2.imread(org_img_dir+img_name+".jpg")
-        for i in range(0, len(results["text"])):
-            x = results["left"][i]
-            y = results["top"][i]
-            
-            w = results["width"][i]
-            h = results["height"][i]
-            text = results["text"][i]
-            conf = int(results["conf"][i])
-            if conf > 30:
-                text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-                cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-            elif conf > 0:
-                text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-                cv2.rectangle(debug_image, (x, y), (x + w, y + h), (255, 150, 0), 2)
-                cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(debug_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(orig_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-                cv2.putText(orig_image, "Conf: "+str(conf), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
-        cv2.imwrite(output_dir+"/debug/"+img_name+".png", debug_image)
-        cv2.imwrite(output_dir+"/debug/"+img_name+"_orig"+".png", orig_image)
+    print("Starting multiprocessing...")
+    pool = mp.Pool(min(len(ocr_results), mp.cpu_count()))
+    func = partial(generate_debug_output, ocr_results=ocr_results, imgs=imgs, org_img_dir=org_img_dir, output_dir=output_dir)
+    for item in tqdm(pool.imap(func, ocr_results), total=len(ocr_results)):
+        pass
+    pool.close()
+    pool.join()        
     print("Debug outputs generated.\n")
 
 
@@ -294,59 +307,120 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
                     f.write("\n\nOCR output:\n")
                     f.write(str(text)+"\n")
                     f.write("Confidence: "+str(conf)+"\n")
-                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.8)
-                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.8)
+                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.9)
+                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.9)
                 if debug:
                     f.write("Close matches:\n")
                     f.write("genus: "+str(tmp_genus)+"\n")
                     f.write("species: "+str(tmp_species)+"\n")
+                if text in tmp_genus:
+                    tmp_species = []
+                if text in tmp_species:
+                    tmp_genus = []
                 if len(tmp_genus) != 0:
                     matches_genus.extend(tmp_genus)
                 if len(tmp_species) != 0:
                     matches_species.extend(tmp_species)
+        
         if debug:
             f.write("\n\nMatched genera:\n")
             f.write(str(matches_genus)+"\n")
             f.write("\n\nMatched species:\n")
             f.write(str(matches_species)+"\n")
 
+        # # Structural pattern matching requires Python 3.10+, so we can't use this (much more elegant) solution for now.
+        # match [len(matches_genus), len(matches_species)]:
+        #     case [0,0]:
+        #         final[img_name] = "NO MATCH"
+        #     case [1,0]:
+        #         final[img_name] = matches_genus[0] + " " + "[NO MATCH SPECIES]"
+        #     case [0,1]:
+        #         final[img_name] = "[NO MATCH GENUS]" + " " + matches_species[0]
+
         if len(matches_genus) == 1 and len(matches_species) == 1:
             final[img_name] = matches_genus[0]+" "+matches_species[0]
+            if debug:
+                f.write("Single match for genus and species.\n")
+        elif len(matches_genus) == 1 and len(matches_species) == 0:
+            final[img_name] = matches_genus[0]+" [NO MATCH FOR SPECIES]"
+            if debug:
+                f.write("Single match for genus; no match for species.\n")
+        elif len(matches_genus) == 0 and len(matches_species) == 1:
+            final[img_name] = "[NO MATCH FOR GENUS] "+matches_species[0]
+            if debug:
+                f.write("No match for genus; single match for species.\n")
         elif len(matches_genus) == 1 and len(matches_species) > 1:
-            possibilities = [i for i in range(len(corpus_genus)) if corpus_genus[i] == matches_genus[0]]
-            possibilities = [corpus_species[i] for i in possibilities]
+            # matches genus: {plant}
+            # matches species: {pretty, ugly}
+            # corpus_full (where genus matches our matches above):
+            # {plant pretty, plant red, plant green, purple flower}
+            # possiblities: {pretty, red, green}
+            # possibilities (narrowed down): {pretty}
+
+            if debug:
+                f.write("Single match for genus; multiple matches for species.\n")
+            possibilities = [x.split(" ")[-1] for x in taxon_corpus_full if matches_genus[0] in x.split(" ")[0]]
+            if debug:
+                f.write("Possibilities for species:\n")
+                f.write(str(possibilities)+"\n")
             possibilities = [x for x in possibilities if x in matches_species]
+            if debug:
+                f.write("Narrowed down possibilities:\n")
+                f.write(str(possibilities)+"\n")
             if len(possibilities) == 1:
                 final[img_name] = matches_genus[0]+" "+possibilities[0]
             elif len(possibilities) > 1:
                 final[img_name] = matches_genus[0]+"[MULTIPLE MATCHES FOR SPECIES]"
             else:
-                final[img_name] = matches_genus[0]+"[NO MATCH FOR SPECIES]"
+                final[img_name] = matches_genus[0] + "[NO MATCH FOR SPECIES]"
         elif len(matches_genus) > 1 and len(matches_species) == 1:
-            possibilities = [i for i in range(len(corpus_species)) if corpus_species[i] == matches_species[0]]
-            possibilities = [corpus_genus[i] for i in possibilities]
+            if debug:
+                f.write("Multiple matches for genus; single match for species.\n")
+            possibilities = [x.split(" ")[0] for x in taxon_corpus_full if matches_species[0] in x.split(" ")[-1]]
+            if debug:
+                f.write("Possibilities for genus:\n")
+                f.write(str(possibilities)+"\n")
             possibilities = [x for x in possibilities if x in matches_genus]
+            if debug:
+                f.write("Narrowed down possibilities:\n")
+                f.write(str(possibilities)+"\n")
             if len(possibilities) == 1:
                 final[img_name] = possibilities[0]+" "+matches_species[0]
             elif len(possibilities) > 1:
                 final[img_name] = "[MULTIPLE MATCHES FOR GENUS]" + matches_species[0]
             else:
                 final[img_name] = "[NO MATCH FOR GENUS]" + matches_species[0]
+        elif len(matches_genus) == 0 and len(matches_species) > 1:
+            if debug:
+                f.write("No match for genus; multiple matches for species.\n")
+            final[img_name] = "NO MATCH"
+        elif len(matches_genus) > 1 and len(matches_species) == 0:
+            if debug:
+                f.write("Multiple matches for genus; no match for species.\n")
+            final[img_name] = "NO MATCH"
         elif len(matches_genus) > 1 and len(matches_species) > 1:
+            if debug:
+                f.write("Multiple matches for genus; multiple matches for species.\n")
             possibilities = [x+" "+y for x in matches_genus for y in matches_species]
+            if debug:
+                f.write("Possibilities:\n")
+                f.write(str(possibilities)+"\n")
             possibilities = [x for x in possibilities if x in taxon_corpus_full]
+            if debug:
+                f.write("Narrowed down possibilities:\n")
+                f.write(str(possibilities)+"\n")
             if len(possibilities) == 1:
                 final[img_name] = possibilities[0]
             elif len(possibilities) > 1:
                 final[img_name] = "[MULTIPLE MATCHES FOR GENUS AND SPECIES]"
             else:
                 final[img_name] = "[GENUS/SPECIES MISMATCH]"
-        elif len(matches_genus) == 1 and len(matches_species) == 0:
-            final[img_name] = matches_genus[0]+"[NO MATCH FOR SPECIES]"
-        elif len(matches_genus) == 0 and len(matches_species) == 1:
-            final[img_name] = "[NO MATCH FOR GENUS]"+matches_species[0]
         else:
             final[img_name] = "NO MATCH"
+        if debug:
+            f.write("========================================================\n")
+            f.write("Final result for "+img_name+":\n")
+            f.write(final[img_name]+"\n")
     print("Done.\n")
     return final
 
