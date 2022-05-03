@@ -1,5 +1,5 @@
 # Model Fine Tuning
-To train the model, first clone the tesstrain repo:
+To train the model, first clone the tesstrain repo in your home directory:
 ``` bash
 git clone https://github.com/tesseract-ocr/tesstrain.git
 ```
@@ -10,6 +10,8 @@ module load leptonica/1.82.0
 module load libicu/71.1
 module load tesseract/4.1.3
 ```
+Download the training dataset, `lines.tgz`,  and the groundtruth dataset, `ascii.tgz`, and put it in the `tesseract-training` directory from:
+https://fki.tic.heia-fr.ch/databases/download-the-iam-handwriting-database
 
 Generate the training data:
 ``` bash
@@ -20,6 +22,7 @@ python3 generate_training_data.py
 Then run the training (for SCC):
 
 ``` bash
+cd $HOME/tesstrain
 make training MODEL_NAME=handwriting-eng START_MODEL=eng DATA_DIR=/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/tesseract-training GROUND_TRUTH_DIR=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/gt PSM=7 TESSDATA=$HOME/ml-herbarium/transcription/handwriting_tesseract_training/tessdata
 ```
 
