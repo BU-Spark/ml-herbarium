@@ -4,12 +4,15 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 import multiprocessing as mp
+import imutils
+from imutils import perspective
+from imutils import contours
 from tqdm import tqdm
 
 NUM_CORES = min(mp.cpu_count(), 50)
 
 # get the resulting images and text files
-craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220405-014212/"
+craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220425-160006/"
 # "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/result"
 boxes = {}
 # imgs = []
@@ -36,7 +39,7 @@ def fillBoxes():
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220405-005447/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
 imgs = {}
 
 def addImg(fIdx):
@@ -254,8 +257,43 @@ if not os.path.exists(save_dir):
 for key, label in labels.items():
 	try:
 		plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
-	except:
+		img = cv2.imread(os.path.join(save_dir, key+"_label.jpg"))
+		grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+		grey = cv2.GaussianBlur(grey, (7,7), 0)
+		#find borders for the edges of the image
+		boundingbb = cv2.Canny(grey, 50, 100)
+		boundingbb = cv2.dilate(boundingbb, None, iterations=1)
+		boundingbb = cv2.erode(boundingbb, None, iterations=1)
+		# find contours
+		contours, hierarchy = cv2.findContours(boundingbb, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+		# find the bounding box of the contours
+		countours = countours[0] if imutils.is_cv2() else countours[1]
+		for c in countours:
+			if cv2.contourArea(c) < 1000:
+				continue
+			box = cv2.minAreaRect(c)
+			box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
+			box = np.array(box, dtype="int")
+			box = perspective.order_points(box)
+			
+			orig = img.copy()
+			
+			cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 5)
+			
+			for (x,y) in list(box):
+				cv2.circle(orig, (int(x), int(y)), 7, (0, 0, 255), -1)
+				#cv2.putText(orig, "{}, {}".format(x, y), (int(x) - 20, int(y) - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+				cv2.imwrite(os.path.join(save_dir, key+"_label_contour.jpg"), orig)
+			
+			cv2.waitKey(0)
+		# (x, y, w, h) = cv2.boundingRect(countours)
+		# # crop the image
+		# cropped = img[y:y+h, x:x+w]
+		# plt.imsave(os.path.join(save_dir, key+"_label_cropped.jpg"), cropped)
+	except Exception as e:
+		print(e)
 		print("Error saving label for image: ", key+".jpg")
+
 
 # for i,j in enumerate(lines[0]):
 # 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
