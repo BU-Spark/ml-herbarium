@@ -307,8 +307,8 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
                     f.write("\n\nOCR output:\n")
                     f.write(str(text)+"\n")
                     f.write("Confidence: "+str(conf)+"\n")
-                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.9)
-                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.9)
+                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.8)
+                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.8)
                 if debug:
                     f.write("Close matches:\n")
                     f.write("genus: "+str(tmp_genus)+"\n")
