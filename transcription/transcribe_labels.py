@@ -43,7 +43,11 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = 50
-org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220420-172248/"
+# org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/data/scraped-data/20220426-144149/"
+# craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220420-172248/"
+# output_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/data/trans-results/"
+
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"
 craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
 output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
 
@@ -283,16 +287,29 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		matches = []
 		guess = None
 
+		if not os.path.exists(output_dir+"/debug/"):
+			os.makedirs(output_dir+"/debug/")
+		f = open(output_dir+"/debug/"+name+key+".txt", "w")
+
 		for s in lines:
+			f.write("\n\nOCR output:\n")
+			f.write(str(s)+"\n")
+
 			tmp = get_close_matches(s, corpus)
+			f.write("Close matches:\n")
+			f.write(str(tmp)+"\n")
+
 			if len(tmp) != 0:
 				matches.append(tmp)
 	#             print('am matched words img'+str(i)+':',tmp)
 				matched = True
+
 			else:  ## if no match, try to match the words to the words in the corpus (this method caused more wrong matches, so I commented it out) ##FIXME: Make this better
 				split = s.split(" ")
 				for s2 in split:
+					f.write("Close matches run on "+s2+":\n")
 					tmp = get_close_matches(s2, corpus)
+					f.write(str(tmp)+"\n")
 					if len(tmp) != 0:
 						matches.append(tmp)
 						matched = True
@@ -302,6 +319,10 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 		# if matched:
 			# print('am matched words img'+str(i)+':',has_spaces)
 			final[key] = has_spaces[0]
+			f.write("\n\n-------------------------\nLIST of Final match (first element of list):\n")
+			f.write(str(has_spaces))
+			f.write("\n\n-------------------------\nFinal match (first element of list):\n")
+			f.write(str(has_spaces)+"\n")
 			# final[key]=match
 		else: 
 			# print(print('am matched words img'+str(i)+':',matches))
@@ -316,6 +337,16 @@ def match_words_to_corpus(all_decoded_am, name, corpus):
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
+import pickle 
+from synonym.generate_syn import main
+syn_dic_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/transcription/synonym/syn_pure.pkl'
+
+if not os.path.exists(syn_dic_dir):
+	main()
+
+with open(syn_dic_dir, 'rb') as f:
+	syn_dic = pickle.load(f)
+
 def determine_match(gt, final, fname):
 	f = open(output_dir+fname+"_results.txt", "w")
 	cnt = 0
@@ -323,11 +354,11 @@ def determine_match(gt, final, fname):
 	ncnt = 0
 	if gt != None:
 		for key,final_val in final.items():
-			if gt[key] == final_val:
+			if gt[key] == final_val: # correct match
 				f.write(key+": "+final_val+"\n")
 				cnt+=1
 			else:
-				if final_val=="NO MATCH":
+				if final_val=="NO MATCH": # no outputs from CRAFT
 					f.write(key+": "+final_val+"\n")
 					ncnt+=1
 				# elif "GUESS" in final_val:
@@ -337,8 +368,15 @@ def determine_match(gt, final, fname):
 				# 	else:
 				# 		f.write(key+"––"+final_val+"––EXPECTED:"+gt[key]+"\n")
 				else:
-					f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
-					wcnt+=1
+					if (final_val in syn_dic) and (syn_dic[final_val] == gt[key]): # CRAFT output is a synonym
+						f.write(key+": " + syn_dic[final_val] + " by synonym" + "\n")
+						cnt += 1
+					elif (gt[key] in syn_dic) and (syn_dic[gt[key]] == final_val): # gt is a synonym
+						f.write(key+": " + final_val + " by synonym" + "\n")
+						cnt += 1
+					else:
+						f.write(key+"––WRONG: "+final_val+"––EXPECTED:"+gt[key]+"\n")
+						wcnt+=1
 
 		print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
 		print(fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
@@ -356,13 +394,13 @@ def main():
 	lines, taxon_corpus, geography_corpus, taxon_gt_txt, geography_gt_txt, n_imgs, boxes, imgs = import_process_data()
 	character_probs = handwritting_recognition(lines)
 	all_decoded_am = probs_to_words(character_probs, lines)
-	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
-	geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
 	if os.path.exists(output_dir):
 		shutil.rmtree(output_dir)
 	os.makedirs(output_dir)
+	taxon_final = match_words_to_corpus(all_decoded_am, "taxon", taxon_corpus)
+	# geography_final = match_words_to_corpus(all_decoded_am, "geography", geography_corpus)
 	determine_match(taxon_gt_txt, taxon_final, "taxon")
-	determine_match(geography_gt_txt, geography_final, "geography")
+	# determine_match(geography_gt_txt, geography_final, "geography")
 
 
 if __name__ == "__main__":
