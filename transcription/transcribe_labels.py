@@ -43,10 +43,6 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 NUM_CORES = 50
-# org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/data/scraped-data/20220426-144149/"
-# craft_res_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/CRAFT-results/20220420-172248/"
-# output_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/data/trans-results/"
-
 org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"
 craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
 output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
