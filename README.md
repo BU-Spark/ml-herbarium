@@ -10,9 +10,10 @@ Dependencies can be found in requirements.txt
 
 <br />
 
-## Install Requirements
-### Add dependencies to auto load in your bashrc
+## Install/Load Requirements
+### Add dependencies to auto load in your .bashrc file
 `nano ~/.bashrc`
+
 Add these lines to the file:
 ```
 module load python3/3.8.10
@@ -21,6 +22,8 @@ module load libicu/71.1
 module load tesseract/4.1.3
 ```
 `ctrl+x` then return to save and exit
+
+Note: If you are not using the SCC, you will need to install the above dependencies manually.
 ### Create virtual environment for dependency management
 `python3 -m venv .env`
 ### Activate virtual env
