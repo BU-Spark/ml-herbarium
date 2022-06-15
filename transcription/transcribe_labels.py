@@ -25,12 +25,12 @@ def get_gt(fname, org_img_dir):
     return None
 
 def get_corpus_taxon(org_img_dir):
-    ## Mock corpus path:
-    # corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
-    # corpus_full = open(corpus_dir).read().split("\n")
+    # Mock corpus path:
+    corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+    corpus_full = open(corpus_dir).read().split("\n")
 
-    ## Real corpus path:
-    corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
+    # Real corpus path:
+    # corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
     corpus_full = [s.lower() for s in corpus_full]
     corpus_full = [s for s in corpus_full if s != ""]
 
