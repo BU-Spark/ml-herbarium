@@ -11,11 +11,17 @@ Dependencies can be found in requirements.txt
 <br />
 
 ## Install Requirements
-### Add Python 3.8.10 to your .bashrc
+### Add dependencies to auto load in your bashrc
 `nano ~/.bashrc`
-Add this to the file: `module load python3/3.8.10`
-ctrl+x then return to save and exit
-### Create virtual environment for lower memory overhead
+Add these lines to the file:
+```
+module load python3/3.8.10
+module load leptonica/1.82.0
+module load libicu/71.1
+module load tesseract/4.1.3
+```
+`ctrl+x` then return to save and exit
+### Create virtual environment for dependency management
 `python3 -m venv .env`
 ### Activate virtual env
 `source .env/bin/activate`
