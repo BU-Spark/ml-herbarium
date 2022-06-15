@@ -25,14 +25,17 @@ def get_gt(fname, org_img_dir):
     return None
 
 def get_corpus_taxon(org_img_dir):
-    corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+    ## Mock corpus path:
+    # corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+    # corpus_full = open(corpus_dir).read().split("\n")
 
-    corpus_full = open(corpus_dir).read().split("\n")
+    ## Real corpus path:
+    corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
     corpus_full = [s.lower() for s in corpus_full]
     corpus_full = [s for s in corpus_full if s != ""]
 
-    corpus_genus = [s.split(" ")[0] for s in corpus_full]
-    corpus_species = [s.split(" ")[1] for s in corpus_full]
+    corpus_genus = [s.split(" ")[0] for s in corpus_full if len(s.split(" ")) > 1]
+    corpus_species = [s.split(" ")[1] for s in corpus_full if len(s.split(" ")) > 1]
     
     corpus_full = list(set(corpus_full))
     corpus_genus = list(set(corpus_genus))
@@ -155,10 +158,9 @@ def run_ocr(img_name, imgs, config):
 
 def ocr(imgs, num_threads):
     ocr_results = {}
-    tesspath = os.path.expanduser("~/.local/bin/tesseract")
+    pytesseract.pytesseract.tesseract_cmd="/share/pkg.7/tesseract/4.1.3/install/bin/tesseract"
     tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
     tessdata_dir_config = r'--tessdata-dir "{}"'.format(tessdatapath)
-    pytesseract.pytesseract.tesseract_cmd=tesspath
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
     pool = mp.Pool(min(num_threads, len(imgs)))
