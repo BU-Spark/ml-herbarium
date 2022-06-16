@@ -18,6 +18,16 @@ import mxnet as mx
 from skimage import transform as skimage_tf, exposure
 from tqdm import tqdm
 
+from functools import partial
+import re
+import shutil
+import sys
+from PIL import Image
+import multiprocessing as mp
+import warnings
+
+from tqdm import tqdm
+
 # os.chdir("../mxnet/handwritten-text-recognition-for-apache-mxnet-master/")
 print(os.getcwd())
 # from ocr.utils.expand_bounding_box import expand_bounding_box
@@ -44,49 +54,82 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 
+def get_gt(fname, org_img_dir):
+    gt_dir = org_img_dir + fname + "_gt.txt"
+    if os.path.exists(gt_dir):
+        gt = open(gt_dir).read().split("\n")
+        gt = [i.lower() for i in gt if i]
+        ground_truth = {s.split(": ")[0]: s.split(": ")[1] for s in gt}
+        return ground_truth
 
-def get_imgsAndBoxes():
-	craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
-	org_img_dir = "../in_data/images/"
-	boxes = []
-	imgs = []
-	fnames = []
+    return None
 
-	for fname in sorted(os.listdir(craft_res_dir)):
-		if ".jpg" in fname and "mask" not in fname:
-			# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
-			tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
-			tmp_txt = [line.split(",") for line in tmp_txt]
-			tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-			boxes.append(tmp_bxs)
+def get_corpus_taxon(org_img_dir):
+    # Mock corpus path:
+    corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+    corpus_full = open(corpus_dir).read().split("\n")
 
-	# get the original images to crop them
-	for fname in sorted(os.listdir(org_img_dir)):
-		if ".jpeg" in fname:
-			imgs.append(cv2.imread(os.path.join(org_img_dir, fname), cv2.IMREAD_GRAYSCALE))
-			fnames.append(fname)
+    # Real corpus path:
+    # corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
+    corpus_full = [s.lower() for s in corpus_full]
+    corpus_full = [s for s in corpus_full if s != ""]
 
-	return boxes,imgs,fnames
+    corpus_genus = [s.split(" ")[0] for s in corpus_full if len(s.split(" ")) > 1]
+    corpus_species = [s.split(" ")[1] for s in corpus_full if len(s.split(" ")) > 1]
+    
+    corpus_full = list(set(corpus_full))
+    corpus_genus = list(set(corpus_genus))
+    corpus_species = list(set(corpus_species))
 
-def get_gt():
-	gt_dir = "../in_data/"
-	if os.path.exists(os.path.join(gt_dir,"gt.txt")):
-		gt = open(os.path.join(gt_dir,"gt.txt")).read().split("\n")
-		return gt
+    return corpus_full, corpus_genus, corpus_species
 
-	return None
+def get_corpus(fname, org_img_dir, words = True):
+    corpus_dir = org_img_dir + fname + "_corpus.txt"
 
-def get_corpus():
-	corpus_dir = "../in_data/"
-	corpus = open(os.path.join(corpus_dir,"corpus.txt")).read().split(" ")
-	corpus = [s.lower() for s in corpus]
+    if words: 
+        corpus = re.split("\n| ", open(corpus_dir).read()) # split on newline or space
+    else:
+        corpus = re.split("\n", open(corpus_dir).read()) # split on newline
+    corpus = [s.lower() for s in corpus]
+    corpus = [s for s in corpus if s != ""]
+    corpus = list(set(corpus))
 
-	corpus_fullname = [(corpus[i]+" "+corpus[i+1]) for i in range(len(corpus)-1) if (i%2==0)]
-	corpus_fullname = list(set(corpus_fullname))
+    return corpus
 
-	corpus_full = corpus_fullname + list(set(corpus))
+def get_img(image_path):
+    warnings.filterwarnings("error")
+    try:
+        img = np.array(Image.open(image_path))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        kernel = np.ones((1, 1), np.uint8)
+        img = cv2.dilate(img, kernel, iterations=1)
+        img = cv2.erode(img, kernel, iterations=1)
+        img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,51,14)
+        img = np.array(img)
+    except:
+        warnings.filterwarnings("default")
+        return {}, image_path
+    warnings.filterwarnings("default")
+    return {image_path.split("/")[-1][:-4]: img}, None
 
-	return corpus_full
+def get_imgs(imgs, num_threads):
+    imgs_out = {}
+    failures = []
+
+    print("\nGetting original images and preprocessing...")
+    print("Starting multiprocessing...")
+    pool = mp.Pool(min(num_threads, len(imgs)))
+    for item, error in tqdm(pool.imap(get_img, imgs), total=len(imgs)):
+        imgs_out.update(item)
+        if error:
+            failures.append(error)
+    pool.close()
+    pool.join()
+    for f in failures:
+        print("Failed to get image: "+f)
+    print("Original images obtained and preprocessing complete.\n")
+
+    return imgs_out
 
 # expands boxes according to input margins
 def expand_boxes(boxes, diff_axes=False, mx=20, my=40, m=4):
@@ -157,16 +200,16 @@ def crop_lines(boxes, imgs):
 
 
 ### --------------------------------- Import data & process --------------------------------- ###
-boxes,imgs,fnames = get_imgsAndBoxes()
-corpus = get_corpus()
-gt_txt = get_gt()
-n_imgs = len(imgs)
+# boxes,imgs,fnames = get_imgsAndBoxes()
+# corpus = get_corpus()
+# gt_txt = get_gt()
+# n_imgs = len(imgs)
 
-# segment the lines of text (used to feed into models like mxnet)
-lines = [get_lines(bxs) for bxs in boxes]
-lines = [expand_boxes(bxs) for bxs in lines]
-lines = crop_lines(lines, imgs)
-
+# # segment the lines of text (used to feed into models like mxnet)
+# lines = [get_lines(bxs) for bxs in boxes]
+# lines = [expand_boxes(bxs) for bxs in lines]
+# lines = crop_lines(lines, imgs)
+lines = get_imgsAndBoxes()
 
 
 
@@ -278,12 +321,12 @@ for i,lines in enumerate(all_decoded_am):
 
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-f = open("results.txt", "w")
+f = open("/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/transc-chase/results.txt", "w+")
 cnt = 0
 if gt_txt != None:
 	for i,t in enumerate(gt_txt):
-		#if i >= len(final):
-	#		break
+		if i >= len(final):
+			break
 		if t == final[i]:
 			print(fnames[i]+": "+t)
 			f.write(fnames[i]+": "+t+"\n")
