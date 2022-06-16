@@ -184,6 +184,7 @@ def scrape_occurrence(key, data):
         and "genus" in content
         and "species" in content
         and "media" in content
+        and "recordedBy" in content 
         and content["media"]
         and "format" in content["media"][0]
         and "identifier" in content["media"][0]
@@ -193,6 +194,10 @@ def scrape_occurrence(key, data):
         return_dict[key]["country"] = content["country"]
         return_dict[key]["genus"] = content["genus"]
         return_dict[key]["species"] = content["species"]
+        if return_dict[key]["genus"] in return_dict[key]["species"]:
+            return_dict[key]["species"] = return_dict[key]["species"][len(return_dict[key]["genus"])+1:]
+        return_dict[key]["recordedBy"] = content["recordedBy"]
+
     return return_dict
 
 
@@ -258,24 +263,49 @@ def download_images(data):
 # ### Export Geograpy Data
 
 # %%
-def export_geography_data(data):
-    with open(OUTPUT_PATH + "countries.txt", "w") as f:
+def export_geography_gt(data):
+    with open(OUTPUT_PATH + "geography_gt.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["country"] + "\n")
-    print("Successfully wrote countries to file.")
+    print("Successfully wrote geography gt to file.")
 
-
+def export_geography_corpus(data):
+    with open(OUTPUT_PATH + "geography_corpus.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["country"] + "\n")
+    print("Successfully wrote geography corpus to file.")
 # %% [markdown]
 # ### Export Taxon Data
 
 # %%
-def export_taxon_data(data):
-    with open(OUTPUT_PATH + "taxon.txt", "w") as f:
+def export_taxon_gt(data):
+    with open(OUTPUT_PATH + "taxon_gt.txt", "w") as f:
         for key in data:
             f.write(data[key]["id"]+": "+data[key]["genus"] + " " + data[key]["species"] + "\n")
-    print("Successfully wrote taxon to file.")
+    print("Successfully wrote taxon gt to file.")
+
+def export_taxon_corpus(data):
+    with open(OUTPUT_PATH + "taxon_corpus.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["genus"] + " " + data[key]["species"] + "\n")
+    print("Successfully wrote taxon corpus to file.")
 
 
+# %% [markdown]
+# ### Export Collector Data
+
+# %%
+def export_collector_gt(data):
+    with open(OUTPUT_PATH + "collector_gt.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["id"]+": "+data[key]["recordedBy"] + "\n")
+    print("Successfully wrote collector gt to file.")
+
+def export_collector_corpus(data):
+    with open(OUTPUT_PATH + "collector_corpus.txt", "w") as f:
+        for key in data:
+            f.write(data[key]["recordedBy"] + "\n")
+    print("Successfully wrote collector corpus to file.")
 # %% [markdown]
 # ## Print Help Message
 def print_help_message():
@@ -341,8 +371,12 @@ if __name__ == "__main__":
         data = export_gbif_ids(df, args)
         data = fetch_data(data)
         download_images(data)
-        export_geography_data(data)
-        export_taxon_data(data)
+        export_taxon_gt(data)
+        export_geography_gt(data)
+        export_collector_gt(data)
+        export_taxon_corpus(data)
+        export_geography_corpus(data)
+        export_collector_corpus(data)
         print("Successfully exported data to output path. Done!")
     elif args[0] == "csv":
         TYPE = "csv"
@@ -353,6 +387,10 @@ if __name__ == "__main__":
         data = export_gbif_ids(df)
         data = fetch_data(data)
         download_images(data)
-        export_geography_data(data)
-        export_taxon_data(data)
+        export_taxon_gt(data)
+        export_geography_gt(data)
+        export_collector_gt(data)
+        export_taxon_corpus(data)
+        export_geography_corpus(data)
+        export_collector_corpus(data)
         print("\nSuccessfully exported data to output path. Done!")

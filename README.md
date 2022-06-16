@@ -10,12 +10,21 @@ Dependencies can be found in requirements.txt
 
 <br />
 
-## Install Requirements
-### Add Python 3.8.10 to your .bashrc
+## Install/Load Requirements
+### Add dependencies to auto load in your .bashrc file
 `nano ~/.bashrc`
-Add this to the file: `module load python3/3.8.10`
-ctrl+x then return to save and exit
-### Create virtual environment for lower memory overhead
+
+Add these lines to the file:
+```
+module load python3/3.8.10
+module load leptonica/1.82.0
+module load libicu/71.1
+module load tesseract/4.1.3
+```
+`ctrl+x` then return to save and exit
+
+Note: If you are not using the SCC, you will need to install the above dependencies manually.
+### Create virtual environment for dependency management
 `python3 -m venv .env`
 ### Activate virtual env
 `source .env/bin/activate`
@@ -24,6 +33,43 @@ ctrl+x then return to save and exit
 
 ## Note for VS Code
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.8.10` at path `~/.env/bin/python3.8`.
+
+## Install Leptonica
+In your home directory, run:
+
+`git clone https://github.com/DanBloomberg/leptonica.git --depth 1`
+
+`cd leptonica`
+
+`./autogen.sh`
+
+`./configure --prefix=$HOME/.local --disable-shared`
+
+`make`
+
+`make install`
+
+## Install Tesseract
+In your home directory, run:
+
+`wget https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz -O tesseract-4.0.0.tar.gz`
+
+`tar zxvf tesseract-4.0.0.tar.gz`
+
+`export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig`
+
+`./autogen.sh`
+
+`./configure --prefix=$HOME/.local --disable-shared`
+
+`make`
+
+`make install`
+
+`cd ~/.local/share/tessdata`
+
+`wget https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main/eng.traineddata`
+
 
 <br />
 

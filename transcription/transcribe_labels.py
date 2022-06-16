@@ -440,20 +440,20 @@ def determine_match(gt, final, fname, output_dir):
                 cnt+=1
             elif "GUESS" in final_val:
                     if gt[img_name] == final_val.split("GUESS: ")[1]:
-                        f.write(img_name+"--"+final_val+"\n")
+                        f.write(img_name+"––"+final_val+"\n")
                         cnt+=1
                     else:
-                        f.write(img_name+"--"+final_val+"--EXPECTED:"+gt[img_name]+"\n")
+                        f.write(img_name+"––"+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                         ncnt+=1
             elif "[" in final_val:
-                f.write(img_name+"--PARTIAL MATCH: "+final_val+"--EXPECTED:"+gt[img_name]+"\n")
+                f.write(img_name+"––PARTIAL MATCH: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                 pcnt+=1
             else:
                 if final_val=="NO MATCH":
-                    f.write(img_name+": "+final_val+"--EXPECTED:"+gt[img_name]+"\n")
+                    f.write(img_name+": "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                     ncnt+=1
                 else:
-                    f.write(img_name+"--WRONG: "+final_val+"--EXPECTED:"+gt[img_name]+"\n")
+                    f.write(img_name+"––WRONG: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                     wcnt+=1
 
         print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
