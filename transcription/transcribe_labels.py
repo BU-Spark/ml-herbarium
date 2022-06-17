@@ -10,6 +10,7 @@ from pytesseract import Output
 import numpy as np
 import multiprocessing as mp
 import warnings
+import pickle
 
 from tqdm import tqdm
 
@@ -29,7 +30,7 @@ def get_corpus_taxon(org_img_dir):
     corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
     corpus_full = open(corpus_dir).read().split("\n")
 
-    # Real corpus path:
+    # # Real corpus path:
     # corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
     corpus_full = [s.lower() for s in corpus_full]
     corpus_full = [s for s in corpus_full if s != ""]
@@ -87,7 +88,7 @@ def get_imgs(imgs, num_threads):
     pool.join()
     for f in failures:
         print("Failed to get image: "+f)
-    print("Original images obtained and preprocessing complete.\n")
+    print("Done.\n")
 
     return imgs_out
 
@@ -135,7 +136,22 @@ def words_to_lines(ocr_results, x_margin):
                     if has_y_overlap(y, y2, h, h2) and ((x+x_margin+w) > x2 or (x2+x_margin+w2) > x):
                         lines[img_name].append([i, j])
     return lines # Returns a dictionary of lines, where each line is a list of indices of words in the image from the ocr_results dictionary
+
+def get_syn_dict():
+    print("Getting synonym dictionary...")
+    from synonym.generate_syn import main as generate_syn
+    syn_dic_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/synonym-matching/output/syn_pure.pkl'
+
+    if not os.path.exists(syn_dic_dir):
+        generate_syn()
+
+    with open(syn_dic_dir, 'rb') as f:
+        syn_dict = pickle.load(f)
     
+    print("Done.\n")
+
+    return syn_dict
+
 
 ### --------------------------------- Import data & process --------------------------------- ###
 def import_process_data(org_img_dir, num_threads):
@@ -169,7 +185,7 @@ def ocr(imgs, num_threads):
         ocr_results.update(item)
     pool.close()
     pool.join()
-    print("OCR complete.\n")
+    print("Done.\n")
 
     return ocr_results
 
@@ -219,7 +235,7 @@ def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
         pass
     pool.close()
     pool.join()        
-    print("Debug outputs generated.\n")
+    print("Done.\n")
 
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
@@ -427,7 +443,7 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
     return final
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
-def determine_match(gt, final, fname, output_dir):
+def determine_match(gt, final, fname, output_dir, syn_dict = None):
     f = open(output_dir+fname+"_results.txt", "w")
     cnt = 0
     pcnt = 0
@@ -453,8 +469,19 @@ def determine_match(gt, final, fname, output_dir):
                     f.write(img_name+": "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
                     ncnt+=1
                 else:
-                    f.write(img_name+"––WRONG: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
-                    wcnt+=1
+                    if syn_dict != None:
+                        if (final_val in syn_dict) and (syn_dict[final_val] == gt[img_name]): # CRAFT output is a synonym
+                            f.write(img_name+": " + syn_dict[final_val] + " by synonym" + "\n")
+                            cnt += 1
+                        elif (gt[img_name] in syn_dict) and (syn_dict[gt[img_name]] == final_val): # gt is a synonym
+                            f.write(img_name+": " + final_val + " by synonym" + "\n")
+                            cnt += 1
+                        else:
+                            f.write(img_name+"––WRONG: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
+                            wcnt+=1
+                    else:
+                        f.write(img_name+"––WRONG: "+final_val+"––EXPECTED:"+gt[img_name]+"\n")
+                        wcnt+=1
 
         print(fname+" acc: "+str(cnt)+"/"+str(len(final))+" = "+str((cnt/len(final))*100)+"%")
         print(fname+" no match: "+str(ncnt)+"/"+str(len(final))+" = "+str((ncnt/len(final))*100)+"%")
@@ -507,9 +534,10 @@ def main():
     os.makedirs(output_dir)
     if debug:
         ocr_debug(ocr_results, output_dir, imgs, org_img_dir)
+    syn_dict = get_syn_dict()
     taxon_final = match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug)
     geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
-    determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir)
+    determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir, syn_dict)
     determine_match(geography_gt_txt, geography_final, "geography", output_dir)
 
 if __name__ == "__main__":
