@@ -1,16 +1,16 @@
 # imports
-# import wget
+import wget
 import zipfile
 import os
 import pandas as pd
-import shutil
+import  wget
 import pickle
 
 
 # globals
 dataset_url = 'https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip'
 dataset_output_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/synonym-matching/'
-output_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/transcription/synonym/'
+output_dir = '/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/synonym-matching/output/'
 zip_file = 'backbone.zip'
 txt_dir = '/backbone/Taxon.tsv'
 txt = 'Taxon.tsv'
@@ -113,14 +113,14 @@ def syn_pure(syn):
             result = map(process_word, listt)
             result = list(result)
         
-        if flag == 0: 
-            continue
-        if flag == 1:
-            syn_pure[result[0]] = val
-        if flag == 2:
-            syn_pure[key] = result[0]
-        if flag == 3:
-            syn_pure[result[0]] = result[1]
+        if flag == 0: # one word
+            continue 
+        elif flag == 1:
+            syn_pure[result[0].lower()] = val.lower()
+        elif flag == 2:
+            syn_pure[key.lower()] = result[0].lower()
+        else:
+            syn_pure[result[0].lower()] = result[1].lower()
         count += 1
         # print("this is number", count, "key is", key, "val is", val)
 

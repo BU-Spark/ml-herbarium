@@ -1,6 +1,11 @@
 import pickle 
-with open('syn_pure.pkl', 'rb') as f:
-    syn_modi = pickle.load(f)
+with open('/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/synonym-matching/output/syn_pure.pkl', 'rb') as f:
+    syn_dict = pickle.load(f)
 
-print(syn_modi['Carex echinata'])
-# Carex muricata
+test = "Hypericum formosum"
+
+print("Input: " + test)
+
+if (test.lower() in syn_dict):
+    test = syn_dict[test.lower()]
+    print("Synonym: " + test)
