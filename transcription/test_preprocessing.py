@@ -6,11 +6,12 @@ from cv2 import minAreaRect
 import numpy as np
 from regex import R
 import sys, os
+from tqdm import tqdm
 
 image_path = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/tess-test/"
 images = os.listdir(image_path)
 
-output_path = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/preprocessing-outputs/tess-test/rotated/"
+output_path = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/preprocessing-outputs/tess-test/unrotated/"
 
 def getangle(img):
     blur = cv2.GaussianBlur(img, (5, 5), 0)
@@ -30,7 +31,7 @@ def getangle(img):
     if angle < -45:
         angle = -(90 + angle)
     
-    print(angle)
+    #print(angle)
     return angle
 
 def rotateimg(img):
@@ -46,18 +47,18 @@ else:
     shutil.rmtree(output_path)
     os.makedirs(output_path)
 
-for image in images:
+for image in tqdm(images):
     if ".jpg" not in image:
         continue
     try:
         img = cv2.imread(image_path + image, 0)
-        img = rotateimg(img)
         img = np.array(img)
         #img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # performed inline cv2.imread
-        kernel = np.ones((5, 5), np.uint8)
+        kernel = np.ones((1, 1), np.uint8)
         img = cv2.dilate(img, kernel, iterations=1)
         img = cv2.erode(img, kernel, iterations=1)
         img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,51,14)
+        img = rotateimg(img)
         cv2.imwrite(output_path + image, img)
     except Exception as e:
         print("Error processing image: " + image)
