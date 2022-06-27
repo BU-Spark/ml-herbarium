@@ -6,7 +6,6 @@ test = "Hypericum formosum"
 
 print("Input: " + test)
 
-if (test in syn_dict):
-    test = syn_dict[test]
+if (test.lower() in syn_dict):
+    test = syn_dict[test.lower()]
     print("Synonym: " + test)
-# Carex muricata
