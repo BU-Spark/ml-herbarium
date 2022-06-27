@@ -112,7 +112,6 @@ def syn_pure(syn):
         if len(listt) > 0:
             result = map(process_word, listt)
             result = list(result)
-        
         if flag == 0: # one word
             continue 
         elif flag == 1:

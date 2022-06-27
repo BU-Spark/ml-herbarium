@@ -57,6 +57,34 @@ def get_corpus(fname, org_img_dir, words = True):
 
     return corpus
 
+def getangle(img):
+    blur = cv2.GaussianBlur(img, (5, 5), 0)
+    ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = sorted(contours, key=cv2.contourArea, reverse=True)
+    largest_contour = contours[0]
+    minAreaRect = cv2.minAreaRect(largest_contour)
+    box = cv2.boxPoints(minAreaRect)
+    box = np.int0(box)
+    angle = cv2.minAreaRect(largest_contour)[-1]
+    #angle = - angle
+    if angle < .09:
+        angle = 0.0
+    if angle > 5.0:
+        angle /= 100
+    if angle < -45:
+        angle = -(90 + angle)
+    
+    #print(angle)
+    return angle
+
+def rotateimg(img):
+    h,w = img.shape[:2]
+    center = (w//2,h//2)
+    moment = cv2.getRotationMatrix2D(center, getangle(img), 1.0)
+    rotated = cv2.warpAffine(img, moment, (w,h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+    return rotated
+
 def get_img(image_path):
     warnings.filterwarnings("error")
     try:
@@ -66,6 +94,7 @@ def get_img(image_path):
         img = cv2.dilate(img, kernel, iterations=1)
         img = cv2.erode(img, kernel, iterations=1)
         img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,51,14)
+        img = rotateimg(img)
         img = np.array(img)
     except:
         warnings.filterwarnings("default")
@@ -175,8 +204,7 @@ def run_ocr(img_name, imgs, config):
 def ocr(imgs, num_threads):
     ocr_results = {}
     pytesseract.pytesseract.tesseract_cmd="/share/pkg.7/tesseract/4.1.3/install/bin/tesseract"
-    # tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
-    tessdatapath = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/transcription/handwriting_tesseract_training/tessdata"
+    tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
     tessdata_dir_config = r'--tessdata-dir "{}"'.format(tessdatapath)
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
