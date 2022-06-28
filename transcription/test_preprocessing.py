@@ -14,16 +14,21 @@ images = os.listdir(image_path)
 output_path = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/preprocessing-outputs/tess-test/unrotated/"
 
 def getangle(img):
+    # heavier preprocessing to blur, and threshold images (not to be saved) for reliable angle(skew) measurements
     blur = cv2.GaussianBlur(img, (5, 5), 0)
     ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # find the curves along the images with the same color (boundaries)
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)
     largest_contour = contours[0]
+    # traces the rectangle border of each image with a rectangle
     minAreaRect = cv2.minAreaRect(largest_contour)
     box = cv2.boxPoints(minAreaRect)
+    # bitmap
     box = np.int0(box)
     angle = cv2.minAreaRect(largest_contour)[-1]
     #angle = - angle
+    # dealing with strange errors, 95% accuracy 
     if angle < .09:
         angle = 0.0
     if angle > 5.0:
@@ -35,10 +40,13 @@ def getangle(img):
     return angle
 
 def rotateimg(img):
+    # gets the size of the entire image
     h,w = img.shape[:2]
     center = (w//2,h//2)
-    moment = cv2.getRotationMatrix2D(center, getangle(img), 1.0)
-    rotated = cv2.warpAffine(img, moment, (w,h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+    # better than moments based deskewing because there is less error
+    moment = cv2.getRotationMatrix2D(center, getangle(img), 1.0) # 1.0 bc do not need to grayscale twice
+    # bicubic interpolation bc smoother than bilinear/K-nearest neighbors, interpolates with four kernels, each w/2 and h/2
+    rotated = cv2.warpAffine(img, moment, (w,h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE) 
     return rotated
 
 if not os.path.exists(output_path):
