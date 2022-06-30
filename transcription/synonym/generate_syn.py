@@ -1,5 +1,5 @@
 # imports
-# import wget
+import wget
 import zipfile
 import os
 import pandas as pd
@@ -112,15 +112,14 @@ def syn_pure(syn):
         if len(listt) > 0:
             result = map(process_word, listt)
             result = list(result)
-        
-        if flag == 0: 
-            continue
-        if flag == 1:
-            syn_pure[result[0]] = val
-        if flag == 2:
-            syn_pure[key] = result[0]
-        if flag == 3:
-            syn_pure[result[0]] = result[1]
+        if flag == 0: # one word
+            continue 
+        elif flag == 1:
+            syn_pure[result[0].lower()] = val.lower()
+        elif flag == 2:
+            syn_pure[key.lower()] = result[0].lower()
+        else:
+            syn_pure[result[0].lower()] = result[1].lower()
         count += 1
         # print("this is number", count, "key is", key, "val is", val)
 
