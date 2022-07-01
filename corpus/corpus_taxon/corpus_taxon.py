@@ -56,14 +56,15 @@ with open(output_dir + corpus_taxon, "w") as output_file:
             # get rid of single-word taxons
             if ' ' in list_taxon_no_dup[i]:
                 output_file.write(list_taxon_no_dup[i] + '\n')
-                genus = list_taxon_no_dup[i].split()[0]
-                species = "".join(list_taxon_no_dup[i].split()[1:])
-            
+                genus = list_taxon_no_dup[i].split()[0].lower()
+                species = "".join(list_taxon_no_dup[i].split()[1]).lower()
+                # FIXME: need to account for the remaining species [2:]
+                # generate a dictionary of possible species for each genus
                 if genus not in dict_possible_species:
                     dict_possible_species[genus] = [species]
                 else:
                     dict_possible_species[genus] += [species]
-
+                # generate a dictionary of possible genera for each species
                 if species not in dict_possible_genus:
                     dict_possible_genus[species] = [genus]
                 else:
