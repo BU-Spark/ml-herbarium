@@ -20,6 +20,7 @@ duplicates = 'duplicates_taxon.txt'
 
 
 ### Download Dataset
+# FIXME: need to update the new zip file
 # if os.path.exists(dataset_dir + zip_file):
 #     os.remove(dataset_dir + zip_file)
 # wget.download(dataset_url, out=dataset_dir + zip_file)
@@ -57,6 +58,7 @@ with open(output_dir + corpus_taxon, "w") as output_file:
             if ' ' in list_taxon_no_dup[i]:
                 output_file.write(list_taxon_no_dup[i] + '\n')
                 genus = list_taxon_no_dup[i].split()[0].lower()
+                # just take the first word of the whole species name for easier match 
                 species = "".join(list_taxon_no_dup[i].split()[1]).lower()
                 # FIXME: need to account for the remaining species [2:]
                 # generate a dictionary of possible species for each genus
@@ -78,4 +80,12 @@ with open(output_dir + corpus_taxon, "w") as output_file:
 file.close()
 output_file.close()
 print('Finish printing taxon names.')
+
+with open(dataset_dir + 'output/possible_species.pkl', 'rb') as f:
+    dict = pickle.load(f)
+with open(dataset_dir + 'output/possible_genus.pkl', 'rb') as ff:
+    dictt = pickle.load(ff)
+
+print("test 1", len(dict))
+print("test 2", len(dictt))
 

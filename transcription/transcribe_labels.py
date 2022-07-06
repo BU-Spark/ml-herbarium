@@ -339,14 +339,16 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
 
 ### --------------------------------- Match taxon to corpus --------------------------------- ###
 def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug=False):
+    # corpus_genus: key is genus and value is a list of possible species 
     def match_genus(n):
-        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.8)
+        # FIXME: cutoff needs to modify 
+        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.7)
         try:
             return x
         except:
             print("no match")
     def match_species(n):
-        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.8)
+        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.7)
         try:
             return x
         except:
@@ -357,51 +359,71 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
 
         results_modified = [x for x in results["text"] if len(x) > 1]
-        result_genus = list(map(match_genus, results_modi))
-        result_species = list(map(match_species, results_modi))
-        result_genus = list(set([x[0] for x in result_genus if len(x) != 0]))
-        result_species = list(set([x[0] for x in result_species if len(x) != 0]))
-        print("this is result genus:", result_genus)
-        print("this is result species:", result_species)
+        results_genus = list(map(match_genus, results_modified))
+        results_species = list(map(match_species, results_modified))
+        # taking care of situation like this: this is result species: [['centeterius'], ['inceps'], ['smithsonianus'], 
+        # ['constitutionis'], ['oto'], ['obsistens'], ['ochrea'], ['oto'], ['oto']]
+        results_genus = list(set([x[0] for x in results_genus if len(x) != 0]))
+        results_species = list(set([x[0] for x in results_species if len(x) != 0]))
         
+        possible_species = []
+        # first word in each list is a genus
+        possible_species += [[x]+corpus_genus[x] for x in results_genus]
+        possible_genus= []
+        # first word in each list is a species
+        possible_genus += [[x]+corpus_species[x] for x in results_species]
+
+        matches_genus = []
+        matches_species = []
+        for i in range(len(possible_species)):
+            for h in possible_species[i][1:]:
+                if h in results_species:
+                    matches_species += [h]
+                    matches_genus += [possible_species[i][0]]
+        
+        for n in range(len(possible_genus)):
+            for k in possible_genus[n][1:]:
+                if k in results_genus:
+                    matches_genus += [k]
+                    matches_species += [possible_genus[n][0]]
+        
+        print("this is number", img_name )
+        print("this is result genus:", possible_genus)
+        print("this is result species:", possible_species)
 
         if debug:
             f = open(output_dir+"/debug/"+img_name+"_taxon.txt", "w")
-        matches_genus = []
-        matches_species = []
-        for i in range(len(results["text"])):
-            text = results["text"][i].lower()
-            print("here is the text:", text)
-            conf = int(results["conf"][i])
-            if conf > 30:    
-                if debug:
-                    f.write("\n\nOCR output:\n")
-                    f.write(str(text)+"\n")
-                    f.write("Confidence: "+str(conf)+"\n")
+            f.write("\n\n Results after OCR outputs: " + "\n")
+            f.write("Genus: " + str(results_genus) + "\n")
+            f.write("Species: " + str(results_species) + "\n")
+            f.write("\n\n After using the possible genus/species dictionaries: " + "\n")
+            f.write("Possible species: " + str(possible_species) + "\n")
+            f.write("Possible genus: " + str(possible_genus) + "\n")
 
-                # tmp_full = get_close_matches(text, taxon_corpus_full, n=1, cutoff=0.8)
-                # corpus_genus: key is genus and valus is a list of possible species
-                tmp_genus = get_close_matches(text, list(corpus_genus.keys()), n=1, cutoff=0.8)
-                if len(tmp_genus) >= 1:
-                    tmp_species = get_close_matches(text, corpus_genus[tmp_genus[0]], n=1, cutoff=0.8)
-                else:
-                    tmp_species = get_close_matches(text, list(corpus_species.keys()), n=1, cutoff=0.8)
-                    if len(tmp_species) >= 1:
-                        tmp_genus = get_close_matches(text, corpus_species[tmp_species[0]], n=1, cutoff=0.8)
+        # matches_genus = []
+        # matches_species = []
+        # for i in range(len(results["text"])):
+        #     text = results["text"][i].lower()
+        #     conf = int(results["conf"][i])
+        #     if conf > 30:    
+        #         if debug:
+        #             f.write("\n\nOCR output:\n")
+        #             f.write(str(text)+"\n")
+        #             f.write("Confidence: "+str(conf)+"\n")
 
-                if debug:
-                    f.write("Close matches:\n")
-                    f.write("genus: "+str(tmp_genus)+"\n")
-                    f.write("species: "+str(tmp_species)+"\n")
+                # if debug:
+                #     f.write("Close matches:\n")
+                #     f.write("genus: "+str(tmp_genus)+"\n")
+                #     f.write("species: "+str(tmp_species)+"\n")
 
-                if text in tmp_genus:
-                    tmp_species = []
-                if text in tmp_species:
-                    tmp_genus = []
-                if len(tmp_genus) != 0:
-                    matches_genus.extend(tmp_genus)
-                if len(tmp_species) != 0:
-                    matches_species.extend(tmp_species)
+                # if text in tmp_genus:
+                #     tmp_species = []
+                # if text in tmp_species:
+                #     tmp_genus = []
+                # if len(tmp_genus) != 0:
+                #     matches_genus.extend(tmp_genus)
+                # if len(tmp_species) != 0:
+                #     matches_species.extend(tmp_species)
         
         if debug:
             f.write("\n\nMatched genera:\n")
