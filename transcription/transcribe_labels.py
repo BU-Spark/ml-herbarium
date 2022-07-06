@@ -342,13 +342,13 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
     # corpus_genus: key is genus and value is a list of possible species 
     def match_genus(n):
         # FIXME: cutoff needs to modify 
-        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.7)
+        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.8)
         try:
             return x
         except:
             print("no match")
     def match_species(n):
-        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.7)
+        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.8)
         try:
             return x
         except:
@@ -358,7 +358,7 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
     print("Matching words to taxon corpus...")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
 
-        results_modified = [x for x in results["text"] if len(x) > 1]
+        results_modified = [results["text"][i] for i in range(len(results["text"])) if int(results["conf"][i]) > 30 and len(results["text"][i]) > 1]
         results_genus = list(map(match_genus, results_modified))
         results_species = list(map(match_species, results_modified))
         # taking care of situation like this: this is result species: [['centeterius'], ['inceps'], ['smithsonianus'], 
@@ -375,21 +375,35 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
 
         matches_genus = []
         matches_species = []
-        for i in range(len(possible_species)):
-            for h in possible_species[i][1:]:
-                if h in results_species:
-                    matches_species += [h]
-                    matches_genus += [possible_species[i][0]]
+        # for i in range(len(possible_species)):
+        #     for h in possible_species[i][1:]:
+        #         if h in results_species:
+        #             matches_species += [h]
+        #             matches_genus += [possible_species[i][0]]
         
-        for n in range(len(possible_genus)):
-            for k in possible_genus[n][1:]:
-                if k in results_genus:
-                    matches_genus += [k]
-                    matches_species += [possible_genus[n][0]]
+        # for n in range(len(possible_genus)):
+        #     for k in possible_genus[n][1:]:
+        #         if k in results_genus:
+        #             matches_genus += [k]
+        #             matches_species += [possible_genus[n][0]]
+        for a in results_species:
+            for b in results_genus:
+                if a in corpus_genus[b]:
+                    matches_species += [a]
+                    matches_genus += [b]
         
-        print("this is number", img_name )
-        print("this is result genus:", possible_genus)
-        print("this is result species:", possible_species)
+        for a in results_genus:
+            for b in results_species:
+                if a in corpus_species[b]:
+                    matches_genus += [a]
+                    matches_species += [b]
+        
+        matches_genus = list(set(matches_genus))
+        matches_species = list(set(matches_species))
+        
+        # print("this is number", img_name )
+        # print("this is result genus:", possible_genus)
+        # print("this is result species:", possible_species)
 
         if debug:
             f = open(output_dir+"/debug/"+img_name+"_taxon.txt", "w")
