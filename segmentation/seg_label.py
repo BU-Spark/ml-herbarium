@@ -180,40 +180,42 @@ def crop_lines(boxes, imgs):
 		line_crops.append(img_lines)
 	return line_crops
 
+def main():
+	# segment the labels
+	fillBoxes()
+	getOrigImgs()
+	boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
+	boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
+	boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
+	labels = {} # segment label
 
-# segment the labels
-fillBoxes()
-getOrigImgs()
-boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
-boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
-boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
-labels = {} # segment label
+	for key, image in imgs.items():
+		try:
+			labels[key]=crop_labels(image, boxes_comb_sorted[key])
+		except:
+			labels[key]=None
+			print("Error cropping label for image: ", key+".jpg")
 
-for key, image in imgs.items():
-	try:
-		labels[key]=crop_labels(image, boxes_comb_sorted[key])
-	except:
-		labels[key]=None
-		print("Error cropping label for image: ", key+".jpg")
+	# segment the lines of text (used to feed into models like mxnet)
+	lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
+	lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
+	lines = crop_lines(lines, imgs)
 
-# segment the lines of text (used to feed into models like mxnet)
-lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
-lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
-lines = crop_lines(lines, imgs)
+	# save cropped labels
+	timestr = time.strftime("%Y%m%d-%H%M%S")
 
-# save cropped labels
-timestr = time.strftime("%Y%m%d-%H%M%S")
+	if os.path.exists(save_dir):
+		shutil.rmtree(save_dir)
+	os.makedirs(save_dir)
 
-if os.path.exists(save_dir):
-    shutil.rmtree(save_dir)
-os.makedirs(save_dir)
+	for key, label in labels.items():
+		try:
+			plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
+		except:
+			print("Error saving label for image: ", key+".jpg")
 
-for key, label in labels.items():
-	try:
-		plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
-	except:
-		print("Error saving label for image: ", key+".jpg")
+	# for i,j in enumerate(lines[0]):
+	# 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
 
-# for i,j in enumerate(lines[0]):
-# 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
-
+if __name__ == "__main__":
+    main()
