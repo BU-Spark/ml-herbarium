@@ -11,7 +11,7 @@ import numpy as np
 import multiprocessing as mp
 import warnings
 import pickle
-
+from difflib import get_close_matches
 from tqdm import tqdm
 
 ### --------------------------------- Helper Functions --------------------------------- ###
@@ -27,11 +27,11 @@ def get_gt(fname, org_img_dir):
 
 def get_corpus_taxon(org_img_dir):
     # Mock corpus path:
-    corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
-    corpus_full = open(corpus_dir).read().split("\n")
+    # corpus_dir = org_img_dir + "taxon" + "_corpus.txt"
+    # corpus_full = open(corpus_dir).read().split("\n")
 
     # # Real corpus path:
-    # corpus_full = open("/usr4/ugrad/en/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
+    corpus_full = open("/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
     corpus_full = [s.lower() for s in corpus_full]
     corpus_full = [s for s in corpus_full if s != ""]
 
@@ -201,7 +201,7 @@ def import_process_data(org_img_dir, num_threads):
     taxon_gt_txt = get_gt("taxon", org_img_dir)
     geography_gt_txt = get_gt("geography", org_img_dir)
     
-    return imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full, corpus_genus, corpus_species
+    return imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full
 
 
 ### --------------------------------- Optical character recognition --------------------------------- ###
@@ -212,7 +212,8 @@ def run_ocr(img_name, imgs, config):
 def ocr(imgs, num_threads):
     ocr_results = {}
     pytesseract.pytesseract.tesseract_cmd="/share/pkg.7/tesseract/4.1.3/install/bin/tesseract"
-    tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
+    # tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
+    tessdatapath = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/transcription/handwriting_tesseract_training/tessdata/"
     tessdata_dir_config = r'--tessdata-dir "{}"'.format(tessdatapath)
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
@@ -342,40 +343,109 @@ def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_d
         if matched: cnt+=1
     print("Done.\n")
     return final
-    
+
+
 ### --------------------------------- Match taxon to corpus --------------------------------- ###
 def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug=False):
-    from difflib import get_close_matches
+    # corpus_genus: key is genus and value is a list of possible species 
+    def match_genus(n):
+        # FIXME: cutoff needs to modify 
+        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.8)
+        try:
+            return x
+        except:
+            print("no match")
+    def match_species(n):
+        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.8)
+        try:
+            return x
+        except:
+            print("no match")
     cnt = 0
     final = {}
     print("Matching words to taxon corpus...")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
-        if debug:
-            f = open(output_dir+"/debug/"+img_name+"_taxon.txt", "w")
+
+        results_modified = [results["text"][i] for i in range(len(results["text"])) if int(results["conf"][i]) > 30 and len(results["text"][i]) > 1]
+        results_genus = list(map(match_genus, results_modified))
+        results_species = list(map(match_species, results_modified))
+        # taking care of situation like this: this is result species: [['centeterius'], ['inceps'], ['smithsonianus'], 
+        # ['constitutionis'], ['oto'], ['obsistens'], ['ochrea'], ['oto'], ['oto']]
+        results_genus = list(set([x[0] for x in results_genus if len(x) != 0]))
+        results_species = list(set([x[0] for x in results_species if len(x) != 0]))
+        
+        possible_species = []
+        # first word in each list is a genus
+        possible_species += [[x]+corpus_genus[x] for x in results_genus]
+        possible_genus= []
+        # first word in each list is a species
+        possible_genus += [[x]+corpus_species[x] for x in results_species]
+
         matches_genus = []
         matches_species = []
-        for i in range(len(results["text"])):
-            text = results["text"][i].lower()
-            conf = int(results["conf"][i])
-            if conf > 30:    
-                if debug:
-                    f.write("\n\nOCR output:\n")
-                    f.write(str(text)+"\n")
-                    f.write("Confidence: "+str(conf)+"\n")
-                tmp_genus = get_close_matches(text, corpus_genus, n=1, cutoff=0.8)
-                tmp_species = get_close_matches(text, corpus_species, n=1, cutoff=0.8)
-                if debug:
-                    f.write("Close matches:\n")
-                    f.write("genus: "+str(tmp_genus)+"\n")
-                    f.write("species: "+str(tmp_species)+"\n")
-                if text in tmp_genus:
-                    tmp_species = []
-                if text in tmp_species:
-                    tmp_genus = []
-                if len(tmp_genus) != 0:
-                    matches_genus.extend(tmp_genus)
-                if len(tmp_species) != 0:
-                    matches_species.extend(tmp_species)
+        # for i in range(len(possible_species)):
+        #     for h in possible_species[i][1:]:
+        #         if h in results_species:
+        #             matches_species += [h]
+        #             matches_genus += [possible_species[i][0]]
+        
+        # for n in range(len(possible_genus)):
+        #     for k in possible_genus[n][1:]:
+        #         if k in results_genus:
+        #             matches_genus += [k]
+        #             matches_species += [possible_genus[n][0]]
+        for a in results_species:
+            for b in results_genus:
+                if a in corpus_genus[b]:
+                    matches_species += [a]
+                    matches_genus += [b]
+        
+        for a in results_genus:
+            for b in results_species:
+                if a in corpus_species[b]:
+                    matches_genus += [a]
+                    matches_species += [b]
+        
+        matches_genus = list(set(matches_genus))
+        matches_species = list(set(matches_species))
+        
+        # print("this is number", img_name )
+        # print("this is result genus:", possible_genus)
+        # print("this is result species:", possible_species)
+
+        if debug:
+            f = open(output_dir+"/debug/"+img_name+"_taxon.txt", "w")
+            f.write("\n\n Results after OCR outputs: " + "\n")
+            f.write("Genus: " + str(results_genus) + "\n")
+            f.write("Species: " + str(results_species) + "\n")
+            f.write("\n\n After using the possible genus/species dictionaries: " + "\n")
+            f.write("Possible species: " + str(possible_species) + "\n")
+            f.write("Possible genus: " + str(possible_genus) + "\n")
+
+        # matches_genus = []
+        # matches_species = []
+        # for i in range(len(results["text"])):
+        #     text = results["text"][i].lower()
+        #     conf = int(results["conf"][i])
+        #     if conf > 30:    
+        #         if debug:
+        #             f.write("\n\nOCR output:\n")
+        #             f.write(str(text)+"\n")
+        #             f.write("Confidence: "+str(conf)+"\n")
+
+                # if debug:
+                #     f.write("Close matches:\n")
+                #     f.write("genus: "+str(tmp_genus)+"\n")
+                #     f.write("species: "+str(tmp_species)+"\n")
+
+                # if text in tmp_genus:
+                #     tmp_species = []
+                # if text in tmp_species:
+                #     tmp_genus = []
+                # if len(tmp_genus) != 0:
+                #     matches_genus.extend(tmp_genus)
+                # if len(tmp_species) != 0:
+                #     matches_species.extend(tmp_species)
         
         if debug:
             f.write("\n\nMatched genera:\n")
@@ -564,7 +634,7 @@ def main():
             output_dir = org_img_dir.replace('/scraped-data/', '/transcription-results/')
         else:
             output_dir = org_img_dir+"results/"
-    imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full, corpus_genus, corpus_species = import_process_data(org_img_dir, num_threads)
+    imgs, geography_corpus_words, geography_corpus_full, taxon_gt_txt, geography_gt_txt, taxon_corpus_full = import_process_data(org_img_dir, num_threads)
     ocr_results = ocr(imgs, num_threads)
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
@@ -572,6 +642,12 @@ def main():
     if debug:
         ocr_debug(ocr_results, output_dir, imgs, org_img_dir)
     syn_dict = get_syn_dict()
+
+    with open('/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/corpus_taxon/output/possible_species.pkl', 'rb') as f:
+        corpus_genus = pickle.load(f)
+    with open('/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/corpus_taxon/output/possible_genus.pkl', 'rb') as ff:
+        corpus_species = pickle.load(ff)
+
     taxon_final = match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug)
     geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
     determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir, syn_dict)

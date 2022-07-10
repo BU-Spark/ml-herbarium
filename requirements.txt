@@ -7,3 +7,4 @@ ipykernel
 notebook
 python-dwca-reader
 pytesseract
+wget
