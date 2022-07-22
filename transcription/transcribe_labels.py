@@ -1,4 +1,5 @@
 from functools import partial
+import heapq
 import os
 import re
 import shutil
@@ -11,7 +12,7 @@ import numpy as np
 import multiprocessing as mp
 import warnings
 import pickle
-from difflib import get_close_matches
+from rapidfuzz import process
 from tqdm import tqdm
 
 ### --------------------------------- Helper Functions --------------------------------- ###
@@ -102,7 +103,7 @@ def get_img(image_path):
         img = cv2.dilate(img, kernel, iterations=1)
         img = cv2.erode(img, kernel, iterations=1)
         img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,51,14)
-        img = rotateimg(img)
+        # img = rotateimg(img)
         img = np.array(img)
     except:
         warnings.filterwarnings("default")
@@ -212,8 +213,7 @@ def run_ocr(img_name, imgs, config):
 def ocr(imgs, num_threads):
     ocr_results = {}
     pytesseract.pytesseract.tesseract_cmd="/share/pkg.7/tesseract/4.1.3/install/bin/tesseract"
-    # tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
-    tessdatapath = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/transcription/handwriting_tesseract_training/tessdata/"
+    tessdatapath = os.path.expanduser("~/ml-herbarium/transcription/handwriting_tesseract_training/tessdata")
     tessdata_dir_config = r'--tessdata-dir "{}"'.format(tessdatapath)
     print("Running OCR on images using Tesseract "+str(pytesseract.pytesseract.get_tesseract_version())+" ...")
     print("Starting multiprocessing...")
@@ -276,139 +276,133 @@ def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
     print("Done.\n")
 
 
-### --------------------------------- Match words to corpus --------------------------------- ###
-def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_dir, debug=False):
-    from difflib import get_close_matches
-    cnt = 0
-    final = {}
-    print("Matching words to "+ name +" corpus...")
-    for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
-        if debug:
-            f = open(output_dir+"/debug/"+img_name+"_"+name+".txt", "w")
-        matched = False
-        matches = {}
-        for i in range(len(results["text"])):
-            text = results["text"][i].lower()
-            conf = int(results["conf"][i])
-            if conf > 30:    
-                if debug:
-                    f.write("\n\nOCR output:\n")
-                    f.write(str(text)+"\n")
-                    f.write("Confidence: "+str(conf)+"\n")
-                tmp = get_close_matches(text, corpus_words, n=1, cutoff=0.8)
-                if debug:
-                    f.write("Close matches:\n")
-                    f.write(str(tmp)+"\n")
-                if len(tmp) != 0:
-                    matches[i]=tmp[0]
-                    matched = True
-        if debug:
-            f.write("\n\nMatched words:\n")
-            f.write(str(matches)+"\n")
-
-        matched_pairs = []
-        matched_pairs_matched = False
-        for m1 in matches.values():
-            for m2 in matches.values():
-                if m1 != m2:
-                    tmp = get_close_matches(m1+" "+m2, corpus_full, n=1, cutoff=0.9)
-                    if len(tmp) != 0:
-                        matched_pairs.extend(tmp)
-                        matched_pairs_matched = True
-        if debug:
-            f.write("\n\nMatched pairs:\n")
-            f.write(str(matched_pairs)+"\n")
-
-        if matched_pairs_matched:
-            final[img_name] = matched_pairs[0]
-            if debug:
-                f.write("\n\n-------------------------\nFinal match (first element of list):\n")
-                f.write(str(matched_pairs))
-                f.write("\n-------------------------\n")
-        elif matched:
-            guesses = []
-            for i, m in matches.items():
-                guess_idx = find_idx_nearby_text(ocr_results, img_name, i)
-                if guess_idx != None:
-                    guesses.append("GUESS: "+ m + ocr_results[img_name]["text"][guess_idx])
-            if len(guesses) != 0:
-                final[img_name] = guesses[0]
-                if debug:
-                    f.write("\n\n-------------------------\nGuesses:\n")
-                    f.write(str(guesses))
-                    f.write("\n-------------------------\n")
-
-        else: 
-            final[img_name]="NO MATCH"
-        if matched: cnt+=1
-    print("Done.\n")
-    return final
+# ### --------------------------------- Match words to corpus --------------------------------- ###
+# def match_words_to_corpus(ocr_results, name, corpus_words, corpus_full, output_dir, debug=False):
+#     cnt = 0
+#     final = {}
+#     print("Matching words to "+ name +" corpus...")
+#     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
+#         if debug:
+#             f = open(output_dir+"/debug/"+img_name+"_"+name+".txt", "w")
+#         matched = False
+#         matches = {}
+#         for i in range(len(results["text"])):
+#             text = results["text"][i].lower()
+#             conf = int(results["conf"][i])
+#             if conf > 30:    
+#                 if debug:
+#                     f.write("\n\nOCR output:\n")
+#                     f.write(str(text)+"\n")
+#                     f.write("Confidence: "+str(conf)+"\n")
+#                 tmp = get_close_matches(text, corpus_words, n=1, cutoff=0.8)
+#                 if debug:
+#                     f.write("Close matches:\n")
+#                     f.write(str(tmp)+"\n")
+#                 if len(tmp) != 0:
+#                     matches[i]=tmp[0]
+#                     matched = True
+#         if debug:
+#             f.write("\n\nMatched words:\n")
+#             f.write(str(matches)+"\n")
+# 
+#         matched_pairs = []
+#         matched_pairs_matched = False
+#         for m1 in matches.values():
+#             for m2 in matches.values():
+#                 if m1 != m2:
+#                     tmp = get_close_matches(m1+" "+m2, corpus_full, n=1, cutoff=0.9)
+#                     if len(tmp) != 0:
+#                         matched_pairs.extend(tmp)
+#                         matched_pairs_matched = True
+#         if debug:
+#             f.write("\n\nMatched pairs:\n")
+#             f.write(str(matched_pairs)+"\n")
+# 
+#         if matched_pairs_matched:
+#             final[img_name] = matched_pairs[0]
+#             if debug:
+#                 f.write("\n\n-------------------------\nFinal match (first element of list):\n")
+#                 f.write(str(matched_pairs))
+#                 f.write("\n-------------------------\n")
+#         elif matched:
+#             guesses = []
+#             for i, m in matches.items():
+#                 guess_idx = find_idx_nearby_text(ocr_results, img_name, i)
+#                 if guess_idx != None:
+#                     guesses.append("GUESS: "+ m + ocr_results[img_name]["text"][guess_idx])
+#             if len(guesses) != 0:
+#                 final[img_name] = guesses[0]
+#                 if debug:
+#                     f.write("\n\n-------------------------\nGuesses:\n")
+#                     f.write(str(guesses))
+#                     f.write("\n-------------------------\n")
+# 
+#         else: 
+#             final[img_name]="NO MATCH"
+#         if matched: cnt+=1
+#     print("Done.\n")
+#     return final
 
 
 ### --------------------------------- Match taxon to corpus --------------------------------- ###
 def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug=False):
     # corpus_genus: key is genus and value is a list of possible species 
     def match_genus(n):
-        # FIXME: cutoff needs to modify 
-        x = get_close_matches(n, list(corpus_genus.keys()), n=1, cutoff=0.8)
-        try:
-            return x
-        except:
-            print("no match")
+        if len(n) > 1:
+            choice = process.extractOne(n, list(corpus_genus.keys()), score_cutoff=91)
+        if choice:
+            text, similarity, _ = choice
+            return similarity, text
     def match_species(n):
-        x = get_close_matches(n, list(corpus_species.keys()), n=1, cutoff=0.8)
-        try:
-            return x
-        except:
-            print("no match")
+        if len(n) > 1:
+            choice = process.extractOne(n, list(corpus_species.keys()), score_cutoff=91)
+        if choice:
+            text, similarity, _ = choice
+            return similarity, text
     cnt = 0
     final = {}
     print("Matching words to taxon corpus...")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
 
-        results_modified = [results["text"][i] for i in range(len(results["text"])) if int(results["conf"][i]) > 30 and len(results["text"][i]) > 1]
+        results_modified = [results["text"][i] for i in range(len(results["text"])) if int(results["conf"][i]) > 3 and len(results["text"][i]) > 1]
         results_genus = list(map(match_genus, results_modified))
         results_species = list(map(match_species, results_modified))
         # taking care of situation like this: this is result species: [['centeterius'], ['inceps'], ['smithsonianus'], 
         # ['constitutionis'], ['oto'], ['obsistens'], ['ochrea'], ['oto'], ['oto']]
-        results_genus = list(set([x[0] for x in results_genus if len(x) != 0]))
-        results_species = list(set([x[0] for x in results_species if len(x) != 0]))
+        results_genus = list(set([x for x in results_genus if x != None and len(x) != 0]))
+        results_species = list(set([x for x in results_species if x != None and len(x) != 0]))
         
+        heapq.heapify(results_genus)
+        heapq.heapify(results_species)
+
         possible_species = []
         # first word in each list is a genus
-        possible_species += [[x]+corpus_genus[x] for x in results_genus]
+        possible_species += [[x]+corpus_genus[x[1]] for x in results_genus]
         possible_genus= []
         # first word in each list is a species
-        possible_genus += [[x]+corpus_species[x] for x in results_species]
+        possible_genus += [[x]+corpus_species[x[1]] for x in results_species]
 
         matches_genus = []
         matches_species = []
-        # for i in range(len(possible_species)):
-        #     for h in possible_species[i][1:]:
-        #         if h in results_species:
-        #             matches_species += [h]
-        #             matches_genus += [possible_species[i][0]]
-        
-        # for n in range(len(possible_genus)):
-        #     for k in possible_genus[n][1:]:
-        #         if k in results_genus:
-        #             matches_genus += [k]
-        #             matches_species += [possible_genus[n][0]]
+     
         for a in results_species:
             for b in results_genus:
-                if a in corpus_genus[b]:
+                if a[1] in corpus_genus[b[1]]:
                     matches_species += [a]
                     matches_genus += [b]
         
         for a in results_genus:
             for b in results_species:
-                if a in corpus_species[b]:
+                if a[1] in corpus_species[b[1]]:
                     matches_genus += [a]
                     matches_species += [b]
         
         matches_genus = list(set(matches_genus))
         matches_species = list(set(matches_species))
         
+        heapq.heapify(matches_genus)
+        heapq.heapify(matches_species)
+
         # print("this is number", img_name )
         # print("this is result genus:", possible_genus)
         # print("this is result species:", possible_species)
@@ -421,31 +415,6 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
             f.write("\n\n After using the possible genus/species dictionaries: " + "\n")
             f.write("Possible species: " + str(possible_species) + "\n")
             f.write("Possible genus: " + str(possible_genus) + "\n")
-
-        # matches_genus = []
-        # matches_species = []
-        # for i in range(len(results["text"])):
-        #     text = results["text"][i].lower()
-        #     conf = int(results["conf"][i])
-        #     if conf > 30:    
-        #         if debug:
-        #             f.write("\n\nOCR output:\n")
-        #             f.write(str(text)+"\n")
-        #             f.write("Confidence: "+str(conf)+"\n")
-
-                # if debug:
-                #     f.write("Close matches:\n")
-                #     f.write("genus: "+str(tmp_genus)+"\n")
-                #     f.write("species: "+str(tmp_species)+"\n")
-
-                # if text in tmp_genus:
-                #     tmp_species = []
-                # if text in tmp_species:
-                #     tmp_genus = []
-                # if len(tmp_genus) != 0:
-                #     matches_genus.extend(tmp_genus)
-                # if len(tmp_species) != 0:
-                #     matches_species.extend(tmp_species)
         
         if debug:
             f.write("\n\nMatched genera:\n")
@@ -453,95 +422,34 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
             f.write("\n\nMatched species:\n")
             f.write(str(matches_species)+"\n")
 
-        # # Structural pattern matching requires Python 3.10+, so we can't use this (much more elegant) solution for now.
-        # match [len(matches_genus), len(matches_species)]:
-        #     case [0,0]:
-        #         final[img_name] = "NO MATCH"
-        #     case [1,0]:
-        #         final[img_name] = matches_genus[0] + " " + "[NO MATCH SPECIES]"
-        #     case [0,1]:
-        #         final[img_name] = "[NO MATCH GENUS]" + " " + matches_species[0]
-
-        if len(matches_genus) == 1 and len(matches_species) == 1:
-            final[img_name] = matches_genus[0]+" "+matches_species[0]
-            if debug:
-                f.write("Single match for genus and species.\n")
-        elif len(matches_genus) == 1 and len(matches_species) == 0:
-            final[img_name] = matches_genus[0]+" [NO MATCH FOR SPECIES]"
-            if debug:
-                f.write("Single match for genus; no match for species.\n")
-        elif len(matches_genus) == 0 and len(matches_species) == 1:
-            final[img_name] = "[NO MATCH FOR GENUS] "+matches_species[0]
-            if debug:
-                f.write("No match for genus; single match for species.\n")
-        elif len(matches_genus) == 1 and len(matches_species) > 1:
-            # matches genus: {plant}
-            # matches species: {pretty, ugly}
-            # corpus_full (where genus matches our matches above):
-            # {plant pretty, plant red, plant green, purple flower}
-            # possiblities: {pretty, red, green}
-            # possibilities (narrowed down): {pretty}
-
-            if debug:
-                f.write("Single match for genus; multiple matches for species.\n")
-            possibilities = [x.split(" ")[-1] for x in taxon_corpus_full if matches_genus[0] in x.split(" ")[0]]
-            if debug:
-                f.write("Possibilities for species:\n")
-                f.write(str(possibilities)+"\n")
-            possibilities = [x for x in possibilities if x in matches_species]
-            if debug:
-                f.write("Narrowed down possibilities:\n")
-                f.write(str(possibilities)+"\n")
-            if len(possibilities) == 1:
-                final[img_name] = matches_genus[0]+" "+possibilities[0]
-            elif len(possibilities) > 1:
-                final[img_name] = matches_genus[0]+"[MULTIPLE MATCHES FOR SPECIES]"
-            else:
-                final[img_name] = matches_genus[0] + "[NO MATCH FOR SPECIES]"
-        elif len(matches_genus) > 1 and len(matches_species) == 1:
-            if debug:
-                f.write("Multiple matches for genus; single match for species.\n")
-            possibilities = [x.split(" ")[0] for x in taxon_corpus_full if matches_species[0] in x.split(" ")[-1]]
-            if debug:
-                f.write("Possibilities for genus:\n")
-                f.write(str(possibilities)+"\n")
-            possibilities = [x for x in possibilities if x in matches_genus]
-            if debug:
-                f.write("Narrowed down possibilities:\n")
-                f.write(str(possibilities)+"\n")
-            if len(possibilities) == 1:
-                final[img_name] = possibilities[0]+" "+matches_species[0]
-            elif len(possibilities) > 1:
-                final[img_name] = "[MULTIPLE MATCHES FOR GENUS]" + matches_species[0]
-            else:
-                final[img_name] = "[NO MATCH FOR GENUS]" + matches_species[0]
-        elif len(matches_genus) == 0 and len(matches_species) > 1:
-            if debug:
-                f.write("No match for genus; multiple matches for species.\n")
-            final[img_name] = "NO MATCH"
-        elif len(matches_genus) > 1 and len(matches_species) == 0:
-            if debug:
-                f.write("Multiple matches for genus; no match for species.\n")
-            final[img_name] = "NO MATCH"
-        elif len(matches_genus) > 1 and len(matches_species) > 1:
-            if debug:
-                f.write("Multiple matches for genus; multiple matches for species.\n")
-            possibilities = [x+" "+y for x in matches_genus for y in matches_species]
-            if debug:
-                f.write("Possibilities:\n")
-                f.write(str(possibilities)+"\n")
-            possibilities = [x for x in possibilities if x in taxon_corpus_full]
-            if debug:
-                f.write("Narrowed down possibilities:\n")
-                f.write(str(possibilities)+"\n")
-            if len(possibilities) == 1:
-                final[img_name] = possibilities[0]
-            elif len(possibilities) > 1:
-                final[img_name] = "[MULTIPLE MATCHES FOR GENUS AND SPECIES]"
-            else:
-                final[img_name] = "[GENUS/SPECIES MISMATCH]"
-        else:
-            final[img_name] = "NO MATCH"
+        # Structural pattern matching
+        match [len(matches_genus), len(matches_species)]:
+            case [0,0]:
+                final[img_name] = "NO MATCH"
+            case [1,0]:
+                final[img_name] = matches_genus[0][1] + " " + "[NO MATCH SPECIES]"
+                if debug:
+                    f.write("Single match for genus; no match for species.\n")
+            case [0,1]:
+                final[img_name] = "[NO MATCH GENUS]" + " " + matches_species[0][1]
+                if debug:
+                    f.write("No match for genus; single match for species.\n")
+            case [1,1]:
+                final[img_name] = matches_genus[0][1] + " " + matches_species[0][1]
+                if debug:
+                    f.write("Single match for genus and species.\n")
+            case [1,_]:
+                final[img_name] = matches_genus[0][1] + " " + "[MULTIPLE MATCHES]"
+                if debug:
+                    f.write("Single match for genus; multiple matches for species.\n")
+            case [_,1]:
+                final[img_name] = "[MULTIPLE MATCHES]" + " " + matches_species[0][1]
+                if debug:
+                    f.write("Multiple matches for genus; single match for species.\n")
+            case [_,_]:
+                final[img_name] = "[MULTIPLE MATCHES]" + " " + "[MULTIPLE MATCHES]"
+                if debug:
+                    f.write("Multiple matches for genus and species.\n")
         if debug:
             f.write("========================================================\n")
             f.write("Final result for "+img_name+":\n")
@@ -649,9 +557,9 @@ def main():
         corpus_species = pickle.load(ff)
 
     taxon_final = match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug)
-    geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
+    # geography_final = match_words_to_corpus(ocr_results, "geography", geography_corpus_words, geography_corpus_full, output_dir, debug)
     determine_match(taxon_gt_txt, taxon_final, "taxon", output_dir, syn_dict)
-    determine_match(geography_gt_txt, geography_final, "geography", output_dir)
+    # determine_match(geography_gt_txt, geography_final, "geography", output_dir)
 
 if __name__ == "__main__":
     main()
