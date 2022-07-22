@@ -439,17 +439,15 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
                 if debug:
                     f.write("Single match for genus and species.\n")
             case [1,_]:
-                final[img_name] = matches_genus[0][1] + " " + "[MULTIPLE MATCHES]"
+                final[img_name] = matches_genus[0][1] + " " + matches_species[-1][1]
                 if debug:
                     f.write("Single match for genus; multiple matches for species.\n")
             case [_,1]:
-                final[img_name] = "[MULTIPLE MATCHES]" + " " + matches_species[0][1]
+                final[img_name] = matches_genus[-1][1] + " " + matches_species[0][1]
                 if debug:
                     f.write("Multiple matches for genus; single match for species.\n")
             case [_,_]:
-                final[img_name] = "[MULTIPLE MATCHES]" + " " + "[MULTIPLE MATCHES]"
-                if debug:
-                    f.write("Multiple matches for genus and species.\n")
+                final[img_name] = matches_genus[-1][1] + " " + matches_species[-1][1]
         if debug:
             f.write("========================================================\n")
             f.write("Final result for "+img_name+":\n")
