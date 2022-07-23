@@ -348,32 +348,31 @@ def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
 def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, output_dir, debug=False):
     # corpus_genus: key is genus and value is a list of possible species 
     def match_genus(n):
-        if len(n) > 1:
-            choice = process.extractOne(n, list(corpus_genus.keys()), score_cutoff=91)
+        if len(n[1]) > 1:
+            choice = process.extractOne(n[1], list(corpus_genus.keys()), score_cutoff=91)
         if choice:
             text, similarity, _ = choice
-            return similarity, text
+            # return similartiy, matched genus, OCR confidence, OCR text
+            return similarity, text, n[0], n[1]
     def match_species(n):
-        if len(n) > 1:
-            choice = process.extractOne(n, list(corpus_species.keys()), score_cutoff=91)
+        if len(n[1]) > 1:
+            choice = process.extractOne(n[1], list(corpus_species.keys()), score_cutoff=91)
         if choice:
             text, similarity, _ = choice
-            return similarity, text
+            # return similartiy, matched species, OCR confidence, OCR text
+            return similarity, text, n[0], n[1]
     cnt = 0
     final = {}
     print("Matching words to taxon corpus...")
     for img_name,results in tqdm(ocr_results.items(), total=len(ocr_results)):
 
-        results_modified = [results["text"][i] for i in range(len(results["text"])) if int(results["conf"][i]) > 3 and len(results["text"][i]) > 1]
+        results_modified = [(results["conf"][i], results["text"][i]) for i in range(len(results["text"])) if int(results["conf"][i]) > 3 and len(results["text"][i]) > 1]
         results_genus = list(map(match_genus, results_modified))
         results_species = list(map(match_species, results_modified))
         # taking care of situation like this: this is result species: [['centeterius'], ['inceps'], ['smithsonianus'], 
         # ['constitutionis'], ['oto'], ['obsistens'], ['ochrea'], ['oto'], ['oto']]
         results_genus = list(set([x for x in results_genus if x != None and len(x) != 0]))
         results_species = list(set([x for x in results_species if x != None and len(x) != 0]))
-        
-        heapq.heapify(results_genus)
-        heapq.heapify(results_species)
 
         possible_species = []
         # first word in each list is a genus
@@ -399,9 +398,6 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
         
         matches_genus = list(set(matches_genus))
         matches_species = list(set(matches_species))
-        
-        heapq.heapify(matches_genus)
-        heapq.heapify(matches_species)
 
         # print("this is number", img_name )
         # print("this is result genus:", possible_genus)
@@ -439,21 +435,64 @@ def match_taxon(ocr_results, taxon_corpus_full, corpus_genus, corpus_species, ou
                 if debug:
                     f.write("Single match for genus and species.\n")
             case [1,_]:
-                final[img_name] = matches_genus[0][1] + " " + matches_species[-1][1]
-                if debug:
-                    f.write("Single match for genus; multiple matches for species.\n")
+                potential_taxa = []
+                for species in matches_species:
+                    if species[1] in corpus_genus[matches_genus[0][1]]:
+                        potential_taxa += [(matches_genus[0][1] + " " + species[1], species[0]+species[2])]
+                if len(potential_taxa) == 0:
+                    final[img_name] = matches_genus[0][1] + " " + "[NO MATCH SPECIES]"
+                else:
+                    potential_taxa = sorted(potential_taxa, key=lambda x: x[1], reverse=True)
+                    final[img_name] = potential_taxa[0][0]
+                    if debug:
+                        f.write("Multiple matches for genus; no match for species.\n")
+                        f.write("Potential taxa: " + str(potential_taxa) + "\n")
+                        f.write("Final taxon: " + final[img_name] + "\n")
             case [_,1]:
-                final[img_name] = matches_genus[-1][1] + " " + matches_species[0][1]
-                if debug:
-                    f.write("Multiple matches for genus; single match for species.\n")
+                potential_taxa = []
+                for genus in matches_genus:
+                    if genus[1] in corpus_species[matches_species[0][1]]:
+                        potential_taxa += [(genus[1] + " " + matches_species[0][1], genus[0]+genus[2])]
+                if len(potential_taxa) == 0:
+                    final[img_name] = "[NO MATCH GENUS]" + " " + matches_species[0][1]
+                else:
+                    potential_taxa = sorted(potential_taxa, key=lambda x: x[1], reverse=True)
+                    final[img_name] = potential_taxa[0][0]
+                    if debug:
+                        f.write("No match for genus; multiple matches for species.\n")
+                        f.write("Potential taxa: " + str(potential_taxa) + "\n")
+                        f.write("Final taxon: " + final[img_name] + "\n")
             case [_,_]:
-                final[img_name] = matches_genus[-1][1] + " " + matches_species[-1][1]
+                potential_taxa = []
+                for genus in matches_genus:
+                    for species in matches_species:
+                        if species[1] in corpus_genus[genus[1]]:
+                            potential_taxa += [(genus[1] + " " + species[1], genus[0] + genus[2] + species[0] + species[2])]
+                if len(potential_taxa) == 0:
+                    final[img_name] = "NO MATCH"
+                else:
+                    potential_taxa = sorted(potential_taxa, key=lambda x: x[1], reverse=True)
+                    final[img_name] = potential_taxa[0][0]
+                    if debug:
+                        f.write("Multiple matches for genus and species.\n")
+                        f.write("Potential taxa: " + str(potential_taxa) + "\n")
+                        f.write("Final taxon: " + str(final[img_name]) + "\n")
+                    
         if debug:
             f.write("========================================================\n")
             f.write("Final result for "+img_name+":\n")
             f.write(final[img_name]+"\n")
     print("Done.\n")
     return final
+
+# def multiple_matches(matches_genus, matches_species):
+#     g, *rest_genus = matches_genus
+#     s, *rest_species = matches_species
+#     match [g[0], s[0], len(rest_genus), len(rest_species)]:
+#         case []
+# 
+# 
+
 
 ### --------------------------------- Determine which are same as ground truth/or just output results --------------------------------- ###
 def determine_match(gt, final, fname, output_dir, syn_dict = None):
