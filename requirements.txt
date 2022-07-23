@@ -9,3 +9,4 @@ python-dwca-reader
 pytesseract
 wget
 rapidfuzz
+requests
