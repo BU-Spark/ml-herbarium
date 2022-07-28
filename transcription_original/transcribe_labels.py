@@ -10,6 +10,7 @@ import shutil
 import sys
 
 import cv2
+from matplotlib import lines
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -175,36 +176,31 @@ def process_data(org_img_dir, craft_res_dir):
 
 
 ### --------------------------------- Handwritting recognition --------------------------------- ###
-def run_handwritten_recog(line_images, handwriting_line_recognition_net):
-	def operation(line_image):
-		line_image_size = (60, 800)
-		line_image = handwriting_recognition_transform(line_image, line_image_size)
-		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
-		return line_character_prob
-	form_character_prob = []
-	form_character_prob.append(map(operation(line_images)))
-	return form_character_prob
-
-def handwriting_recog(lines, num_threads):
+def run_handwritten_recog(line_images):
 	handwriting_line_recognition_net = HandwritingRecognitionNet(rnn_hidden_states=512,
 															 rnn_layers=2, ctx=ctx, max_seq_len=160)
 	pretrained_params = "models/herb_line_trained_on_all.params"
 	handwriting_line_recognition_net.load_parameters(pretrained_params, ctx=ctx) # "models/handwriting_line8.params"
 	handwriting_line_recognition_net.hybridize()
-
-
 	line_image_size = (60, 800)
+	form_character_prob = []
+	for i, line_image in enumerate(line_images):
+		# print(x,i)
+		line_image = handwriting_recognition_transform(line_image, line_image_size)
+		line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
+		form_character_prob.append(line_character_prob)
+	return form_character_prob
+
+def handwriting_recog(lines, num_threads):
 	character_probs = []
-	x = 0
-	for line_images in lines:
-		form_character_prob = []
-		for i, line_image in enumerate(line_images):
-			# print(x,i)
-			line_image = handwriting_recognition_transform(line_image, line_image_size)
-			line_character_prob = handwriting_line_recognition_net(line_image.as_in_context(ctx))
-			form_character_prob.append(line_character_prob)
-		character_probs.append(form_character_prob)
-		x+=1
+	print("Starting multiprocessing...")
+	pool = mp.Pool(min(num_threads, len(lines)))
+	for output in tqdm(pool.imap(run_handwritten_recog, lines), total=len(lines)):
+		character_probs.append(output)
+	pool.close()
+	pool.join()
+	print("Done.\n")
+	
 	return character_probs
 
 
@@ -229,7 +225,7 @@ def prob_to_words(character_probs, lines):
 	for i, form_character_probs in enumerate(character_probs):
 		this_am = [] 
 		# this_bs = []
-		print("Processed img "+str(i)+" character prob")
+		# print("Processed img "+str(i)+" character prob")
 		for j, line_character_probs in enumerate(form_character_probs):
 			decoded_line_am = get_arg_max(line_character_probs)
 			this_am.append(decoded_line_am)
@@ -274,11 +270,9 @@ def match_to_corpus(all_decoded_am, lines, fnames, corpus, gt_txt, output_dir):
 	if gt_txt != None:
 		for i in range(len(gt_txt)):
 			if gt_txt[fnames[i][:-4]] == final[i]:
-				print(fnames[i][:-4]+": "+ final[i])
 				f.write(fnames[i][:-4]+": "+ final[i] +"\n")
 				cnt+=1
 			else:
-				print(fnames[i]+": N/A")
 				f.write(fnames[i]+": N/A\n")
 
 		print("acc: "+str(cnt)+"/"+str(len(gt_txt)))
