@@ -83,7 +83,8 @@ def get_gt(org_img_dir):
 
 def get_corpus(org_img_dir):
 	corpus_dir = org_img_dir
-	corpus = open(os.path.join(corpus_dir,"taxon_corpus.txt")).read().split("\n")
+	# corpus = open(os.path.join(corpus_dir,"taxon_corpus.txt")).read().split("\n")
+	corpus = open("/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
 	corpus = [s.lower() for s in corpus]
 	corpus = [s for s in corpus if s != ""]
 
@@ -237,6 +238,7 @@ def prob_to_words(character_probs, lines):
 def match_to_corpus(all_decoded_am, lines, fnames, corpus, gt_txt, output_dir):
 	cnt = 0
 	final = []
+
 	for i,lines in enumerate(all_decoded_am):
 		matched = False
 		matches = []
