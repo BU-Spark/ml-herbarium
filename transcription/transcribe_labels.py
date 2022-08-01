@@ -15,6 +15,8 @@ import pickle
 from rapidfuzz import process
 from tqdm import tqdm
 
+cv2.setNumThreads(1)
+
 ### --------------------------------- Helper Functions --------------------------------- ###
 def get_gt(fname, org_img_dir):
     gt_dir = org_img_dir + fname + "_gt.txt"
@@ -347,7 +349,7 @@ def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
 ### --------------------------------- Match taxon to corpus --------------------------------- ###
 def run_match_taxon(img, corpus_genus, corpus_species, output_dir, debug):
     img_name, results = img
-    results_modified = [(results["conf"][i], results["text"][i]) for i in range(len(results["text"])) if int(results["conf"][i]) > 3 and len(results["text"][i]) > 1]
+    results_modified = [(results["conf"][i], results["text"][i]) for i in range(len(results["text"])) if int(results["conf"][i]) > 30 and len(results["text"][i]) > 1]
     mg = partial(match_genus, corpus_genus=corpus_genus)
     results_genus = list(map(mg, results_modified))
     ms = partial(match_species, corpus_species=corpus_species)
@@ -403,7 +405,6 @@ def run_match_taxon(img, corpus_genus, corpus_species, output_dir, debug):
 
     # Structural pattern matching
     match [len(matches_genus), len(matches_species)]:
-
         case [0,0]:
             result = "NO MATCH"
         case [1,0]:
