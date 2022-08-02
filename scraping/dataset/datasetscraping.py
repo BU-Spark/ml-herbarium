@@ -26,7 +26,6 @@ import multiprocessing as mp
 
 # %%
 timestr = time.strftime("%Y%m%d-%H%M%S")
-
 PERCENT_TO_SCRAPE = 0.00015
 NUMBER_TO_SKIP = 40000
 DATASET_PATH = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/"
@@ -347,8 +346,6 @@ if __name__ == "__main__":
         DATASET_URL = args[args.index("-u") + 1]
     if args.count("-c") > 0:
         NUM_CORES = int(args[args.index("-c") + 1])
-    if args.count("-k") > 0:
-        KEEP = True
     if args.count("--output_path") > 0:
         OUTPUT_PATH = args[args.index("--output_path") + 1]
     if args.count("--percent_to_scrape") > 0:
@@ -357,8 +354,10 @@ if __name__ == "__main__":
         DATASET_URL = args[args.index("--dataset_url") + 1]
     if args.count("--num_cores") > 0:
         NUM_CORES = int(args[args.index("--num_cores") + 1])
-    if args.count("--keep") > 0:
+    if args.count("--keep") > 0 or args.count("-k") > 0:
         KEEP = True
+    else:
+        KEEP = False
     if args[0] == "dwca":
         TYPE = "dwca"
         print("Scraping dataset from Darwin Core Archive.")
