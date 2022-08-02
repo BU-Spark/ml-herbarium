@@ -243,7 +243,7 @@ def generate_debug_output(img_name, ocr_results, imgs, org_img_dir, output_dir):
         h = results["height"][i]
         text = results["text"][i]
         conf = int(results["conf"][i])
-        if conf > 30:
+        if conf > 15:
             text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
             cv2.rectangle(debug_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(debug_image, text, (x, y - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 200), 2)
@@ -349,7 +349,7 @@ def ocr_debug(ocr_results, output_dir, imgs, org_img_dir):
 ### --------------------------------- Match taxon to corpus --------------------------------- ###
 def run_match_taxon(img, corpus_genus, corpus_species, output_dir, debug):
     img_name, results = img
-    results_modified = [(results["conf"][i], results["text"][i]) for i in range(len(results["text"])) if int(results["conf"][i]) > 30 and len(results["text"][i]) > 1]
+    results_modified = [(results["conf"][i], results["text"][i]) for i in range(len(results["text"])) if int(results["conf"][i]) > 1 and len(results["text"][i]) > 1]
     mg = partial(match_genus, corpus_genus=corpus_genus)
     results_genus = list(map(mg, results_modified))
     ms = partial(match_species, corpus_species=corpus_species)
