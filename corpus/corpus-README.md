@@ -37,11 +37,11 @@ It then returns a list of lists of cities.
 
 ## write_geo()
 
-This function writes the geo-coordinates of the cities to a text file.
+This function writes the countries and states of the cities to a text file.
 The text file is named corpus_geography.txt and is located in the output_dir.
 ```
     The text file is formatted as follows:
-    city_name, latitude, longitude
+    country_name, state_name, city_name
 ```
 
 
