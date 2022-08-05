@@ -2,7 +2,7 @@
 
 # transcribe_labels.py
 
-ml-herbarium/transcription/transcribe/transcribe_labels.py
+ml-herbarium/transcription/transcribe_labels.py
 
 ## get_gt()
 
@@ -344,7 +344,7 @@ runs the OCR, and then matches the OCR results to the ground truth.
 
 # test_preprocessing.py
 
-ml-herbarium/transcription/transcribe/test_preprocessing.py
+ml-herbarium/transcription/test_preprocessing.py
 
 ## getangle()
 
