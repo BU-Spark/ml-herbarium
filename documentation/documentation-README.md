@@ -2,7 +2,7 @@
 
 # generate_docs.py
 
-/usr4/ugrad/en/ml-herbarium/documentation/generate_docs.py
+ml-herbarium/documentation/generate_docs.py
 
 ## call_api()
 

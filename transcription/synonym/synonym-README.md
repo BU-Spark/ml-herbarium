@@ -2,7 +2,7 @@
 
 # generate_syn.py
 
-/usr4/ugrad/en/ml-herbarium/transcription/synonym/generate_syn.py
+ml-herbarium/transcription/synonym/generate_syn.py
 
 ## download_dataset()
 

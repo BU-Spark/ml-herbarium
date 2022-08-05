@@ -2,7 +2,7 @@
 
 # corpus_geography.py
 
-/usr4/ugrad/en/ml-herbarium/corpus/corpus_geography/corpus_geography.py
+ml-herbarium/corpus/corpus_geography/corpus_geography.py
 
 ## download_dataset()
 

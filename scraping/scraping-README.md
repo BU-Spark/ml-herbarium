@@ -2,7 +2,7 @@
 
 # datasetscraping.py
 
-/usr4/ugrad/en/ml-herbarium/scraping/dataset/datasetscraping.py
+ml-herbarium/scraping/dataset/datasetscraping.py
 
 ## download_dataset()
 
@@ -267,7 +267,7 @@ SystemExit
 
 # download.py
 
-/usr4/ugrad/en/ml-herbarium/scraping/web/download.py
+ml-herbarium/scraping/web/download.py
 
 ## zipdir()
 This function takes in a source directory and a destination directory and zips the source directory into the destination directory.

@@ -2,7 +2,7 @@
 
 # seg_label.py
 
-/usr4/ugrad/en/ml-herbarium/segmentation/seg_label.py
+ml-herbarium/segmentation/seg_label.py
 
 ## addBox()
 
