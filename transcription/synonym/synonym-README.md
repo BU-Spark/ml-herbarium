@@ -40,19 +40,18 @@ The function will return the syn dictionary.
 This function takes a string as input and returns a string as output.
 The input string is assumed to be a word or a phrase.
 The output string is the same as the input string, except that
-if the input string is a phrase, then the output string is the first
-word of the phrase.
+if the input string contains anything other than genus and species, then the output string is the first two words of the phrase.
 
 
 
 ## syn_pure()
 
 
-This function takes a dictionary of synonyms and returns a dictionary of synonyms with only one word.
+This function takes a dictionary of synonyms (syn) and returns a dictionary of synonyms (syn_pure) with only genus and species.
 The input dictionary is a dictionary of synonyms, where the key is the word and the value is the synonym.
 The output dictionary is a dictionary of synonyms, where the key is the word and the value is the synonym.
-The output dictionary only contains synonyms with one word.
-The output dictionary is saved as a pickle file.
+The output dictionary only contains synonyms with genus and species.
+The output dictionary (syn_pure) is saved as a pickle file.
 
 
 
