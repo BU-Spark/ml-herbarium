@@ -50,7 +50,6 @@ from ocr.handwriting_line_recognition import decode as decoder_handwriting, alph
 
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
 
-
 def get_imgsAndBoxes(org_img_dir, craft_res_dir):
 	boxes = []
 	imgs = []
@@ -83,8 +82,8 @@ def get_gt(org_img_dir):
 
 def get_corpus(org_img_dir):
 	corpus_dir = org_img_dir
-	# corpus = open(os.path.join(corpus_dir,"taxon_corpus.txt")).read().split("\n")
-	corpus = open("/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
+	corpus = open(os.path.join(corpus_dir,"taxon_corpus.txt")).read().split("\n")
+	# corpus = open("/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-angeline1/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt").read().split("\n")
 	corpus = [s.lower() for s in corpus]
 	corpus = [s for s in corpus if s != ""]
 
@@ -197,6 +196,7 @@ def handwriting_recog(lines, num_threads):
 	print("Starting multiprocessing...")
 	pool = mp.Pool(min(num_threads, len(lines)))
 	for output in tqdm(pool.imap(run_handwritten_recog, lines), total=len(lines)):
+	# for output in pool.imap(run_handwritten_recog, lines):
 		character_probs.append(output)
 	pool.close()
 	pool.join()
@@ -235,36 +235,41 @@ def prob_to_words(character_probs, lines):
 	return all_decoded_am
 
 ### --------------------------------- Match words to corpus --------------------------------- ###
-def match_to_corpus(all_decoded_am, lines, fnames, corpus, gt_txt, output_dir):
-	cnt = 0
+def match(lines, corpus):
+	matches = []
+	for j,s in enumerate(lines):
+		tmp = get_close_matches(s, corpus)
+		if len(tmp) != 0:
+			matches.append(tmp)
+#             print('am matched words img'+str(i)+':',tmp)
+		else:
+			split = s.split(" ")
+			for s2 in split:
+				tmp = get_close_matches(s2, corpus)
+				if len(tmp) != 0:
+					matches.append(tmp)
+#                     print("    img"+str(i)+":", tmp)
+	has_spaces = [label for strs in matches for label in strs if " " in label]
+	if len(has_spaces) > 0: 
+		# print('am matched words img'+str(i)+':',has_spaces)
+		result = has_spaces[0]
+	else: 
+		# print(print('am matched words img'+str(i)+':',matches))
+		result = "no match"
+	return result
+		
+def match_to_corpus(all_decoded_am, fnames, corpus, gt_txt, output_dir):
 	final = []
-
-	for i,lines in enumerate(all_decoded_am):
-		matched = False
-		matches = []
-		for j,s in enumerate(lines):
-			tmp = get_close_matches(s, corpus)
-			if len(tmp) != 0:
-				matches.append(tmp)
-	#             print('am matched words img'+str(i)+':',tmp)
-				matched = True
-			else:
-				split = s.split(" ")
-				for s2 in split:
-					tmp = get_close_matches(s2, corpus)
-					if len(tmp) != 0:
-						matches.append(tmp)
-	#                     print("    img"+str(i)+":", tmp)
-						matched = True
-		has_spaces = [label for strs in matches for label in strs if " " in label]
-		if len(has_spaces) > 0: 
-			# print('am matched words img'+str(i)+':',has_spaces)
-			final.append(has_spaces[0])
-		else: 
-			# print(print('am matched words img'+str(i)+':',matches))
-			final.append("-- "+str(i)+" --")
-		if matched: cnt+=1
-		# print()
+	print("Starting matching...")
+	print("Starting multiprocessing...")
+	pool = mp.Pool(min(len(all_decoded_am), mp.cpu_count()))
+	func = partial(match, corpus=corpus)
+	for result in tqdm(pool.imap(func, all_decoded_am), total=len(all_decoded_am)):
+	# for result in pool.imap(func, all_decoded_am):
+		final.append(result)
+	pool.close()
+	pool.join()        
+	print("Done.\n")
 
 	### ---------- Determine which are same as ground truth/or just output results --------- ###
 	f = open(output_dir + "results.txt", "w")
@@ -321,7 +326,7 @@ def main():
 	os.makedirs(output_dir)
 	character_probs = handwriting_recog(lines, num_threads)
 	all_decoded_am = prob_to_words(character_probs, lines)
-	match_to_corpus(all_decoded_am, lines, fnames, corpus, gt_txt, output_dir)
+	match_to_corpus(all_decoded_am, fnames, corpus, gt_txt, output_dir)
 if __name__ == "__main__":
 	main()
 
