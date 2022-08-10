@@ -7,7 +7,7 @@
 #$ -m e                 # Send email at end of job
 #$ -m a                 # Send email at abort of job
 #$ -m b                 # Send email at begining of job
-#$ -M "en@bu.edu"
+# -M "your@email.here" #Be sure to add a money sign after the hashtag
 
 module load python3/3.10.5
 module load leptonica/1.82.0
