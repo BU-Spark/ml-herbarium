@@ -344,6 +344,7 @@ if __name__ == "__main__":
         PERCENT_TO_SCRAPE = float(args[args.index("-p") + 1])
     if args.count("-u") > 0:
         DATASET_URL = args[args.index("-u") + 1]
+        download_dataset()
     if args.count("-c") > 0:
         NUM_CORES = int(args[args.index("-c") + 1])
     if args.count("--output_path") > 0:
@@ -352,6 +353,7 @@ if __name__ == "__main__":
         PERCENT_TO_SCRAPE = float(args[args.index("--percent_to_scrape") + 1])
     if args.count("--dataset_url") > 0:
         DATASET_URL = args[args.index("--dataset_url") + 1]
+        download_dataset()
     if args.count("--num_cores") > 0:
         NUM_CORES = int(args[args.index("--num_cores") + 1])
     if args.count("--keep") > 0 or args.count("-k") > 0:
