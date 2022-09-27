@@ -1,33 +1,58 @@
+import shutil
+import time
 import numpy as np
 import cv2
 import os
 import matplotlib.pyplot as plt
+import multiprocessing as mp
+from tqdm import tqdm
 
+NUM_CORES = min(mp.cpu_count(), 50)
 
-# get the resulting images and text files
-craft_res_dir = "../CRAFT/CRAFT-pytorch-master/result/"
-# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/result"
-boxes = []
+org_img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
+craft_res_dir = org_img_dir.replace('/scraped-data/', '/CRAFT-results/')
+save_dir = org_img_dir.replace('/scraped-data/', '/seg-results/')
+
+boxes = {}
 # imgs = []
 
-for fname in sorted(os.listdir(craft_res_dir)):
+def addBox(fname):
 	if ".jpg" in fname and "mask" not in fname:
 		# imgs.append(cv2.imread(os.path.join(craft_res_dir, fname)))
 		tmp_txt = open(os.path.join(craft_res_dir, fname[:len(fname)-3]+"txt"),"r").read().split("\n")[:-1]
 		tmp_txt = [line.split(",") for line in tmp_txt]
 		tmp_bxs = [[[int(line[i]),int(line[i+1])] for i,val in enumerate(line) if int(i)%2==0] for line in tmp_txt ]
-		boxes.append(tmp_bxs)
+		boxes[fname[4:len(fname)-4]] = tmp_bxs
+		return boxes
+
+def fillBoxes():
+	print("\nFilling boxes dictionary...")
+	print("Starting multiprocessing...")
+	list_imgs = sorted(os.listdir(craft_res_dir))
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addBox, list_imgs), total=len(sorted(os.listdir(craft_res_dir)))):
+		if item: boxes.update(item)
+	pool.close()
+	pool.join()
+	print("\nBoxes dictionary filled.\n")
 
 # get the original images to crop them
 # org_img_dir = "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/test_models/CRAFT-pytorch-master/in_data"
-org_img_dir = "../in_data/"# "/Users/jasonli/Desktop/BU/Junior/Spring2021/CS791/sandbox/herb_dat/imgs"
-imgs = []
-fnames = []
-for fname in sorted(os.listdir(org_img_dir)):
-	if ".jpg" in fname:
-		imgs.append(cv2.imread(os.path.join(org_img_dir, fname)))
-		fnames.append(fname)
-n_imgs = len(imgs)
+imgs = {}
+
+def addImg(fIdx):
+	imgs[fIdx]=cv2.imread(os.path.join(org_img_dir, fIdx+".jpg"))
+	return imgs
+
+def getOrigImgs():
+	print("Getting original images...")
+	print("Starting multiprocessing...")
+	pool = mp.Pool(NUM_CORES)
+	for item in tqdm(pool.imap(addImg, boxes), total=len(boxes)):
+		imgs.update(item)
+	pool.close()
+	pool.join()
+	print("\nOriginal images obtained.\n")
 # print(fnames)
 
 
@@ -58,13 +83,13 @@ def has_overlap(b1,b2):
 	return None
 
 # expands boxes according to input margins
-def expand_boxes(boxes, diff_axes=False, mx=20, my=40, m=4):
+def expand_boxes(bxs, diff_axes=False, mx=20, my=40, m=4):
 	if not diff_axes:
 		mx = m
 		my = m
 		
 	boxes_exp = []
-	for box in boxes:
+	for box in bxs:
 		tl, tr, br, bl = box
 		newtl = [tl[0]-mx, tl[1]-my]
 		newtr = [tr[0]+mx, tr[1]-my]
@@ -77,7 +102,6 @@ def expand_boxes(boxes, diff_axes=False, mx=20, my=40, m=4):
 		
 # combines the expanded boxes into a large box (presumably the label)
 def combine_boxes(boxes):
-	count = len(boxes)
 	newboxes = []
 
 	for box in boxes:
@@ -156,26 +180,42 @@ def crop_lines(boxes, imgs):
 		line_crops.append(img_lines)
 	return line_crops
 
+def main():
+	# segment the labels
+	fillBoxes()
+	getOrigImgs()
+	boxes_exp = {key: expand_boxes(bxs, diff_axes=True) for key, bxs in boxes.items()} # expand boxes
+	boxes_comb = {key: combine_boxes(bxs) for key, bxs in boxes_exp.items()} # combine the expanded boxes
+	boxes_comb_sorted = {key: list(reversed(sort_by_size(bxs)))[0] for key, bxs in boxes_comb.items()} # sort them and take the largest box
+	labels = {} # segment label
 
-# segment the labels
-boxes_exp = [expand_boxes(bxs, diff_axes=True) for bxs in boxes] # expand boxes
-boxes_comb = [combine_boxes(bxs) for bxs in boxes_exp] # combine the expanded boxes
-boxes_comb_sorted = [list(reversed(sort_by_size(bxs)))[0] for bxs in boxes_comb] # sort them and take the largest box
-labels = [crop_labels(imgs[i], boxes_comb_sorted[i]) for i in range(n_imgs)] # segment label
+	for key, image in imgs.items():
+		try:
+			labels[key]=crop_labels(image, boxes_comb_sorted[key])
+		except:
+			labels[key]=None
+			print("Error cropping label for image: ", key+".jpg")
 
-# segment the lines of text (used to feed into models like mxnet)
-lines = [get_lines(bxs) for bxs in boxes]
-lines = [expand_boxes(bxs) for bxs in lines]
-lines = crop_lines(lines, imgs)
+	# segment the lines of text (used to feed into models like mxnet)
+	lines = {key: get_lines(bxs) for key, bxs in boxes.items()}
+	lines = {key: expand_boxes(bxs) for key, bxs in lines.items()}
+	lines = crop_lines(lines, imgs)
 
-# save cropped labels
-save_dir = "../labels/"
-if not os.path.exists(save_dir):
+	# save cropped labels
+	timestr = time.strftime("%Y%m%d-%H%M%S")
+
+	if os.path.exists(save_dir):
+		shutil.rmtree(save_dir)
 	os.makedirs(save_dir)
 
-for i,label in enumerate(labels):
-	cv2.imwrite(os.path.join(save_dir, fnames[i]+"_label.jpg"), label)
+	for key, label in labels.items():
+		try:
+			plt.imsave(os.path.join(save_dir, key+"_label.jpg"), label)
+		except:
+			print("Error saving label for image: ", key+".jpg")
 
-# for i,j in enumerate(lines[0]):
-# 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
+	# for i,j in enumerate(lines[0]):
+	# 	cv2.imwrite(os.path.join(save_dir, "test"+str(i)+".jpg"), j)
 
+if __name__ == "__main__":
+    main()

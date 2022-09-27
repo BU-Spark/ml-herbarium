@@ -1,1 +1,8 @@
 .DS_Store
+**/.env/**
+**__pycache__**
+**.pyc
+labels
+**settings.json
+**.ipynb_checkpoints**
+**/gt/**
