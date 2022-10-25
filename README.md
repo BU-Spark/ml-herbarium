@@ -4,6 +4,7 @@ This repository contains a software pipeline to process herbarium specimens. The
 
 Dependencies can be found in `requirements.txt`
 
+
 <br />
 
 # Installation Instuctions
@@ -26,6 +27,18 @@ module load tesseract/4.1.3
 `source .env/bin/activate`
 ### Install requirements
 `pip install -r requirements.txt`
+
+## Note for allocating gpu resources
+```
+# Check group name
+acctool -b y
+# allocate 1 gpus v100 node
+qrsh -P sparkgrp -l gpus=1 -l gpu_c=3.5 gpu_type=V100
+
+Reference:
+- SCC cheetsheet, http://scv.bu.edu/documents/SCC_CheatSheet.pdf
+- More tutorial and training videos, https://www.bu.edu/tech/support/research/training-consulting/rcs-tutorial-videos-and-third-party-tutorials/
+```
 
 ## Note for VS Code
 To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.10.5` in your `.env` path.

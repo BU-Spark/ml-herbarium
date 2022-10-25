@@ -1,3 +1,12 @@
+"""Example how to use run this file:
+$ python datasetscraping.py "csv" -o "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/drago_testdata/" --percent_to_scrape 0.00015 --num_cores 50 -k 1
+
+# "csv"/"dwca": If you dont have data.zip, then you need to download from "dwca", otherwise you can use "csv" indicates that you have data.zip and want to extracted to data.csv
+# -o: output
+# -p/--percent_to_scrape: percentage(%), we have about ~7800000 files in total
+# --num_cores: for multiprocessing
+# -k: if you have data.csv extracted already, then you use 1, otherwise use 0, so we will extract the data from data.zip
+"""
 # %% [markdown]
 # # Dataset Scraping
 

@@ -20,12 +20,14 @@ def call_api(function_source):
                     )
     return response
 
+USER_PATH = "~/CS549_Herbarium_Project/ml-herbarium/documentation/"
+# Best Practices for API Key Safety: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
 def main():
-    path = os.path.expanduser("~/ml-herbarium/documentation")
+    path = os.path.expanduser(USER_PATH)
     files = [os.path.join(dp, f) for dp, dn, fn in os.walk(path) for f in fn]
     files = [f for f in files if f.endswith(".py") and "__" not in f and ".env" not in f and "aws" not in f]
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    with open(os.path.expanduser("~/ml-herbarium/documentation/docs.MD"), "w") as docs:
+    with open(os.path.expanduser(USER_PATH+"docs.MD"), "w") as docs:
         docs.write("# ML-Herbarium Documentation\n\n")
         # docs.write("## File Tree\n\n")
         # rptree.

@@ -6,3 +6,4 @@ labels
 **settings.json
 **.ipynb_checkpoints**
 **/gt/**
+add_apikey.sh

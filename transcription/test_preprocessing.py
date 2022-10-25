@@ -49,11 +49,11 @@ def rotateimg(img):
     rotated = cv2.warpAffine(img, moment, (w,h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE) 
     return rotated
 
-if not os.path.exists(output_path):
-    os.makedirs(output_path)
-else:
-    shutil.rmtree(output_path)
-    os.makedirs(output_path)
+# if not os.path.exists(output_path):
+#     os.makedirs(output_path)
+# else:
+#     shutil.rmtree(output_path)
+#     os.makedirs(output_path)
 
 for image in tqdm(images):
     if ".jpg" not in image:
