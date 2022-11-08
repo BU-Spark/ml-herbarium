@@ -9,7 +9,9 @@ labels
 add_apikey.sh
 
 Tr_OCR/result_craft/
-PaddleOCR/notebook/
+# PaddleOCR/notebook/
 PaddleOCR/icdar2015/
-PaddleOCR/output/
+PaddleOCR/data/
+
+# PaddleOCR/output/
 PaddleOCR/pretrain_models/
