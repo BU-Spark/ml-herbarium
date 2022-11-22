@@ -11,7 +11,7 @@ This notebook is mainly used for going throught the whole process of running the
     - How should results be stored? 
       The result for PP_OCR pipeline can be saved in a given directory. it's an optional argument, please refer to the section "Let's use PaddleOCR on both detection and recognization" in this notebook. Note, since there are thousands of image will be processes, so the result won't be saved in batch processing.
     - How about an interface to query the results? Can a result be manually corrected and stored?
-      There is a function "display_OCR_result_with_imgID(imgID)" can be used to extract the image for a given imgID (You can try it in the notebook, it assume you have img_dict store in the local memory). For any case a manual inspection is needed, you can use this function for debugging or analysis purpose!
+      There is a function "def display_OCR_result_with_imgID(imgID)" can be used to extract the image for a given imgID (You can try it in the notebook, it assume you have img_dict store in the local memory). For any case a manual inspection is needed, you can use this function for debugging or analysis purpose!
 
 
 4. ppocr_test.py
