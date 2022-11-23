@@ -23,6 +23,10 @@ DATASET_PATH = img_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data
 img_dict = {}
 def addImg(fIdx):
     """Adding image to the img_dict, a Dict<int: imgId, nparr: img>, based on the given img_ID
+    Args:
+        @fIdx: str representation of the image id
+    Return:
+        @img_dict: the dictionary, store image id as key, and map to the numpy array as image data
     """
     img_dict[fIdx]=cv2.imread(os.path.join(DATASET_PATH, fIdx+".jpg"))
     # 	# By default, cv2.imread() use BGR, if you want to read in grayscale use, cv2.imread('image_1.png', 1)
@@ -32,6 +36,11 @@ def addImg(fIdx):
     return img_dict
 
 def getOrigImgs(multi_proc=True):
+    """ Read and load all the image into memory. Multiprocessing is supported
+    Args:
+        @multi_proc, bool, whether to use multiprocessing or not
+
+    """
     print("Getting original images...")
     print("Starting multiprocessing...")
     file_list = sorted(os.listdir(DATASET_PATH))
