@@ -67,9 +67,9 @@ def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1):
     print(f"Corrected Prediction Format: {color.GREEN} Pred_category(corr_count/total_count): gt_result || predicted_result || imgID {color.END}")
     count = 0
     for imgId in data_loader.imgIds_list:
-        # if imgId not in corpus_set[0]:
-        #     print(f"Warning: Bad image, {imgId} doesn't exist in Ground Truth Label!")
-        #     continue
+        if not gt_dict.get(imgId):
+            print(f"Warning: Bad image, {imgId} doesn't exist in Ground Truth Label!")
+            continue
         start = time.time()
         # Load and fit the image
         img = data_loader[imgId]
