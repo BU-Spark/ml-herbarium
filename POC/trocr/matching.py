@@ -96,3 +96,37 @@ def pooled_match2(comparison_file,labels, minimum_similarity = .001,**kwargs):
         result_dic[corpus_name[i]] = result
    
     return result_dic
+
+
+ # Function to add in the bigram index as a column on the dataframe
+def bigram_indices(row):
+    """
+    Given a row of data with columns 'Transcription' and 'Bigrams', this function
+    returns a list of tuples containing the indices of the words in the 'Transcription'
+    column that correspond to the bigrams in the 'Bigrams' column.
+    
+    Parameters:
+    row (pandas.Series): A row of data with columns 'Transcription' and 'Bigrams'.
+    
+    Returns:
+    list: A list of tuples, each containing the indices of the words in the 'Transcription'
+    column that correspond to the bigrams in the 'Bigrams' column.
+    
+    Example:
+    row = pd.Series({'Transcription': ['Herbier Museum.', 'Paris Cryptogamie.', 'PC0693452', '0.'],
+    'Bigrams': ['Herbier Museum.','Museum. Paris','Paris Cryptogamie.','Cryptogamie. PC0693452','PC0693452 0.']})
+    bigram_indices(row)
+    [(0, 0), (0, 1), (1, 1), (1, 2), (2, 3)]
+    """
+    list_of_transcriptions =  [list(x.split(' ')) for x in row['Transcription']]
+
+    bigram_idx = []
+    for word in row['Bigrams']:
+        strings = word.split(' ')
+        for i,x in enumerate(list_of_transcriptions):
+            if strings[0] in x:
+                first_idx = i
+            if strings[1] in x:
+                second_idx = i
+        bigram_idx.append((first_idx, second_idx))
+    return bigram_idx

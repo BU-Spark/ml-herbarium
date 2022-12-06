@@ -144,6 +144,28 @@ def main(args):
     #Save intermediate file
     combined_df.to_pickle(os.path.join(save_dir,'test.pkl'))
 
+    # Creating a new column which contains all bigrams from the transcription, with an associated index for each bigram
+    bigram_df = combined_df.copy()
+
+    bigram_df['Bigrams'] = bigram_df['Transcription'].str.join(' ').str.split(' ')
+
+    bigram_df['Bigrams'] = bigram_df['Bigrams'].apply(lambda lst: [lst[i:i+2] for i in range(len(lst) - 1)]).apply(lambda sublists: [' '.join(sublist) for sublist in sublists])
+
+   
+
+    bigram_df['Bigram_idx'] = bigram_df.apply(matching.bigram_indices, axis=1)
+
+    # Associating all biagrams with their respective image
+    bigram_idx = []
+    for i in range(len(bigram_df)):
+        for j in range(len(bigram_df.loc[i, 'Bigrams'])):
+            bigram_idx.append((i))
+    bigram_idx = pd.Series(bigram_idx)
+
+    # Getting the bigrams as individual strings
+    results = pd.Series(bigram_df['Bigrams'].explode().reset_index(drop=True))
+
+
     species = pd.Series(list(pd.read_pickle(ALL_SPECIES_FILE)))
     genus = pd.Series(list(pd.read_pickle(ALL_GENUS_FILE)))
     taxon = pd.read_csv(ALL_TAXON_FILE,delimiter = "\t", names=["Taxon"]).squeeze()
@@ -161,14 +183,14 @@ def main(args):
         subdivisions_dict[subdivision.name] = pycountry.countries.get(alpha_2 = subdivision.country_code).name
 
 
-    # Input to string-grouper all need to be series format
-    results_series = pd.Series(results)
+    # # Input to string-grouper all need to be series format
+    # results_series = pd.Series(results)
 
     #running the matching against all files
     minimum_similarity = .01 #arbitrary, set here to get every prediction, likely want to set this quite a bit higher
     start = time.time()
     # all_matches = matching.pooled_match(results_series,labels,minimum_similarity =minimum_similarity,Taxon = taxon,Species = species,Genus = genus,Countries = countries,Subdivisions = subdivisions)
-    all_matches = matching.pooled_match(results_series,labels,minimum_similarity =minimum_similarity,Taxon = taxon,Species = species,Genus = genus)
+    all_matches = matching.pooled_match(results,bigram_idx,minimum_similarity =minimum_similarity,Taxon = taxon,Species = species,Genus = genus)
     end = time.time()
     print('Time to match all strings: ',end-start)
         
