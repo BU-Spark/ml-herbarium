@@ -200,7 +200,7 @@ def main(args):
         pickle.dump(all_matches, f)
 
     # Getting the final dataframe with all output information
-    final_df = combined_df.copy()
+    final_df = bigram_df.copy()
 
     for k,v in all_matches.items():
         final_df = pd.merge(final_df,v[['right_index','Predictions','similarity',k+'_Corpus']],how = 'left',
@@ -210,7 +210,7 @@ def main(args):
         # Drop the right_index column
         final_df = final_df.drop(columns = ['right_index'])
         # Dealing with the case where there is no match
-        final_df[k+'_Index_Location'] = [x[0].index(x[1]) if x[1] in x[0] else 'No Match Found' for x in zip(final_df['Transcription'], final_df[k+'_Prediction_String'])]
+        final_df[k+'_Index_Location'] = [x[0].index(x[1]) if x[1] in x[0] else 'No Match Found' for x in zip(final_df['Bigrams'], final_df[k+'_Prediction_String'])]
 
     # Save the final dataframe
     final_df.to_pickle(os.path.join(save_dir,'final_df.pkl'))

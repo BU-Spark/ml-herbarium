@@ -8,6 +8,15 @@ import torch.nn.functional as F
 # Yoinked https://github.com/rsommerfeld/trocr/blob/main/src/scripts.py
 # Used for calculating the model confidene in transcriptoins
 def get_confidence_scores(generated_ids):
+    """
+    Given logits, return the confidence scores
+    
+    Parameters:
+    generated_ids (torch.Tensor): Logits from the model
+    
+    Returns:
+    list: List of confidence scores
+    """
     # Takes in the output of the model and returns the confidence scores
 
     # Get raw logits, with shape (examples,tokens,token_vals)
@@ -27,6 +36,20 @@ def get_confidence_scores(generated_ids):
     return [v.item() for v in batch_confidence_scores]
 
 def evaluate_craft_seg(model,processor,words_identified,word_log_dic,testloader,device):
+    """
+    Given a model, processor, words identified, word log dictionary, testloader, and device, evaluate the model on the CRAFTed segmentations
+    
+    Parameters:
+    model (torch.nn.Module): The model to evaluate
+    processor (torch.nn.Module): The processor to use
+    words_identified (list): List of words to identified
+    word_log_dic (dict): Dictionary of image and label associations
+    testloader (torch.utils.data.DataLoader): The testloader to use
+    device (torch.device): The device to use
+    
+    Returns:
+    pandas.DataFrame: results of the evaluation, including the transcription, confidence, and label
+    """
     # Takes in a model, processor, words identified, word log dictionary, testloader, and device, and 
     # returns the associated transcriptions, transcription confidence, and image label
     results = []
@@ -77,6 +100,15 @@ def evaluate_craft_seg(model,processor,words_identified,word_log_dic,testloader,
     return results,confidence,label
 
 def combine_by_label(df):
+    """
+    Given a dataframe, combine the transcriptions and confidence scores by label
+    
+    Parameters:
+    df (pd.DataFrame): Dataframe with columns 'Results' and 'Confidence'
+    
+    Returns:
+    pandas.DataFrame: A DataFrame containing the combined transcriptions and confidence scores
+    """
     # Combines the transcriptions and confidences by label
 
     ukeys, index = np.unique(df.Labels, True)

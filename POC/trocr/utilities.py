@@ -35,6 +35,16 @@ class CVITDataset(Dataset):
         
 
 def create_CVIT(df,processor):
+    """
+    Given a dataframe and a processor, this function creates a training and validation dataset for the CVIT dataset.
+    
+    Parameters:
+    df (pandas.DataFrame): A DataFrame containing the data to split into training and validation sets.
+    processor (callable): A callable object that processes the data from the DataFrame.
+    
+    Returns:
+    tuple: A tuple containing the training and validation datasets as instances of the CVITDataset class.
+    """
     # Training and validaiton splits for CVIT dataset
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_df.reset_index(drop=True, inplace=True)

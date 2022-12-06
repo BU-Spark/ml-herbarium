@@ -11,8 +11,18 @@ def matches_above_x(df,x = .75):
     return df.loc[df['similarity']>=x]
 
 def match(main,comparison_file,minimum_similarity=.001):
-     # Function takes a main file containing strings, a comparison file to match against main,
-     #  and a minimum similarity confidence level. Returns a list of matches based on similarity.
+    """
+    Given a main file containing strings and a comparison file to match against the main file,
+    this function returns a DataFrame of matches based on their cosine similarity.
+    
+    Parameters:
+    main (list or pandas.Series): A list or pandas Series containing the strings to match against.
+    comparison_file (list or pandas.Series): A list or pandas Series containing the strings to compare to the main file.
+    minimum_similarity (float): The minimum similarity confidence level required for a match (default is 0.001).
+    
+    Returns:
+    pandas.DataFrame: A DataFrame containing the matches and their similarity to the strings in the main file.
+    """
 
     if not isinstance(comparison_file, pd.Series):
         comparison_file = pd.Series(comparison_file)
@@ -22,7 +32,17 @@ def match(main,comparison_file,minimum_similarity=.001):
     return matches
 
 def highest_score_per_image(df,labels):
-    # Takes in a dataframe with similarity scores and returns a dataframe with only the highest score per image
+    """
+    Given a DataFrame with similarity scores and a list of labels, this function returns
+    a DataFrame with only the highest score per image.
+    
+    Parameters:
+    df (pandas.DataFrame): A DataFrame containing similarity scores, with columns 'right_index' and 'similarity'.
+    labels (list): A list of labels corresponding to the 'right_index' values in the DataFrame.
+    
+    Returns:
+    pandas.DataFrame: A DataFrame containing the highest similarity scores for each unique 'labels' value.
+    """
 
     # Getting the highest score for each individual image 
     exclude = ['Don Williams','Don William']
@@ -38,9 +58,22 @@ def highest_score_per_image(df,labels):
     return unique_labels
 
 def pooled_match(comparison_file,labels, minimum_similarity = .001,**kwargs):
-    # Take in any number of files containing strings to match against and returns a dictionary
-    # with keys the same name as input and values as the dataframe with matching information
-   
+    """
+    Given a comparison file containing strings and any number of additional files to match against the comparison file,
+    this function returns a dictionary with keys the same name as the input files and values as the DataFrame with
+    matching information.
+    
+    Parameters:
+    comparison_file (list or pandas.Series): A list or pandas Series containing the strings to compare to the other input files.
+    labels (list): A list of labels corresponding to the 'right_index' values in the DataFrame.
+    minimum_similarity (float): The minimum similarity confidence level required for a match (default is 0.001).
+    **kwargs: Any number of additional files containing strings to match against the comparison file, with the
+              file names as keyword arguments and the strings as values.
+    
+    Returns:
+    dict: A dictionary with keys the same name as the input files and values as the DataFrame with matching information.
+    """
+
     corpus_list = []
     corpus_name = []
     
@@ -70,7 +103,7 @@ def pooled_match(comparison_file,labels, minimum_similarity = .001,**kwargs):
 def pooled_match2(comparison_file,labels, minimum_similarity = .001,**kwargs):
     # Take in any number of files containing strings to match against and return a dictionary
     # with keys the same name as input and values as the dataframe with matching information
-   
+    # Same as pooled_match but uses a different method to multiprocess
     corpus_list = []
     corpus_name = []
     
@@ -120,6 +153,8 @@ def bigram_indices(row):
     """
     list_of_transcriptions =  [list(x.split(' ')) for x in row['Transcription']]
 
+    first_idx = None
+    second_idx = None
     bigram_idx = []
     for word in row['Bigrams']:
         strings = word.split(' ')
@@ -128,5 +163,10 @@ def bigram_indices(row):
                 first_idx = i
             if strings[1] in x:
                 second_idx = i
-        bigram_idx.append((first_idx, second_idx))
+            if first_idx != None and second_idx != None:
+                bigram_idx.append((first_idx, second_idx))
+                first_idx = None
+                second_idx = None
+                break
+        
     return bigram_idx
