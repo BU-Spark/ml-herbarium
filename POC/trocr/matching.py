@@ -73,7 +73,7 @@ def pooled_match(comparison_file,labels, minimum_similarity = .001,**kwargs):
     Returns:
     dict: A dictionary with keys the same name as the input files and values as the DataFrame with matching information.
     """
-
+    print('Starting matching process...')
     corpus_list = []
     corpus_name = []
     
@@ -92,11 +92,13 @@ def pooled_match(comparison_file,labels, minimum_similarity = .001,**kwargs):
    
     result_dic = {}
     for i,result in enumerate(pool.map(func,corpus_list)):
+        print('Matching against',corpus_name[i])
         result.columns.values[1] = corpus_name[i]+'_Corpus'
         result.columns.values[3] = "Predictions"
         result = result.drop('left_index', axis=1)
         result = highest_score_per_image(result,labels)
         result_dic[corpus_name[i]] = result
+
    
     return result_dic
 

@@ -60,7 +60,7 @@ def evaluate_craft_seg(model,processor,words_identified,word_log_dic,testloader,
     model.eval()
     if device == 'cuda':
         with torch.no_grad():
-            for idx,data in enumerate(tqdm(testloader,desc='Getting Transcriptions for Image Segments')):
+            for idx,data in enumerate(tqdm(testloader,desc='Transcribing Image Segments')):
 
                 images, labels = data
                 images, labels = images['pixel_values'][0].to(device), labels.to(device)
@@ -79,7 +79,7 @@ def evaluate_craft_seg(model,processor,words_identified,word_log_dic,testloader,
                 label.extend(labels.cpu().numpy())
     else:
         with torch.no_grad():
-            for idx,data in enumerate(tqdm(testloader,desc='Getting Transcriptions for Image Segments')):
+            for idx,data in enumerate(tqdm(testloader,desc='Transcribing Image Segments')):
 
                 images, labels = data
                 images, labels = images['pixel_values'][0].to(device), labels.to(device)

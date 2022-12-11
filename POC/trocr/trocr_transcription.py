@@ -50,11 +50,14 @@ def main(args):
     ALL_GENUS_FILE = args.genus_file
     ALL_TAXON_FILE = args.taxon_file
 
+    print('\n')
     # initialize the CRAFT model
     if torch.cuda.is_available():
         CUDA_CRAFT = True
     else:
         CUDA_CRAFT = False
+        print("\033[1mNo GPU detected, results may be slow.\033[0m")
+    print('Setting up CRAFT model...')
     craft = Craft(output_dir = output_dir_craft,export_extra = False, text_threshold = .7,link_threshold = .4, crop_type="poly",low_text = .3,cuda = CUDA_CRAFT)
 
     # CRAFT on images to get bounding boxes
@@ -82,7 +85,7 @@ def main(args):
             except (IOError, SyntaxError) as e:
                 corrupted_images.append(image)
 
-    
+    print('Setting up Tr-OCR model...')
     # Deleting empty folders, which occurs if some of the images get no segementation from CRAFT
     output_dir_craft = output_dir_craft
     folders = list(os.walk(output_dir_craft))[1:]
@@ -114,7 +117,7 @@ def main(args):
     # For matching the image name with the transriptions
     words_identified = {k: [] for v,k in enumerate(filenames)}
 
-
+    print('Saving intermediate files to {}'.format(save_dir))
     # Save filenames
     with open(os.path.join(save_dir,'filenames.txt'), 'w') as fp:
         for item in filenames:
@@ -144,14 +147,13 @@ def main(args):
     #Save intermediate file
     combined_df.to_pickle(os.path.join(save_dir,'test.pkl'))
 
+    print('Finding bigrams...')
     # Creating a new column which contains all bigrams from the transcription, with an associated index for each bigram
     bigram_df = combined_df.copy()
 
     bigram_df['Bigrams'] = bigram_df['Transcription'].str.join(' ').str.split(' ')
 
     bigram_df['Bigrams'] = bigram_df['Bigrams'].apply(lambda lst: [lst[i:i+2] for i in range(len(lst) - 1)]).apply(lambda sublists: [' '.join(sublist) for sublist in sublists])
-
-   
 
     bigram_df['Bigram_idx'] = bigram_df.apply(matching.bigram_indices, axis=1)
 
@@ -182,9 +184,6 @@ def main(args):
         subdivisions.append(subdivision.name)
         subdivisions_dict[subdivision.name] = pycountry.countries.get(alpha_2 = subdivision.country_code).name
 
-
-    # # Input to string-grouper all need to be series format
-    # results_series = pd.Series(results)
 
     #running the matching against all files
     minimum_similarity = .01 #arbitrary, set here to get every prediction, likely want to set this quite a bit higher
@@ -219,13 +218,11 @@ def main(args):
     final_df.to_csv(os.path.join(save_dir,'final_df.csv'))
     if args.delete_seg:
         # Delete the segmentation folder
-        print('Deleting segmentation folder')
         shutil.rmtree(output_dir_craft)
         print('Segmentation folder deleted')
     
     # Print the location of the final dataframe
     print('Final dataframe saved to: ',os.path.abspath(os.path.join(save_dir,'final_df.csv')))
-        
 
 if __name__ == '__main__':
     # Argument parser which takes in the path to image folder, path to save results, path to species, genus, and taxon files
