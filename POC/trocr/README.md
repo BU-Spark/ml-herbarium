@@ -2,8 +2,8 @@
 
 # File Descriptions
 This directory contains all of the files associated with the Tr-OCR pipeline. 
-## 1. trocr_test.ipynb
-This notebook shows the process of setting up craft for segmentation, extracting all bounding boxes around text within the image. These segmented images are then passed through the Tr-OCR model to perform text recognition; we save the transcriptions and model confidence for each of these calculations. Then we perform string matching against a set of files (Taxon, Species, Genus, Country, and Subdivisions of countries) in order to find the best match for each.  All of this information is then accrued in a final output dataframe, which contains the bounding boxes and transciptions for every segmentation, as well as the location of the closest match found between all reference files. We then test the accuracy of the pipeline on roughly 1000 images. 
+## 1. cleaned_trocr_test.ipynb
+This notebook shows the process of setting up craft for segmentation, extracting all bounding boxes around text within the image. These segmented images are then passed through the Tr-OCR model to perform text recognition; we save the transcriptions and model confidence for each of these calculations. Then we perform string matching against a set of files (Taxon, Species, Genus, Country, and Subdivisions of countries) in order to find the best match for each.  All of this information is then accrued in a final output dataframe, which contains the bounding boxes and transciptions for every segmentation, as well as the location of the closest match found between all reference files. We then test the accuracy of the pipeline on roughly 1000 images. Also includes sections that visualize the final results (images with bounding box overlays).
 ## 2. trocr_train_wab.ipynb
 This file is the main training resource for the Tr-OCR model. We have opted to evaluate all available pre-trained models, fine tuning each on the IAM handwriting dataset. All of the training and validation information is logged using Weights and Biases. 
 ## 3. CVIT_GPU_TRAINING.ipynb
@@ -11,8 +11,6 @@ This notebook is an implementation of the huggingface accelerate library in orde
 ## 4. CVIT_Training.py
 This file can be used to train the trocr model on the CVIT dataset as well. It does not implement the accelerate library to implement the multi-gpu training, but can be used to submit batch jobs for training if necessary. 
 
-## 5. cleaned_trocr_test.ipynb
-This provides the same functionality as the trocr_transcription.py file, but makes the process more transparent by running in a notebook, and also includes sections that visualize the final results (images with bounding box overlays).
 # Model Deployment Files
 Also included are the deployment scripts for running the trocr pipeline locally. 
 Those include:
@@ -80,3 +78,30 @@ If on a mac you can right click and hold option to get the absolute path and cop
 
 
 **Note:** It is HIGHLY recommended to run the pipeline on a GPU. Running on CPU is significanly slower. 
+
+## Final Dataframe Column Descriptions
+### Label
+This column describes the position that a given image was processed
+### Transcription
+This column contains the every transcription that was found in the image. They are ordered based on the relative position of the top left coordinate for each bounding box in an image. 
+## Transcription_Confidence
+This contains the Tr-OCR model confidences in each transcription. This list of values is ordered based on the `Transcription` column (i.e. you can reference each individual transcription and its confidence using the same index number).
+## Image_Path
+This is the absolute path of the location for a given image
+## Bounding_Boxes
+This contains the coordinates of each bouding box found in an image. Exactly like transcription confidence, these lists can be indexed based on positions in the `Transcription` column. 
+## Bigrams
+This column contains every consecutive (word) bi-gram found by joining the list of strings contained in `Transcription`. 
+## Bigram_idx
+This column contains the index (relative to `Transcription`) for each word in a bigram. For example, if the `Transcription` column contained the transcriptions 'Herbier Museum' and 'Paris', `Bigrams` would contain 'Herbier Museum' and 'Museum Paris'. `Bigrams_idx` would contain (0,0) and (0,1), as in the first bigram, both words are contained in `Transcription[0]`, while in the second bigram the first word comes from `Transcription[0]`, with the second word coming from `Transcription[1]`.
+ 
+## Taxon_Prediction_String
+This column contains the piece of transcribed text that was used to make the final prediction for Taxon. 
+## Taxon_Similarity
+This column contains the cosine similarity between the string in    `Taxon_Prediction_String` and `Taxon_Prediction`.
+## Taxon_Prediction
+This column contains the models prediction for the taxon of the input image.
+## Taxon_Index_Location
+This column contains the index value (in `Bigrams` and `Bigram_idx`) for the string from `Taxon_Prediction_String`. This allows you to pick out the bounding boxe(s) and transcription confidence(s) associtaed with the string used for making your final prediction. 
+
+All columns past this point are formatted exactly the same as the previous 4, but reference a different set of corpus files. For example, if matching against a 'Species' corpus file, the next 4 columns in the csv will be `Species_Prediction_String`, `Species_Similarity`,`Species_Prediction`, and `Species_Index_Location`.
