@@ -16,10 +16,10 @@ Also included are the deployment scripts for running the trocr pipeline locally.
 Those include:
 ## 1. trocr_transcription.py
 This is the main function for running the pipeline. It takes in 6 command line argument
-* The --image_folder arg specifies the path to the folder containing images to test
-* The --save_path arg specifies the path to the location where output files should be stored (defaults to creating a new save file in your PWD)
-* The --species_file,--genus_file, and --taxon_file args specify the location of the species, taxon, and genus corpus files
-* An optional -d flag to delete any intermediate directories upon program completion (default is true)
+* The --image_folder arg specifies the absolute path to the folder containing images to test.
+* The --save_path arg specifies the absolute path to the location where output files should be stored. Defaults to creating a new folder with the specified name in your PWD if the provided filepath does not exist. 
+* The --species_file,--genus_file, and --taxon_file args specify the absolute paths of the species, taxon, and genus corpus files.
+* An optional -d flag to delete any intermediate directories upon program completion (default is true).
 
 ## 2. trocr.py
 Contains all the functions which relate to running the trocr portion of the pipeline
@@ -45,6 +45,7 @@ cd new_directory
 Git clone the ml-herbarium repo
 ```
 git clone https://github.com/BU-Spark/ml-herbarium.git
+cd ml-herbarium
 git checkout feature-final-transformers
 cd POC/trocr
 ```
@@ -63,7 +64,7 @@ Run the pipeline, specifying all required arguments
 python3 trocr_transcription.py --image_folder=<PATH_TO_IMAGE_FOLDER> --save_path=<PATH_TO_SAVE_OUTPUTS> --species_file=<PATH_TO_SPECIES_CORPUS>
 --genus_file=<PATH_TO_GENUS_FILE>
 --taxon_file=<PATH_TO_TAXON_FILE>
---delete_seg=<TRUE_OR_FALSE>
+--delete_seg=<True_OR_False>
 ```
 The species, genus, and taxon files are available in the repository at:
 
@@ -74,8 +75,9 @@ The species, genus, and taxon files are available in the repository at:
 
 /ml-herbarium-data/corpus_taxon/output/possible_genus.pkl
 ```
-If on a mac you can right click and hold option to get the absolute path and copy these paths as the arguments.
+If on a mac, you can right click and hold option to get the absolute path for each of these files, and copy them as the arguments.
 
+For specifics on what each argument should be, see [here](#1-trocr_transcriptionpy).
 
 **Note:** It is HIGHLY recommended to run the pipeline on a GPU. Running on CPU is significanly slower. 
 
