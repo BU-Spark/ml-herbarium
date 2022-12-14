@@ -45,7 +45,7 @@ class color:
     UNDERLINE = '\033[4m'
     END = '\033[0m'
 
-def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1):
+def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1, save_result=True):
     """Perform batch evaluation
     Args:
         @ocr: a PaddleOCR object, which take cares all detection and recoginition work
@@ -63,6 +63,9 @@ def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1):
     min_similarity = 0.1
     str_lst = ['taxon', 'geography', 'collector']
     print(f"taxon_corpus_set: {pd.Series(list(corpus_set[0])).shape}, geography_corpus_set: {pd.Series(list(corpus_set[1])).shape}, collector_corpus_set: {pd.Series(list(corpus_set[2])).shape}")
+
+    if save_result:
+        df_dict = {"imgId": [], "boxes": [], "txts": [], "scores": []}
         
     print(f"Corrected Prediction Format: {color.GREEN} Pred_category(corr_count/total_count): gt_result || predicted_result || imgID {color.END}")
     count = 0
@@ -82,6 +85,13 @@ def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1):
         boxes = [line[0] for line in pred_results] # a list of list, e.g., [[696.0, 26.0], [844.0, 26.0], [844.0, 84.0], [696.0, 84.0]]
         txts = [line[1][0] for line in pred_results] # a list of str, e.g., 'Field'
         scores = [line[1][1] for line in pred_results] # a list of float, e.g., 0.9960
+
+        if save_result:
+            # Save the result to dataframe
+            df_dict["imgId"].append(imgId)
+            df_dict["boxes"].append(boxes)
+            df_dict["txts"].append(txts)
+            df_dict["scores"].append(scores)
 
         # If predicted result is none, skip to next one
         if len(txts) == 0:
@@ -122,6 +132,10 @@ def batch_evaluation(ocr, data_loader, gt_dict, corpus_set, min_similarity=0.1):
     print(f"ACC: taxon: {acc_lst[0]}, geography: {acc_lst[1]}, collector: {acc_lst[2]}")
     print(f"Average Acc: {sum(correct_pred.values())/sum(total_pred.values())}")
 
+    if save_result:
+        # Expore to csv file
+        df = pd.DataFrame(df_dict)
+        df.to_csv('/usr4/dl523/dong760/CS549_Herbarium_Project/ml-herbarium/PaddleOCR/output/file_name.csv')
 
 def check_images(s_dir, ext_list):
     """A function to check all invalid image
@@ -256,7 +270,7 @@ def display_OCR_result_with_imgID(img_dict, imgID, save_dir=None, display_result
                        txts,  # txts(list): the texts
                        scores, # confidence
                        drop_score=0.1, # drop_score(float): only scores greater than drop_threshold will be visualized
-                       font_path='/usr4/dl523/dong760/CS549_Herbarium_Project/ml-herbarium/PaddleOCR/doc/fonts/simfang.ttf') # font_path: the path of font which is used to draw text
+                       font_path='./simfang.ttf') # font_path: the path of font which is used to draw text
     im_show = Image.fromarray(im_show)
     if save_dir:
         timestr = time.strftime("%Y%m%d%H%M%S_")

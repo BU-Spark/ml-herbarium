@@ -7,6 +7,7 @@ import pp_ocr_deployment
 batch_size= 4
 # SRC_DIR = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/drago_testdata/images/"
 SRC_DIR = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220621-052943"
+# SRC_DIR = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/TROCR_Training/goodfiles"
 # SRC_DIR = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/scraped-data/20220425-160006-matching"
 
 # Read image in batch
@@ -26,7 +27,7 @@ gt_dict = data_loader.get_gt_dict()
 all_corpus_set = data_loader.get_all_corpus_set()
 
 # Start OCR detection and recognition
-with_gpu = True
+with_gpu = False
 model_dir = "/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/PP_OCR_data/pretrain_models"
 ocr = PaddleOCR(use_angle_cls=True, 
             cls_model_dir="./cls/en_ppocr_mobile_v2.0_cls_infer.tar",
@@ -37,7 +38,7 @@ ocr = PaddleOCR(use_angle_cls=True,
             use_gpu=with_gpu, 
             lang='en',
             show_log=False) # need to run only once to download and load model into memory
-pp_ocr_deployment.batch_evaluation(ocr, data_loader, gt_dict, all_corpus_set)
+pp_ocr_deployment.batch_evaluation(ocr, data_loader, gt_dict, all_corpus_set, save_result=True)
 
 
 
