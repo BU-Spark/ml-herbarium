@@ -31,6 +31,19 @@ $ python pp_ocr_deployment.py -d /projectnb/sparkgrp/ml-herbarium-grp/ml-herbari
 
    A file that use customized data loader in utils.py and ocr algorithm from pp_ocr_deployment.py to perform evaluation on all images scraped from GBIF website.
 
-6. utils.py
+
+6. batch_eval.sh
+
+    The bash script you need to use for running batch_eval.py in scc
+
+7. utils.py
 
    A dependent file that needed for running batch_eval.py
+  
+8. simfang.ttf
+  
+    Required font format file for running pp-ocr.
+    
+9. output.txt
+
+    An example of output you will get after running the pp-ocr batch script
