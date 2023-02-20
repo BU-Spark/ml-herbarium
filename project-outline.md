@@ -13,7 +13,7 @@
 
 
 2. Key Questions
-3. 
+ 
 * [Tertiary task] What phenology information are they looking for? Based on the flower/fruit counting, we have assumed that the change in the number of flowers/fruits has to be studied.
 * What is the expected input data volume? And budget? [to decide on the endpoint capabilities]
 * Do you have a specific dataset in mind? 
@@ -37,6 +37,7 @@
 
 
 4. Impact
+    
     The digitized samples are an invaluable source of information for climate change scientists, and are providing key insights into biodiversity change over the last century. Digitized specimens will facilitate easier dissemination of information and allow more people access to data. The project, if successful, would enable users from various domains in environmental science to further studies pertaining to climate change and its effects on flora and even fauna.
 
 
