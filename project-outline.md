@@ -6,11 +6,14 @@
 ## Overview
 
 1. Situation and current issues
+ 
    The changing climate increases stressors that weaken plant resilience, disrupting forest structure and ecosystem services. Rising temperatures lead to more frequent droughts, wildfires, and invasive pest outbreaks, leading to the loss of plant species. That has numerous detrimental effects, including lowered productivity, the spread of invasive plants, vulnerability to pests, altered ecosystem structure, etc. The project aims to aid climate scientists in capturing patterns in plant life concerning changing climate.
     
     The herbarium specimens are pressed plant samples stored on paper. The specimen labels are handwritten and date back to the early 1900s. The labels contain the curator's name, their institution, the species and genus, and the date the specimen was collected. Since the labels are handwritten, they are not readily accessible from an analytical standpoint. The data, at this time, cannot be analyzed to study the impact of climate on plant life.
 
+
 2. Key Questions
+3. 
 * [Tertiary task] What phenology information are they looking for? Based on the flower/fruit counting, we have assumed that the change in the number of flowers/fruits has to be studied.
 * What is the expected input data volume? And budget? [to decide on the endpoint capabilities]
 * Do you have a specific dataset in mind? 
