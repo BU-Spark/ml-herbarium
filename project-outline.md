@@ -1,5 +1,7 @@
 # Spring 2023 Herbaria Project Outline
 
+## [Note to Professor: The kickoff meeting hasn’t happened and we will update the outline after the kick-off meeting, with inputs from the client.]
+
 ## Kabilan Mohanraj, Keanu Nichols, Rithik Bhandary, Trived Katragadda, 2023-February-18 v0.0.1-dev_
 
 
