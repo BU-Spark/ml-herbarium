@@ -30,7 +30,7 @@
     3. Refinement training could be performed using supplemental information from the classification task.
 
     **Secondary task**
-    1. Vision Transformers can be used to classify the plants based on their taxon labels.
+    1. Vision Transformers can be used to classify the plants based on their taxon labels. The labels on the image will be identified and masked to avoid inductive bias (so it doesn't give hints to the classifier) when training the model.
     2. These predictions could be provided as a priori knowledge to the OCR model to boost its prediction confidence.
 
     **Tertiary task**
