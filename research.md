@@ -1,5 +1,7 @@
 # [Herbaria] Research and Problem Understanding
 
+### Authors: Kabilan Mohanraj, Keanu Nichols, Rithik Bhandary, Trived Katragadda, 2023-February-26
+
 Below are the papers and models we read in the research phase. We understand that improving the existing pipeline takes precedence. However, we would like to explore some of the models we have summarized here.
 
 ## Primary task
