@@ -8,4 +8,4 @@ We've tried using the provided Docker file (not an image) to deploy the pipeline
 We have sought help from Qintian (our Technical Engineer), to take a look into this. This is the reason why there is no new codebase for the primary task yet.
 
 We have also been working on an Named Entity Recognition model, as the post-OCR step. We have worked to deploy 2 models. First, `BotanicalNER` which again had dependency issues with the environment, since the code base is roughly 4 years old. So, we've switched to a new model `TaxoNerd` which is very recent. The model used BERT model trained on taxons.
-TaxoNerd is the most recent development in our task and will be added to the repo in just a couple of days.
+TaxoNerd is the most recent development in our task and will be added to the repo a couple of days.
