@@ -6,7 +6,10 @@
 
 
 **Trived Katragadda:**
-
+1. Added to the already present EDA code so that it will be more representative by including more factors thereby presenting a more clear picture of how the dataset is looking and also where we can look for better insights.
+2. Deployed the IELT model for the classification purpose in the secondary task which is now the state of the art model for fine grain image classification specifically for the Oxford flower dataset which is a similar one to ours.
+3. Trained the model on cub and flower datasets and replicated the results produced in the paper.
+4. In the process of adjusting the parental code so that it can accommodate our custom dataset so that we can train on it and get the classification results.
 
 
 **Rithik Bhandary:**
