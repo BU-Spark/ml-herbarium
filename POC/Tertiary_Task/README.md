@@ -21,7 +21,7 @@ We then run the file `scc_jobs/job_finetune_2.sh` this will go about downloading
 
 The model is [model weight](https://github.com/SwinTransformer/storage/releases/download/v1.0.2/cascade_mask_rcnn_swin_small_patch4_window7.pth) and the config file is [config file](https://github.com/SwinTransformer/Swin-Transformer-Object-Detection/blob/master/configs/swin/cascade_mask_rcnn_swin_small_patch4_window7_mstrain_480-800_giou_4conv1f_adamw_3x_coco.py)
 
-This repository can be found under `/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection`. Because the mmdetection repo has to be cloned I have placed the data at `/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/data`, when finetuning the model it will need to be place in `/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/mmdetection/data`.
+Because the mmdetection repo has to be cloned I have placed the data at `/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/data`, when finetuning the model it will need to be place in `/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/mmdetection/data`.
 
 ### Data Visualization
 
