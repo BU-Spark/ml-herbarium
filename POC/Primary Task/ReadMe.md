@@ -6,3 +6,5 @@ During the EDA phase and the extraction of the evaluation dataset we encountered
 We spent 3 weeks, working on `TextFuseNet` but ran into dependency issues (with the environment setup) as the codebase is about 3 years old and the dependencies used are even older. We've tried using the provided Docker file (not an image) to deploy the pipeline, but the dependencies within the Docker image we built are not compatible with the CUDA drivers on the host machine. This is the reason why there is no new codebase for the primary task yet.
 
 We have also been working on an Named Entity Recognition model, as the post-OCR step. We have worked to deploy a new pipeline `TaxoNerd` which is very recent. The model uses BioBERT model trained on taxons. TaxoNerd is the most recent development in our task and has been added to the existing TrOCR pipeline replacing string similarity matching used in Fall 2022 semester.
+
+The latest implementation of the pipeline can be found under the `trocr` folder, `cleaned_trocr_test.ipynb`.
