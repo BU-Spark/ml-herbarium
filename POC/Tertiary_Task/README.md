@@ -37,8 +37,8 @@ This is based on the [repo](https://github.com/baaivision/EVA/tree/master/EVA-01
 I also have a file under `scc_jobs/create_dataset.py` which can help with creating the plants json file to format needed for EVA.
 We use the repo stored [here](/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/EVA)
 
-Currently I was not able to debug the model in order to test it. I would recommend using the guide [here](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5) in order to format the data into the COCO like style
+Currently I was not able to debug the model in order to test it as I encountred VRAM issues. I would recommend using the guide [here](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5) in order to format the data into the COCO like style.
 
-Once you have the data in the correct format you can look at changing the configurations in `tools/train.py` or start from scratch and use my code as a guide as to what I have done.
+Once you have the data in the correct format you can look at changing the configurations in `tools/lazyconfig_train_net.py` or start from scratch and use my code as a guide as to what I have done. I have updated some of the configs that allow you to take the new plant dataset however it may be better to use the original EVA code and paste mine in. As I was also testing with the ballon dataset.
 
 
