@@ -34,7 +34,7 @@ In order to visualize the data I have created a script `scc_jobs/job_flower_test
 
 This is based on the [repo](https://github.com/baaivision/EVA/tree/master/EVA-01/det) and instructions can be found there in terms of installing the EVA model. One major issue was that when finetuning the model it went from the base 4 GB to 12 GB. When searching online we found that this maybe due to the code from detectron2 using floating-point 32.
 
-I also have a file under `scc_jobs/create_dataset.py` which can help with creating the plants json file to format need for EVA.
+I also have a file under `scc_jobs/create_dataset.py` which can help with creating the plants json file to format needed for EVA.
 We use the repo stored [here](/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/EVA)
 
 Currently I was not able to debug the model in order to test it. I would recommend using the guide [here](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5) in order to format the data into the COCO like style
