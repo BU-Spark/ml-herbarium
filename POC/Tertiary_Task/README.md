@@ -1,6 +1,7 @@
 # ML-Herbarium Tertiary Task Swin-Transformer
 
-This section of the repository deals with the instance segmentation task. We use the repo stored [here](/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/scc_jobs) on the scc server under sparkgrp
+The original repo can be found [here](https://github.com/SwinTransformer/Swin-Transformer-Object-Detection)
+This section of the repository deals with the instance segmentation task. We use the repo stored [here](/projectnb/sparkgrp/ml-herbarium-grp/ml-herbarium-data/Tertiary_Task/Swin-Transformer-Object-Detection/) on the scc server under sparkgrp
 
 The current model can be found in `./work_dirs/flowers_36_epochs_update/epoch_36.pth` and the visualized outputs are in `outputs/plants_36_epochs_segm`
 
