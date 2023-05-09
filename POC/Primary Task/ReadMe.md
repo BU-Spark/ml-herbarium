@@ -1,4 +1,4 @@
-# Progress Update
+# Final Update
 
 We have extracted an evaluation dataset from GBIF, upon which we carried out analysis to see the spread of the data, so as to establish a mutually agreeable evaluation dataset between the clients and us. 
 During the EDA phase and the extraction of the evaluation dataset we encountered a lot of issues with the pre-existing code, such as missing links corrupted files, which needed code to be written to create a workaround.
