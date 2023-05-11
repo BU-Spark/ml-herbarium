@@ -1,93 +1,116 @@
-# Fall 2022 ML Herbarium Project Outline 
+# [Note to Professor: The kickoff meeting hasn’t happened and we will update the outline after the kick-off meeting, with inputs from the client.]
 
-## _Authors: Zhengqi Dong, Cole Hunter, Zihua Xin, Mark Yang_
-** **
+# Spring 2023 Herbaria Project Outline
+
+## Kabilan Mohanraj, Keanu Nichols, Rithik Bhandary, Trived Katragadda, 2023-February-18 v0.0.1-dev_
+
+
 ## Overview
 
-In concert with the Harvard University Herbaria, we will continue the work of previous teams who created an intelligent word recognition module which can be used to digitize natural history specimens. Herbarium specimens are pressed plant samples stored on paper, and are an invaluable source of information for climate change scientists, providing key insights into biodiversity change in the age of the Anthropocene. 
+1. Situation and current issues
+ 
+   The changing climate increases stressors that weaken plant resilience, disrupting forest structure and ecosystem services. Rising temperatures lead to more frequent droughts, wildfires, and invasive pest outbreaks, leading to the loss of plant species. That has numerous detrimental effects, including lowered productivity, the spread of invasive plants, vulnerability to pests, altered ecosystem structure, etc. The project aims to aid climate scientists in capturing patterns in plant life concerning changing climate.
+    
+    The herbarium specimens are pressed plant samples stored on paper. The specimen labels are handwritten and date back to the early 1900s. The labels contain the curator's name, their institution, the species and genus, and the date the specimen was collected. Since the labels are handwritten, they are not readily accessible from an analytical standpoint. The data, at this time, cannot be analyzed to study the impact of climate on plant life.
 
-One of the major issues facing the Harvard Herbaria - as well as others across the country and world - is that most of this data is inaccessible due to a lack of digitized records. Digitized specimens will facilitate easier dissemination of information and allow more people access to this data.
 
-To date, digitization has been a very time consuming process, owing to the fact that these herbariums would need to hire a number of people to manually inspect and log the information on each pressed plant sample. This approach can also become quite costly, as the number of samples stored in these facilities is quite large. 
+2. Key Questions
+ 
+* [Tertiary task] What phenology information are they looking for? Based on the flower/fruit counting, we have assumed that the change in the number of flowers/fruits has to be studied.
+* What is the expected input data volume? And budget? [to decide on the endpoint capabilities]
+* Do you have a specific dataset in mind? 
+* [Primary task] Do you have a dataset on which our solution is expected to perform well? [Mutually agreed upon evaluation set]
 
-Each specimen contains a label that includes the name of the curator, their institution, the species and genus, and the date the specimen was collected. A sizable number of these labels are handwritten and date back to the early 1900s. 
 
-This brought about the idea to leverage modern Optical Character Recognition (OCR) technologies in order to massively speed up the process of fully digitizing these records. This undertaking has already had a number of teams contribute, and in its current form, the project consists of a bidirectional LSTM-RNN which is used to transcribe specimen labels. 
+3. Hypothesis
 
-Moving forward, the goals of our project team are to:
-* Identify potentially novel approaches to improve the accuracy of the model.
-* Consolidate the two pipelines for label extraction and text recognition.
-* Work to expand the scope of outputs from the model 
-    * In its current form the model only returns the species label, which neglects other important distinguishing features which were detailed above
+    **Primary task**
+    1. In the preprocessing step, CRAFT model can be used to extract the handwritten text from the plant image samples.
+    2. State-of-the-art transformer-based OCR model can be employed to produce inferences on the handwritten text extracted in the preceeding step.
+    3. Refinement training could be performed using supplemental information from the classification task.
+
+    **Secondary task**
+    1. Vision Transformers can be used to classify the plants based on their taxon labels. The labels on the image will be identified and masked to avoid inductive bias (so it doesn't give hints to the classifier) when training the model.
+    2. These predictions could be provided as a priori knowledge to the OCR model to boost its prediction confidence.
+
+    **Tertiary task**
+    1. To identify the phenology of the plant under consideration, the flowers and fruits of the plant in the image have to be segmented. This can be achieved by taking advantage of the Mask-RCNN architechture. Transformer based solution will also be explored.
+    2. Once the extraction process is done, the flowers and fruits can be counted and further classified into discrete stages based on the plant phenology.
+
+
+4. Impact
+    
+    The digitized samples are an invaluable source of information for climate change scientists, and are providing key insights into biodiversity change over the last century. Digitized specimens will facilitate easier dissemination of information and allow more people access to data. The project, if successful, would enable users from various domains in environmental science to further studies pertaining to climate change and its effects on flora and even fauna.
+
+
 ### A. Problem Statement: 
 
-Which machine learning model architecture can most accurately detect and transcribe the text present on digital herbarium plant sample images? 
+The Harvard University Herbaria aims to digitize the valuable handwritten information on herbarium specimens, which contain crucial insights into biodiversity changes in the Anthropocene era. 
+
+The main challenge is to develop a transformer-based optical character recognition (OCR) model using deep learning techniques to accurately **locate and extract the specimen labels on the samples to preserve them digitally**. The secondary task involves **building a plant classifier using taxon labels as ground truth, to supplement the OCR model as a source of a priori knowledge.** The tertiary goal involves **indentifying the phenology of the plant specimen under consideration [will be updated after discussing with the client] and possibly predict the biological life cycle stage of the plant**. The successful completion of these objectives will showcase the importance of herbaria in storing and disseminating data for various biological research areas. The ultimate goal is to revive and digitize this valuable information to promote its accessibility to the public and future generations.
+
+
+
 ### B. Checklist for project completion
 
-1. Get existing pipeline up and running on the SCC
-    * Before we can hope to upgrade the current implementation, we need to fully understand how it works, so that we can recognize areas for potential improvements
-2. Research the broader OCR environment
-    * We will conduct research looking at the most popular OCR implementations currently being deployed 
-3. Concurrently with 2, we will look into potential segmentation solutions beyond CRAFT
-    * Being able to more effectively segment the regions in images where text is present should make the transcription step more efficient and accurate
-4. Look into implementing alternative approaches for OCR from step 2, and compare with the current implementation of Tesseract
-    * There are a number of OCR techniques which have been proposed and implemented in other applications; comparing their performance on our specific datasets will be a valuable tool in pushing to improve the accuracy of the pipeline
-5. Upgrade the existing Tesseract pipeline 
-    * Once we have familiarized ourselves with the current codebase, we can begin the process of updating certain portions 
-6. Deploy the most performant model
-7. Time permitting, if we have deployed a satisfactory text detector, we can look to extract information beyond just species from the images
+1. Determine an agreed-upon evaluation set for the OCR model.
+2. Incorporate additional information from the plant images to improve the current best-performing TrOCR model. Attempt approaches such as getting the location information from the images.
+3. Develop a plant classifier for the secondary objective using taxon labels as the ground truth. Preprocess the images to remove text using masking methods. If the secondary objective is successful, use this information as an additional input into the TrOCR model.
+4. Develop a classifier to identify the life cycle stage of a plant by expanding on the previous work of segmenting flowers/fruits in plant images.
+
+
+
 
 ### C. Provide a solution in terms of human actions to confirm if the task is within the scope of automation through AI. 
 
-In our initial stakeholder meeting, the current process for digitizing these natural history specimens was detailed. Each presseed plant gets fed into a specially designed camera setup, where its picture gets taken, and a worker would then manually record the species’ relevant information, such as plant name, location of collection, taxon, date of collection etc. The process has been streamlined over the years, but the bottleneck remains people manually inspecting the images, and recording the text data. Our approach would seek to replace the human manually gathering the text information from the images with our pipeline. 
+1. For the main challenge, a person would look at the plant image with text and try to transcribe the text in the image. They would attempt to get the taxon label and the remaining text in the image. The person would refer to a list of known taxon labels to verify that it is a valid label or match it to the closest label. If the text is hard to recognize, they would look at the surrounding text to try to estimate what the word may be. This is a task that can be completed through AI using state-of-the art models.
+2. The secondary task, a person would look at the image of the plant and from prior knowledge of known categories of the plants and how they look, the person would then idenify what the plant is. Utilizing knowledge such as the location of the plant would help improve the assurance of what the plant category should be. This is another task that can be automated through AI methods.
+3. The tertiary task would involve a person looking at the image of the plant and then drawing out the locations of the fruits and flowers on the image, they would then count the number of occurrences per plant. The person would also classify what stage the flower or fruit is in based on the phenology of the particular flower or fruit. This is a common AI problem in terms of segmenting where the location of the plants and fruits are on the image, additionally classifying the stage of the life cycle the fruit or flower is in.
+
+
+
 
 ### D. Outline a path to operationalization.
 
-At the end of the project, the process detailed above describing the current method for digitizing these records would ideally be modified as follows:
-1. A specimen is placed into the special camera rig, and its picture is taken
-2. That picture is immediately fed into the pipeline we have been working on
-3. The relevant text in the picture will be extracted, transcribed, and stored along with the image
-4. As more images are processed, a database can be constructed with identifying information for every digitized plant sample
-5. Researchers can then be given access to these databases
+* **Pipeline development**
+We plan to use the BU Shared Computing Cluster (SCC) for model training during the development phase. For model inference, we plan to use TorchServe or TensorFlow Serving depending on the framework used.
+* **Demo hosting**
+For hosting the model for demo purposes, we plan to use Hugging Face Spaces.
+* **Public user access (depending on the volume of requests and budget)**
+To provide public access to the inference endpoint, to monitor the model and invoke retraining, we plan to use Kubeflow deployment on bare-metal servers available on research clouds like Chameleon, NERC and MOC. Cloud services like Vertex AI (GCP) and SageMaker (AWS) are also under consideration.
 
-The advantage of this setup comes from providing fast, automated transcription and storage of these digital records. 
 
-One of the points that was emphasized in our first stakeholder meeting was that access to these records would be a valuable tool to researchers all around the world, and getting a functional pipeline constructed would be a great first step towards that goal. 
 
-** **
+
 ## Resources
 
 ### Data Sets
-[CNH Portal for access to herbarium records](https://portal.neherbaria.org/portal/) 
 
-[Pre-1940 plant specimen images in GBIF](https://www.gbif.org/occurrence/gallery?basis_of_record=PRESERVED_SPECIMEN&media_ty[…]axon_key=6&year=1000,1941&advanced=1&occurrence_status=present)
+* CNH Portal: https://portal.neherbaria.org/portal/ 
+* Pre-1940 plant specimen images in GBIF: https://www.gbif.org/occurrence/gallery?basis_of_record=PRESERVED_SPECIMEN&media_ty[…]axon_key=6&year=1000,1941&advanced=1&occurrence_status=present  
+* International Plant Names Index: https://www.gbif.org/dataset/046bbc50-cae2-47ff-aa43-729fbf53f7c5#dataDescription
+* Use for synonyms (GBIF is recommended):
+GBIF: https://hosted-datasets.gbif.org/datasets/backbone/current/
+IPNI:  https://storage.cloud.google.com/ipni-data/
+* CVIT: https://cvit.iiit.ac.in/research/projects/cvit-projects/matchdocimgs
+* IAM: https://fki.tic.heia-fr.ch/databases/iam-handwriting-database
 
-[International Plant Names Index](https://www.gbif.org/dataset/046bbc50-cae2-47ff-aa43-729fbf53f7c5#dataDescription)
 
-[GBIF, the Global Biodiversity Information Facility](https://hosted-datasets.gbif.org/datasets/backbone/current/)
-
-[IPNI, the International Plant Names Index](https://storage.cloud.google.com/ipni-data/)
-
-[IAM On-Line Handwriting Database](https://fki.tic.heia-fr.ch/databases/iam-on-line-handwriting-database)
-
-[NIST Special Database 19](https://www.nist.gov/srd/nist-special-database-19)
-
-[Handwriting of Names Dataset](https://www.kaggle.com/datasets/landlord/handwriting-recognition)
 ### References
 
+1. CRAFT (text detection): https://arxiv.org/abs/1904.01941
+2. TrOCR: https://arxiv.org/abs/2109.10282
+3. "What Is Wrong With Scene Text Recognition Model Comparisons? Dataset and Model Analysis," [10.1109/ICCV.2019.00481](https://doi.org/10.1109/ICCV.2019.00481)
+4. Kubeflow: https://www.kubeflow.org/docs/
+5. Hugging Face Spaces: https://huggingface.co/docs/hub/spaces
+6. GCP Vertex AI: https://cloud.google.com/vertex-ai/docs
+7. AWS SageMaker: https://docs.aws.amazon.com/sagemaker/index.html
+8. TensorFlow Serving: https://github.com/tensorflow/serving
+9. TorchServe: https://github.com/pytorch/serve
 
 
-1. [CRAFT](https://github.com/clovaai/CRAFT-pytorch)
-2. [Tesseract](https://github.com/tesseract-ocr/tesseract)
-3. [TrOCR](https://arxiv.org/abs/2109.10282)
-4. [EAST](https://arxiv.org/abs/1704.03155)
-5. [Survey of OCR Techniques](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9837974)
-6. [Segmentation Comparisons](https://openaccess.thecvf.com/content_ICCVW_2019/papers/RLQ/Nguyen_State-of-the-Art_in_Action_Unconstrained_Text_Detection_ICCVW_2019_paper.pdf)
-7. [PP-OCR](https://arxiv.org/pdf/2009.09941.pdf)
-
-** **
 ## Weekly Meeting Updates
 
-[Meeting Notes](https://docs.google.com/document/d/1XtBjMV5cdqOrsAPZufLfqE8shQPHs2okjE9wKT970Uo/edit?usp=sharing)
+[Meeting notes Google doc](https://docs.google.com/document/d/1XDWf3pze-2Ry9ydcw5s86mSzK6bKi4NbHPcXhiVO73g/edit?usp=sharing)
 
 

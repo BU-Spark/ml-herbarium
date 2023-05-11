@@ -1,4 +1,4 @@
-# ML-Herbarium Project
+# ML-Herbarium Project [the project is continuing this semester and there will be updates to the file as the semester continues]
 
 This repository contains a software pipeline to process herbarium specimens. The specemin image is processed by `transcribe_labels.py` and the results are stored in the output folder. The result will either be a match to a known taxon in the corpus file or 'NO MATCH'. The current pipeline uses [Tesseract OCR](https://tesseract-ocr.github.io/tessdoc/OldVersionDocs.html#tesseract-4) to extract the text from the image and then uses fuzzy matching and structural pattern matching to match the extracted text to the corpus. 
 
