@@ -46,7 +46,7 @@ Git clone the ml-herbarium repo
 ```
 git clone https://github.com/BU-Spark/ml-herbarium.git
 cd ml-herbarium
-git checkout feature-final-transformers
+git checkout dev
 cd POC/trocr
 ```
 Create a new virtual environment and activate it
@@ -59,25 +59,8 @@ Install all required packages
 ```
 pip install -r requirements.txt
 ```
-Run the pipeline, specifying all required arguments
-```
-python3 trocr_transcription.py --image_folder=<PATH_TO_IMAGE_FOLDER> --save_path=<PATH_TO_SAVE_OUTPUTS> --species_file=<PATH_TO_SPECIES_CORPUS>
---genus_file=<PATH_TO_GENUS_FILE>
---taxon_file=<PATH_TO_TAXON_FILE>
---delete_seg=<True_OR_False>
-```
-The species, genus, and taxon files are available in the repository at:
 
-```
-/ml-herbarium/corpus/corpus_taxon/corpus_taxon.txt
-
-/ml-herbarium-data/corpus_taxon/output/possible_species.pkl
-
-/ml-herbarium-data/corpus_taxon/output/possible_genus.pkl
-```
-If on a mac, you can right click and hold option to get the absolute path for each of these files, and copy them as the arguments.
-
-For specifics on what each argument should be, see [here](#1-trocr_transcriptionpy).
+To run the pipeline, please execute the `cleaned_trocr_test.ipynb` notebook in the current (`trocr`) folder.
 
 **Note:** It is HIGHLY recommended to run the pipeline on a GPU. Running on CPU is significanly slower. 
 
