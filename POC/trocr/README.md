@@ -49,15 +49,21 @@ cd ml-herbarium
 git checkout dev
 cd POC/trocr
 ```
-Create a new virtual environment and activate it
+Create a new conda environment and activate it
 ```
-virtualenv venv
-source venv/bin/activate
+conda create -n my-conda-env
+conda activate my-conda-env
 ```
 
-Install all required packages
+Install all required packages and Jupter
 ```
+conda install jupyter
 pip install -r requirements.txt
+```
+
+To start Jupyter Notebooks in the current folder, use the command
+```
+jupyter notebook
 ```
 
 To run the pipeline, please execute the `cleaned_trocr_test.ipynb` notebook in the current (`trocr`) folder.
