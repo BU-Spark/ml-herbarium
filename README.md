@@ -1,4 +1,4 @@
-# ML-Herbarium Project [the project is continuing this semester and there will be updates to the file as the semester continues]
+# ML-Herbarium
 
 This repository contains a software pipeline to process herbarium specimens. There are currently three tasks this project aims to accomplish: 1. classifying specimens via optical character recognition (OCR) and named entity recognition (NER), 2. classifying specimens via image classification, and 3. identifying the phenology of specimens.
 
