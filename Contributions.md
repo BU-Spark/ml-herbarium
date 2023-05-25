@@ -26,3 +26,7 @@
 1. Worked on the instance segmentation task. Whereby I attempted using two different models the EVA model and the Swin Transformer. 
 2. The EVA model did not perform well as it had VRAM issues, it required me to convert the plant dataset to a COCO like format. 
 3. For the Swin transformer we were able to perform instance segmentation by taking the Cascade Mask R-CNN model they had and then finetuned it on the plant dataset. Also, visualized the output.
+
+**Eamon Niknafs:**
+
+Project manager & team lead, wrote one of the initial implementations of the project, and managed the team's progress thereafter.
