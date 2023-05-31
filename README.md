@@ -2,8 +2,8 @@
 
 This repository contains a software pipeline to process herbarium specimens. There are currently three tasks this project aims to accomplish:
 1. Classifying specimens via optical character recognition (OCR) and named entity recognition (NER)
-2. Classifying specimens via image classification
-3. Identifying the phenology of specimens
+2. [Classifying specimens via image classification](https://github.com/BU-Spark/ml-herbarium-classify.git)
+3. [Identifying the phenology of specimens](https://github.com/BU-Spark/ml-herbarium-phenology)
 
 ## Getting Started
 The `run.ipynb` file contains demonstrates how to run each of the three tasks. Additionally, each of the aformentioned tasks is has supporting files and documentation in its respective folder. The primary task is in the `transcription` folder ([README](./transcription/ReadMe.md)), the secondary in the `vision` folder ([README](./vision/README.md)), and the tertiary in the `phenology` folder ([README](./phenology/README.md)). The 
