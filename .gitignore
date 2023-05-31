@@ -6,3 +6,7 @@ labels
 **settings.json
 **.ipynb_checkpoints**
 **/gt/**
+POC/Tertiary_Task/Swin-Transformer-Object-Detection/data/*
+POC/Tertiary_Task/Swin-Transformer-Object-Detection/cascade_mask_rcnn_swin_small_patch4_window7.pth
+POC/Tertiary_Task/Swin-Transformer-Object-Detection/mmdetection/data/*
+POC/Tertiary_Task/Swin-Transformer-Object-Detection/outputs/*

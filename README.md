@@ -1,99 +1,57 @@
-# ML-Herbarium Project
+# ML-Herbarium
 
-This repository contains a software pipeline to process herbarium specimens. The specemin image is processed by `transcribe_labels.py` and the results are stored in the output folder. The result will either be a match to a known taxon in the corpus file or 'NO MATCH'. The current pipeline uses [Tesseract OCR](https://tesseract-ocr.github.io/tessdoc/OldVersionDocs.html#tesseract-4) to extract the text from the image and then uses fuzzy matching and structural pattern matching to match the extracted text to the corpus. 
+This repository contains a software pipeline to process herbarium specimens. There are currently three tasks this project aims to accomplish:
+1. Classifying specimens via optical character recognition (OCR) and named entity recognition (NER)
+2. Classifying specimens via image classification
+3. Identifying the phenology of specimens
 
-Dependencies can be found in `requirements.txt`
+## Getting Started
+The `run.ipynb` file contains demonstrates how to run each of the three tasks. Additionally, each of the aformentioned tasks is has supporting files and documentation in its respective folder. The primary task is in the `transcription` folder ([README](./transcription/ReadMe.md)), the secondary in the `vision` folder ([README](./vision/README.md)), and the tertiary in the `phenology` folder ([README](./phenology/README.md)). The 
 
-<br />
+# Overview
+ 
+The changing climate increases stressors that weaken plant resilience, disrupting forest structure and ecosystem services. Rising temperatures lead to more frequent droughts, wildfires, and invasive pest outbreaks, leading to the loss of plant species. That has numerous detrimental effects, including lowered productivity, the spread of invasive plants, vulnerability to pests, altered ecosystem structure, etc. The project aims to aid climate scientists in capturing patterns in plant life concerning changing climate.
 
-# Installation Instuctions
-## 1. Add dependencies to auto load in your .bashrc file (FOR BU SCC ONLY)
-`nano ~/.bashrc`
+The herbarium specimens are pressed plant samples stored on paper. The specimen labels are handwritten and date back to the early 1900s. The labels contain the curator's name, their institution, the species and genus, and the date the specimen was collected. Since the labels are handwritten, they are not readily accessible from an analytical standpoint. The data, at this time, cannot be analyzed to study the impact of climate on plant life.
 
-Add these lines to the file:
-```
-module load python3/3.10.5
-module load leptonica/1.82.0
-module load libicu/71.1
-module load tesseract/4.1.3
-```
-`ctrl+x` then return to save and exit
-
-> Note: If you are not using the BU SCC, you will need to install the above dependencies manually.
-## 2. Create and activate virtual environment for dependency management
-`python3 -m venv .env`
-### Activate virtual env
-`source .env/bin/activate`
-### Install requirements
-`pip install -r requirements.txt`
-
-## Note for VS Code
-To select the correct Python interpreter, open your command palette (Command or Control+Shift+P), select `Python: Select Interpreter` then choose `Python 3.10.5` in your `.env` path.
-
-# Instructions for Manual Installation of Dependencies
-> Note: The following instructions are for manual installation. If you are using the BU SCC, you do not need to follow these instructions. These instructions are for installing ***without*** root access on ***CentOS***. If installing on other distributions, you may want to just install using `apt-get install` or `yum install`.
-## 1. Install Leptonica
-In your home directory, run:
-
-`git clone https://github.com/DanBloomberg/leptonica.git --depth 1`
-
-`cd leptonica`
-
-`./autogen.sh`
-
-`./configure --prefix=$HOME/.local --disable-shared`
-
-`make`
-
-`make install`
-
-## 2. Install Tesseract
-In your home directory, run:
-
-`wget https://github.com/tesseract-ocr/tesseract/archive/4.1.3.tar.gz -O tesseract-4.1.3.tar.gz`
-
-`tar zxvf tesseract-4.1.3.tar.gz`
-
-`export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig`
-
-`./autogen.sh`
-
-`./configure --prefix=$HOME/.local --disable-shared`
-
-`make`
-
-`make install`
-
-`cd ~/.local/share/tessdata`
-
-`wget https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main/eng.traineddata`
+The digitized samples are an invaluable source of information for climate change scientists, and are providing key insights into biodiversity change over the last century. Digitized specimens will facilitate easier dissemination of information and allow more people access to data. The project, if successful, would enable users from various domains in environmental science to further studies pertaining to climate change and its effects on flora and even fauna.
 
 
-<br />
+## Project Description
 
-# Pipeline Features
-## Transcription
-The pipeline uses [Tesseract OCR](https://tesseract-ocr.github.io/tessdoc/OldVersionDocs.html#tesseract-4) to extract the text from the image and then uses fuzzy matching and structural pattern matching to match the extracted text to the corpus.
+The Harvard University Herbaria aims to digitize the valuable handwritten information on herbarium specimens, which contain crucial insights into biodiversity changes in the Anthropocene era. 
 
-To run transcription, open the transcription folder and run `transcribe_labels.py`.
-```
-Usage: python3 transcribe_labels.py <org_img_dir> [OPTIONAL ARGUMENTS]
+The main challenge is to develop a transformer-based optical character recognition (OCR) model using deep learning techniques to accurately **locate and extract the specimen labels on the samples to preserve them digitally**. The secondary task involves **building a plant classifier using taxon labels as ground truth, to supplement the OCR model as a source of a priori knowledge.** The tertiary goal involves **identifying the phenology of the plant specimen under consideration [will be updated after discussing with the client] and possibly predict the biological life cycle stage of the plant**. The successful completion of these objectives will showcase the importance of herbaria in storing and disseminating data for various biological research areas. The ultimate goal is to revive and digitize this valuable information to promote its accessibility to the public and future generations.
 
-OPTIONAL ARGUMENTS:
-        -o <output_dir>, --output <output_dir>
-        -n <num_threads>, --num-threads <num_threads> (Default: 32)
-        -d, --debug
-```
-> Note: This will take a while to run. Be sure your environment is activated and properly configured.
 
-## Training
-Training can be done by following the [Tesseract Training Instructions](https://tesseract-ocr.github.io/tessdoc/tess4/TrainingTesseract-4.00.html) Training can be useful to fine-tune the English Tesseract model to improve its handwriting recognition. A standalone model can also be trained from scratch.
 
-An importatnt note is that all the training data must be on one folder (the ground truth folder). Each training image must be a `.png` or `.tiff` file. Each training image must have a corresponding ground truth file with the same name and the extension `.gt.txt`. More docs and some scripts to generate the ground truth files can be found in the `transcription/tesseract/training` folder.
+## Project Checklist
 
-The traning datasets used so far for training so far are [CVIT](https://cvit.iiit.ac.in/research/projects/cvit-projects/matchdocimgs), [IAM](https://fki.tic.heia-fr.ch/databases/iam-handwriting-database), and [NMIST](http://yann.lecun.com/exdb/mnist/). The IAM dataset seemed to not have enough data to yeild good results for training a Tesseract model. The NMIST dataset only contains single characters, so it also is not ideal. The CVIT dataset is very large, but it is promising to train a good model; however, we did not have enough time to complete the training.
+1. Determine an agreed-upon evaluation set for the OCR model.
+2. Incorporate additional information from the plant images to improve the current best-performing TrOCR model. Attempt approaches such as getting the location information from the images.
+3. Develop a plant classifier for the secondary objective using taxon labels as the ground truth. Preprocess the images to remove text using masking methods. If the secondary objective is successful, use this information as an additional input into the TrOCR model.
+4. Develop a classifier to identify the life cycle stage of a plant by expanding on the previous work of segmenting flowers/fruits in plant images.
 
-## Scraping
+
+
+
+## Proposed Solution
+
+1. For the main challenge, a person would look at the plant image with text and try to transcribe the text in the image. They would attempt to get the taxon label and the remaining text in the image. The person would refer to a list of known taxon labels to verify that it is a valid label or match it to the closest label. If the text is hard to recognize, they would look at the surrounding text to try to estimate what the word may be. This is a task that can be completed through AI using state-of-the art models.
+2. The secondary task, a person would look at the image of the plant and from prior knowledge of known categories of the plants and how they look, the person would then idenify what the plant is. Utilizing knowledge such as the location of the plant would help improve the assurance of what the plant category should be. This is another task that can be automated through AI methods.
+3. The tertiary task would involve a person looking at the image of the plant and then drawing out the locations of the fruits and flowers on the image, they would then count the number of occurrences per plant. The person would also classify what stage the flower or fruit is in based on the phenology of the particular flower or fruit. This is a common AI problem in terms of segmenting where the location of the plants and fruits are on the image, additionally classifying the stage of the life cycle the fruit or flower is in.
+
+## Other Folders
+### `./corpus`
+The corpus folder contains the code to generate the corpus file. The corpus file is a `.pkl` file of all possible pairs of genus and species. This file is used in transcription to match the extracted text to the corpus.
+
+### `./CRAFT`
+The CRAFT folder contains the code to run the CRAFT model. The CRAFT model is used to extract the text from the images and place bounding boxes around the text.
+
+### `./EDA`
+The `EDA` folder contains an exploritory data analysis of the dataset. The `EDA.ipynb` file contains the code to generate the EDA. The `EDA_Notebook_Spring_2023.ipynb` file contains the latest output of the EDA.
+
+### `./scraping`
 The scraping folder contains the code to scrape the GBIF database to download images for testing and training purposes. The scraping workflow also generates a mock corpus file and ground truth file.
 To run transcription, open the dataset folder in the scraping folder and run `datasetscraping.py`.
 ```
@@ -108,43 +66,31 @@ Optional arguments:
         -h, --help: Print this help message.
 ```
 
-## Corpus generation
-The corpus folder contains the code to generate the corpus file. The corpus file is a `.pkl` file of all possible pairs of genus and species. This file is used in transcription to match the extracted text to the corpus.
+### `./trocr`
+The trocr folder contains the code to run the TrOCR model. The TrOCR model is used to transcribe the text from the images.
 
-## Segmentation (not in use)
-The segmentation folder contains the code to segment the labels from the rest of the image. It takes the specemin image and outputs a cropped image containing only the largest label. We chose to not use this step as it is not necessary for the pipeline, and reduces accuracy. It does however reduce the transcription time when segmented images are used instead of full images.
+## Resources
 
-# Accuracy
-## Transcription Accuracy
-Current metrics for total pipeline accuracy are:
-11/30 correct with a 100% accurate match rate. In other words, when the pipeline returns a match, it is almost always correct (otherwise returns no match).
+### Data Sets
 
-# Original Pipeline
-The original pipeline takes a different approach to transcription. It uses MXNet and a custom model to extract the text from the image and then uses fuzzy matching to match the extracted text to the corpus. Overall the new pipeline preforms better than the original pipeline; however, the old pipeline is sometimes better for hand-labeled images. The original pipeline is approximately 10x slower than the new pipeline.
+* CNH Portal: https://portal.neherbaria.org/portal/ 
+* Pre-1940 plant specimen images in GBIF: https://www.gbif.org/occurrence/gallery?basis_of_record=PRESERVED_SPECIMEN&media_ty[…]axon_key=6&year=1000,1941&advanced=1&occurrence_status=present  
+* International Plant Names Index: https://www.gbif.org/dataset/046bbc50-cae2-47ff-aa43-729fbf53f7c5#dataDescription
+* Use for synonyms (GBIF is recommended):
+GBIF: https://hosted-datasets.gbif.org/datasets/backbone/current/
+IPNI:  https://storage.cloud.google.com/ipni-data/
+* CVIT: https://cvit.iiit.ac.in/research/projects/cvit-projects/matchdocimgs
+* IAM: https://fki.tic.heia-fr.ch/databases/iam-handwriting-database
 
-Below are docs to assist with running and training the original pipeline. More are available in the `CRAFT` folder and the `transcription_original` folder.
 
-## Allocate GPU (If using old CRAFT Pipeline)
-### check if V100 GPU being used
-`lshw -C display`
-### syscall for executing jobs on GPU, RUN if lshw -C display does not return V100
-`qrsh -l gpus=1 -l gpu_type=V100`
-### check that GPU updated
-`lshw -C display`
+### References
 
-<br/>
-
-## Run the CRAFT pipeline
-### Bounding boxes for image masks of text boxes
-`cd CRAFT/CRAFT-pytorch-master`
-### make script executable
-`chmod +x bash_submit.sh`
-### execute CRAFT detector on HUH images
-`./bash_submit.sh`
-
-<br/>
-
-# Add Users
-To add yourself to the repository, open a Pull Request modifying `COLLABORATORS`, entering your GitHub username in a newline.
-
-All Pull Requests must follow the Pull Request Template, with a title formatted like such `[Project Name]: <Descriptive Title>`
+1. CRAFT (text detection): https://arxiv.org/abs/1904.01941
+2. TrOCR: https://arxiv.org/abs/2109.10282
+3. "What Is Wrong With Scene Text Recognition Model Comparisons? Dataset and Model Analysis," [10.1109/ICCV.2019.00481](https://doi.org/10.1109/ICCV.2019.00481)
+4. Kubeflow: https://www.kubeflow.org/docs/
+5. Hugging Face Spaces: https://huggingface.co/docs/hub/spaces
+6. GCP Vertex AI: https://cloud.google.com/vertex-ai/docs
+7. AWS SageMaker: https://docs.aws.amazon.com/sagemaker/index.html
+8. TensorFlow Serving: https://github.com/tensorflow/serving
+9. TorchServe: https://github.com/pytorch/serve
