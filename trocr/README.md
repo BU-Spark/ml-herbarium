@@ -49,6 +49,11 @@ conda install jupyter
 pip install -r requirements.txt
 pip install taxonerd
 ```
+Currently, the setup uses `en_core_eco_biobert` model for entity recognition as part of the TaxoNERD pipeline. To download and add the model, run the folllowing command.
+```
+pip install https://github.com/nleguillarme/taxonerd/releases/download/v1.5.0/en_core_eco_biobert-1.0.2.tar.gz
+```
+Other available models can be viewed [here](https://github.com/nleguillarme/taxonerd#models).
 
 To start Jupyter Notebooks in the current folder, use the command
 ```
