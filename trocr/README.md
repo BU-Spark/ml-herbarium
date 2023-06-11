@@ -53,6 +53,8 @@ Currently, the setup uses `en_core_eco_biobert` model for entity recognition as 
 ```
 pip install https://github.com/nleguillarme/taxonerd/releases/download/v1.5.0/en_core_eco_biobert-1.0.2.tar.gz
 ```
+> **NOTE [SCC ONLY]:** If the `spacy` module throws an import error, you might have to uninstall the cublass package that is already installed, using the command `pip uninstall nvidia-cublas-cu11`. This is to avoid conflicts between the cuda module loaded in SCC and the installed packages from the requirements file.
+
 Other available models can be viewed [here](https://github.com/nleguillarme/taxonerd#models). Respective model installation instructions can be found [here](https://github.com/nleguillarme/taxonerd#models:~:text=To%20download%20the%20models%3A).
 
 To start Jupyter Notebooks in the current folder, use the command
