@@ -47,7 +47,7 @@ Install all required packages and Jupter
 ```
 conda install jupyter
 pip install -r requirements.txt
-pip install taxonerd
+pip install taxonerd[cuda113] (depending on the version of CUDA installed in your environment)
 ```
 Currently, the setup uses `en_core_eco_biobert` model for entity recognition as part of the TaxoNERD pipeline. To download and add the model, run the folllowing command.
 ```
