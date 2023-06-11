@@ -53,7 +53,7 @@ Currently, the setup uses `en_core_eco_biobert` model for entity recognition as 
 ```
 pip install https://github.com/nleguillarme/taxonerd/releases/download/v1.5.0/en_core_eco_biobert-1.0.2.tar.gz
 ```
-Other available models can be viewed [here](https://github.com/nleguillarme/taxonerd#models).
+Other available models can be viewed [here](https://github.com/nleguillarme/taxonerd#models). Respective model installation instructions can be found [here](https://github.com/nleguillarme/taxonerd#models:~:text=To%20download%20the%20models%3A).
 
 To start Jupyter Notebooks in the current folder, use the command
 ```
