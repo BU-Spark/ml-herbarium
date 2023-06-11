@@ -39,7 +39,7 @@ cd trocr
 ```
 Create a new conda environment and activate it
 ```
-conda create -n my-conda-env
+conda create -n my-conda-env python=3.9
 conda activate my-conda-env
 ```
 
