@@ -35,7 +35,7 @@ Git clone the ml-herbarium repo
 git clone https://github.com/BU-Spark/ml-herbarium.git
 cd ml-herbarium
 git checkout dev
-cd POC/trocr
+cd trocr
 ```
 Create a new conda environment and activate it
 ```
@@ -47,6 +47,7 @@ Install all required packages and Jupter
 ```
 conda install jupyter
 pip install -r requirements.txt
+pip install taxonerd
 ```
 
 To start Jupyter Notebooks in the current folder, use the command
