@@ -32,7 +32,6 @@ six==1.16.0
 soupsieve==2.3.2.post1
 sparse-dot-topn-for-blocks==0.3.1.post3
 string-grouper==0.6.1
-taxonerd==1.5.1
 threadpoolctl==3.1.0
 tokenizers==0.13.2
 topn==0.0.7
@@ -43,3 +42,4 @@ tqdm==4.64.1
 transformers==4.24.0
 typing_extensions==4.4.0
 urllib3==1.26.13
+taxonerd==1.5.1
