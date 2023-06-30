@@ -1,6 +1,9 @@
 import uno
 import pathlib
 from com.sun.star.beans import PropertyValue
+from com.sun.star.awt.FontSlant import (NONE, ITALIC,)
+from com.sun.star.awt.FontWeight import (NORMAL, BOLD,)
+from com.sun.star.awt.FontUnderline import (NONE, SINGLE,)
 import os
 import random
 
@@ -32,9 +35,20 @@ def get_font_style():
 
 def apply_font_style(textCursor):
     style = get_font_style()
-    # Change the font of all the text the cursor spans
+    # Change the font and styles of all the text the cursor spans
     textCursor.setPropertyValue("CharFontName", style[1])
     textCursor.setPropertyValue("CharHeight", style[0])
+
+    textCursor.setPropertyValue("CharPosture", NONE)
+    textCursor.setPropertyValue("CharWeight", NORMAL)
+    textCursor.setPropertyValue("CharUnderline", NONE)
+
+    if(random.randint(0, 4096)%3 == 0):
+        textCursor.setPropertyValue("CharPosture", ITALIC) # Set italic font style
+    if(random.randint(0, 4096)%3 == 1):
+        textCursor.setPropertyValue("CharWeight", BOLD)  # Set bold font style
+    if(random.randint(0, 4096)%3 == 2):
+        textCursor.setPropertyValue("CharUnderline", SINGLE)  # Underline text
 
 def export_pdf():
     desktop = create_instance()
@@ -44,33 +58,29 @@ def export_pdf():
         make_prop("Hidden", True)
     ]
 
-    url = file_url("files/file.odt")
+    url = file_url("trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/files/file.odt")
 
     print(url)
 
-    print("Loading...")
+    print("Loading document...")
 
     doc = desktop.loadComponentFromURL(url, "_blank", 0, loadArgs)
 
-    print("Loaded...")
+    print("Loaded document...")
 
-    # Create a cursor that spans the entire document
+    # Create a cursor that spans one paragraph at a time
     text = doc.Text
     textCursor = text.createTextCursor()
-
-    # tab delimiter
-    # different configurations can be lists and we choose randomly from each of them - font size, font style, background color
 
     textCursor.gotoEndOfParagraph(True)
     apply_font_style(textCursor)
 
     # print(textCursor.String)
 
+    print("Aplying font styles...")
     while(textCursor.gotoNextParagraph(False)):
         textCursor.gotoEndOfParagraph(True)
         apply_font_style(textCursor)
-
-
 
     filterProps = [
         make_prop("IsSkipEmptyPages", False),
@@ -82,12 +92,14 @@ def export_pdf():
         make_prop("FilterData", filterProps),
     ]
 
-    pdfName = file_url("files/file.pdf")
+    pdfName = file_url("trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/files/file.pdf")
 
-    print("Saving PDF", pdfName)
+    print("Saving PDF... Finishing up", pdfName)
 
+    # Save the document
     doc.storeToURL(pdfName, saveArgs)
 
+    # Close the document
     doc.dispose()
 
 export_pdf()

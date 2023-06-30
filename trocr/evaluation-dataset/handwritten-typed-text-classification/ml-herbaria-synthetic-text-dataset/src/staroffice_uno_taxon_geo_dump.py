@@ -54,15 +54,15 @@ def dump_text_to_odt_file():
         make_prop("Hidden", True)
     ]
 
-    url = file_url("files/file.odt")
+    url = file_url("trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/files/file.odt")
 
     print(url)
 
-    print("Loading...")
+    print("Loading document...")
 
     doc = desktop.loadComponentFromURL(url, "_blank", 0, loadArgs)
 
-    print("Loaded...")
+    print("Loaded document...")
 
     # Create a cursor that spans the entire document
     text = doc.Text
@@ -81,11 +81,12 @@ def dump_text_to_odt_file():
 
     line_limit = 2000
 
-    taxon_to_insert = corpus_generator("../corpus/corpus_taxon/corpus_taxon.txt", batch_size, start_line)
-    location_to_insert = corpus_generator("../corpus/corpus_geography/corpus_geography.txt", batch_size, start_line)
+    taxon_to_insert = corpus_generator("corpus/corpus_taxon/corpus_taxon.txt", batch_size, start_line)
+    location_to_insert = corpus_generator("corpus/corpus_geography/corpus_geography.txt", batch_size, start_line)
 
     # break_flag = False
 
+    print("Fetching and printing text...")
     for batch in zip_longest(taxon_to_insert, location_to_insert, fillvalue=""):
         if(start_line > line_limit):
             break
@@ -103,10 +104,10 @@ def dump_text_to_odt_file():
 
     cursor.gotoEndOfParagraph(True)
 
-    # tab delimiter
-
     # Save the document
     doc.store()
+
+    print("Printing done... Finishing up")
 
     # Close the document
     doc.dispose()
