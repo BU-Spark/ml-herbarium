@@ -28,7 +28,7 @@ def corpus_generator(filename, batch_size, start_line=0):
         curr_line = 0
 
         while curr_line < start_line:
-            line = line.readline()
+            line = file.readline()
             if not line:
                 break
             
@@ -76,10 +76,10 @@ def dump_text_to_odt_file():
 
     # text.insertString( cursor, "The first line in the newly created text document.\n", 0 )
     # text.insertString( cursor, "Now we are in the second line\n" , 0 )
-    start_line = 0
+    start_line = 2000
     batch_size = 16
 
-    line_limit = 2000
+    line_limit = 5000 + start_line
 
     taxon_to_insert = corpus_generator("corpus/corpus_taxon/corpus_taxon.txt", batch_size, start_line)
     location_to_insert = corpus_generator("corpus/corpus_geography/corpus_geography.txt", batch_size, start_line)
@@ -97,6 +97,8 @@ def dump_text_to_odt_file():
             for string in elements:
                 if string == "":
                     continue
+                if len(string)%2 == 0:
+                    string = string.upper()
                 text.insertString(cursor, string+"\n", 0)
                 text.insertControlCharacter(cursor.End, PARAGRAPH_BREAK, False)
 
