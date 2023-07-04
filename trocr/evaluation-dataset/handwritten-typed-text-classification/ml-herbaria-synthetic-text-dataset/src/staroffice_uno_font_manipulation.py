@@ -25,8 +25,8 @@ def file_url(path):
     return pathlib.Path(path).as_uri()
 
 def get_font_style():
-    font_sizes = [20, 22.5, 25, 27.5, 30]
-    font_styles = ["Courier", "Times New Roman", "Calibri", "Arial", "American Typewriter"]
+    font_sizes = [20, 22.5, 25, 27.5, 30, 32.5]
+    font_styles = ["Courier", "Times New Roman", "Calibri", "Arial", "American Typewriter", "Helvetica", "Futura", "Bodoni 72", "PT Serif", "PT Sans"]
 
     idx_size = random.randint(0, len(font_sizes)-1)
     idx_font = random.randint(0, len(font_styles)-1)
