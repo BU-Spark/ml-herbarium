@@ -3,6 +3,7 @@ from skimage import morphology, color
 
 import torch
 import torch.nn as nn
+from torchvision.datasets import ImageFolder
 
 class PartialErosion:
     def __init__(self, iterations=2, selem=morphology.square(3)):
@@ -72,5 +73,39 @@ class VGG16Binary(nn.Module):
         return x
 
     
+class TrOCRPreprocessor(ImageFolder):
+    def __init__(self, root, processor, transform=None, target_transform=None):
+        super().__init__(root, transform=transform, target_transform=target_transform)
+        self.processor = processor
+
+    def __getitem__(self, index):
+        # We retrieve the image and label like in the default __getitem__ method
+        img, target = super().__getitem__(index)
+
+        # We apply the TrOCR processor to the image
+        pixel_values = self.processor(images=img, return_tensors="pt").pixel_values
+
+        # We return the tensor under the "pixel_values" key along with the target
+        return pixel_values, target
     
+
+class TensorDataset(Dataset):
+    def __init__(self, tensor_directory):
+        self.tensor_files = glob.glob(f'{tensor_directory}/*image_representation*.pt')
+        self.label_files = glob.glob(f'{tensor_directory}/labels*.pt')
+        self.tensor_files.sort()  # make sure that the tensor files are in the correct order
+        self.label_files.sort()  # make sure that the tensor files are in the correct order
+        
+    def __len__(self):
+        return len(self.tensor_files)
+
+    def __getitem__(self, idx):
+        tensor_file = self.tensor_files[idx]
+        lable_file = self.label_files[idx]
+        tensor = torch.load(tensor_file)
+        labels = torch.load(lable_file)
+        
+        return tensor, labels
+
     
+
