@@ -4,6 +4,7 @@ from skimage import morphology, color
 import torch
 import torch.nn as nn
 from torchvision.datasets import ImageFolder
+from torch.utils.data import Dataset
 
 class PartialErosion:
     def __init__(self, iterations=2, selem=morphology.square(3)):
