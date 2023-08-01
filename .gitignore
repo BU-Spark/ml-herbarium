@@ -17,6 +17,5 @@ trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synth
 <<<<<<< HEAD
 trocr/evaluation-dataset/handwritten-typed-text-classification/logs/*
 trocr/evaluation-dataset/handwritten-typed-text-classification/tensors/*
-=======
 trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/*.zip
->>>>>>> fd2afad645fcf58f3f4f42854bee4ad174f31561
+trocr/label-extraction/data/*
