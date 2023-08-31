@@ -14,8 +14,11 @@ POC/Tertiary_Task/Swin-Transformer-Object-Detection/mmdetection/data/*
 POC/Tertiary_Task/Swin-Transformer-Object-Detection/outputs/*
 trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/files/*
 trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/images/*
-<<<<<<< HEAD
 trocr/evaluation-dataset/handwritten-typed-text-classification/logs/*
 trocr/evaluation-dataset/handwritten-typed-text-classification/tensors/*
 trocr/evaluation-dataset/handwritten-typed-text-classification/ml-herbaria-synthetic-text-dataset/*.zip
 trocr/label-extraction/data/*
+trocr/label-extraction/lightning_logs/*
+**.csv
+trocr/label-extraction/comp-vision-scripts/*
+trocr/datasets/*
