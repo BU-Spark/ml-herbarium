@@ -16,7 +16,7 @@ from transformers import (
 )
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("detr-objection-detection")
+logger = logging.getLogger("detr-object-detection")
 
 
 def run_object_detection_pipeline(pipe: Pipeline, image: Image) -> Image:
@@ -72,26 +72,26 @@ def mask_image(image: Image, bounding_boxes: list) -> Image:
     return masked_image, label_bboxes
 
 
-def run(image_folder: str, pretrained_model: str, output_folder: str):
+def run(image_folder: str, output_folder: str, pretrained_model: str = "spark-ds549/detr-label-detection", cache_dir: str ="data/"):
     """
-    CLI program that pulls a pretrained DETR model from huggingface, and runs it
-    on an image passed via a URL. The results are then saved to a file.
+    Program that pulls a pretrained DETR model from huggingface, and runs it
+    on a folder with input images. The results are then saved to the output folder specified.
 
-    Default model: facebook/detr-resnet-50
+    Default model: spark-ds549/detr-label-detection
 
-    Default filename: detr-bounding-boxes.png
+    Default cache directory: "data" directory in the current directory
     """
 
     logger.info(f"Getting {pretrained_model} pretrained model...")
 
     # Moving model to GPU
     if(torch.cuda.is_available()):
-        model = DetrForObjectDetection.from_pretrained(pretrained_model, cache_dir="./label-extraction/data/").to('cuda')
-        device = 0
+        model = DetrForObjectDetection.from_pretrained(pretrained_model, cache_dir=cache_dir).to('cuda')
+        device = 0 # if GPU is avialable
     else:
-        model = DetrForObjectDetection.from_pretrained(pretrained_model, cache_dir="./label-extraction/data/") 
-        device = -1
-    processor = DetrImageProcessor.from_pretrained(pretrained_model, cache_dir="./label-extraction/data/")
+        model = DetrForObjectDetection.from_pretrained(pretrained_model, cache_dir=cache_dir) 
+        device = -1 # if GPU is unavialable
+    processor = DetrImageProcessor.from_pretrained(pretrained_model, cache_dir=cache_dir)
 
     logger.info("Setting up object detection pipeline...")
     pipe = pipeline(
@@ -125,4 +125,4 @@ def run(image_folder: str, pretrained_model: str, output_folder: str):
 
 
 if __name__ == "__main__":
-    main()
+    run()

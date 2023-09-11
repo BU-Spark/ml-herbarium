@@ -4,6 +4,7 @@ import json
 import warnings
 import pickle
 import ast
+import shutil
 
 # Third-party library imports
 import transformers
@@ -40,7 +41,7 @@ warnings.filterwarnings("ignore", "(Possibly )?corrupt EXIF data", UserWarning)
 @click.option('--input-dir', default='./', type=click.Path(), help='Location of input images.')
 @click.option('--save-dir', default='./', type=click.Path(), help='Location to save all output files.')
 @click.option('--cache-dir', default='./', type=click.Path(), help='Location to cache all downloaded models and databases')
-@click.option('--delete-intermediate', default=True, is_flag=True, help='Whether to delete intermediate files.')
+@click.option('--delete-intermediate', default=False, is_flag=True, help='Whether to delete intermediate files.')
 
 
 def main(input_dir, save_dir, cache_dir, delete_intermediate):
@@ -57,6 +58,10 @@ def main(input_dir, save_dir, cache_dir, delete_intermediate):
     output_dir_detr = workdir+'detr_output_files/'
     # Location of the segmentations
     output_dir_craft = workdir+'craft_output_files/'
+    # Create intermediate directories
+    os.makedirs(output_dir_detr)
+    os.makedirs(output_dir_craft)
+
     # Location to save all output files
     save_dir = save_dir
 
@@ -66,7 +71,7 @@ def main(input_dir, save_dir, cache_dir, delete_intermediate):
     detr_model = 'KabilanM/detr-label-extraction'
     # The DETR model returns the bounding boxes of the lables indentified from the images
     # We will utilize the bounding boxes to rank lables in the downstream task
-    label_bboxes = detr.run(input_dir, detr_model, output_dir_detr)
+    label_bboxes = detr.run(input_dir, output_dir_detr, detr_model)
     
     # Save the label bounding boxes into a pickle file
     pickle.dump(label_bboxes, open(save_dir+"label_boxes.pkl", "wb"))
@@ -318,11 +323,12 @@ def main(input_dir, save_dir, cache_dir, delete_intermediate):
 
     combined_df.to_pickle(save_dir+"full_results_with_confidence.pkl")
 
+    print(delete_intermediate)
     if delete_intermediate:
         # Delete the intermediate folders
         shutil.rmtree(output_dir_craft)
         shutil.rmtree(output_dir_detr)
-        print('Intermediate files deleted')
+        print('\nIntermediate files deleted')
 
 if __name__ == '__main__':
     main()
