@@ -1,20 +1,41 @@
 # Proof of Concept - Deployment Plan
 
 # File Descriptions
-This directory contains all of the files associated with the Tr-OCR pipeline. 
+This directory contains all of the files associated with the Tr-OCR pipeline.
+
+## trocr_with_detr_label_extraction.ipynb
+This notebook shows the process of setting up DETR to identify labels in each image and CRAFT for segmentation, extracting all bounding boxes around text within the bounding boxes from DETR. These segmented images are then passed through the TrOCR model to perform text recognition; we save the transcriptions and model confidence for each of these calculations. Then, we perform entity recognition and linking against a database of taxons (in order to find the best match for each.  All of this information is then accrued in a final output dataframe, which contains the bounding boxes and transcriptions for every segmentation. We then test the accuracy of the pipeline on roughly 250 images at different confidence thresholds.
+
 ## cleaned_trocr_test.ipynb
-This notebook shows the process of setting up craft for segmentation, extracting all bounding boxes around text within the image. These segmented images are then passed through the Tr-OCR model to perform text recognition; we save the transcriptions and model confidence for each of these calculations. Then we perform entity recognition and linking against a database of taxons (in order to find the best match for each.  All of this information is then accrued in a final output dataframe, which contains the bounding boxes and transciptions for every segmentation. We then test the accuracy of the pipeline on roughly 250 images.
+This notebook is identical to the above notebook, except it does not include the DETR model.
 
 # Model Deployment Files
-## trocr_transcription.py
-> **NOTE:** This deployment file has not been updated to reflect the current state of the pipeline. Please consider executing the Jupyter Notebook `cleaned_trocr_test.ipynb`.
+## trocr_with_detr_transcription.py
+This is the main script for running the pipeline. This script performs several operations, such as object detection, text extraction, and Named Entity Recognition (NER) on a set of images. 
 
-This is the main function for running the pipeline. It takes in 6 command line argument
+1. First, it initializes and runs a model called DETR to identify labels in each image and save their bounding boxes to a pickle file.
+2. Second, it runs a text detection model called CRAFT on the images to identify areas containing text, saving these bounding areas to another pickle file.
+3. Third, it sets up a text recognition model called TrOCR and runs it on the text areas identified by CRAFT, storing the results in a DataFrame and saving it to a pickle file.
+4. Fourth, it uses TaxoNERD, an NER tool, to identify taxon names within the text recognized by TrOCR, adding these identifications and their confidence scores to the DataFrame.
 
-The --image_folder arg specifies the absolute path to the folder containing images to test.
-The --save_path arg specifies the absolute path to the location where output files should be stored. Defaults to creating a new folder with the specified name in your PWD if the provided filepath does not exist.
-The --species_file,--genus_file, and --taxon_file args specify the absolute paths of the species, taxon, and genus corpus files.
-An optional -d flag to delete any intermediate directories upon program completion (default is true).
+Note that this script uses command-line interface (CLI) options to specify input/output directories and other parameters as below.
+- `--input-dir`: Specifies the location of the input images. Required argument.
+- `--save-dir`: Specifies the directory where all output files will be saved. Default is the current directory (`./`).
+- `--cache-dir`: Specifies the directory for caching downloaded models and databases. Default is the current directory (`./`).
+- `--delete-intermediate`: A flag that, when used, will delete all intermediate files created during the process.
+
+If you want to specify the input and output directories, for example, you would run:
+
+```
+python trocr_with_detr_transcription.py --input-dir /path/to/input --save-dir /path/to/output
+```
+
+If you also want to delete the intermediate files after the script runs, you'd include the `--delete-intermediate` flag:
+
+```
+python trocr_with_detr_transcription.py --input-dir /path/to/input --save-dir /path/to/output --delete-intermediate
+```
+
 ## trocr.py
 Contains all the functions which relate to running the trocr portion of the pipeline
 ## utilities.py
@@ -22,6 +43,9 @@ Contains a number of functions which are primarily related to the invluded CVIT_
 
 ## requirements.txt
 All required python installs for running the pipeline
+
+## trocr_env.txt
+Conda environment configuration to run the pipeline.
 
 # Deployment instructions
 Optional: Create a new directory and cd into it
@@ -64,19 +88,19 @@ jupyter notebook
 
 To run the pipeline, please execute the `cleaned_trocr_test.ipynb` notebook in the current (`trocr`) folder.
 
-> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU. Running on CPU is significanly slower. 
+> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU. Running on the CPU is significantly slower. 
 
 ## Final Dataframe Column Descriptions
 ### Label
 This column describes the position that a given image was processed
 ### Transcription
-This column contains the every transcription that was found in the image. They are ordered based on the relative position of the top left coordinate for each bounding box in an image. 
+This column contains every transcription that was found in the image. They are ordered based on the relative position of the top left coordinate for each bounding box in an image. 
 ## Transcription_Confidence
-This contains the Tr-OCR model confidences in each transcription. This list of values is ordered based on the `Transcription` column (i.e. you can reference each individual transcription and its confidence using the same index number).
+This contains the TrOCR model confidences in each transcription. This list of values is ordered based on the `Transcription` column (i.e. you can reference each individual transcription and its confidence using the same index number).
 ## Image_Path
 This is the absolute path of the location for a given image
 ## Bounding_Boxes
-This contains the coordinates of each bouding box found in an image. Exactly like transcription confidence, these lists can be indexed based on positions in the `Transcription` column. 
+This contains the coordinates of each bounding box found in an image. Exactly like transcription confidence, these lists can be indexed based on positions in the `Transcription` column. 
 ## Taxon_Output
 This contains the taxons predicted by the entity linking step in the TaxoNerd pipeline.
 ## Confidence_Output
@@ -85,7 +109,9 @@ This contains the confidence for taxons predicted by the entity linking step in 
 ## Evaluation Dataframe Column Descriptions
 ## Confidence_Threshold
 This column contains the confidence threshold use for entity linking in the TaxoNerd pipeline. 
-## Taxons_Predicted
-This column contains the number of taxons predicted at each `Confidence_Threshold` (from 0 to 0.9).
+## Num_Taxons_Correct
+This column contains the number of taxons **correctly** predicted at each `Confidence_Threshold` (from 0 to 1 at 0.1 intervals).
+## Num_Taxons_Predicted
+This column contains the number of taxons predicted at each `Confidence_Threshold` (from 0 to 1 at 0.1 intervals).
 ## Taxons_Accuracy_Predicted
 This column contains the number of taxons predicted with a cosine similarity score of `>0.8` at each `Confidence_Threshold`.
