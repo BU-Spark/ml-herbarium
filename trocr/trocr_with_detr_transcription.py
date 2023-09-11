@@ -38,7 +38,7 @@ warnings.filterwarnings("ignore", "(Possibly )?corrupt EXIF data", UserWarning)
 
 # Define CLI arguments
 @click.command()
-@click.option('--input-dir', default='./', type=click.Path(), help='Location of input images.')
+@click.option('--input-dir', required=True, type=click.Path(), help='Location of input images.')
 @click.option('--save-dir', default='./', type=click.Path(), help='Location to save all output files.')
 @click.option('--cache-dir', default='./', type=click.Path(), help='Location to cache all downloaded models and databases')
 @click.option('--delete-intermediate', default=False, is_flag=True, help='Whether to delete intermediate files.')
