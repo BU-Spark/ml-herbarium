@@ -71,7 +71,7 @@ Install all required packages and Jupter
 ```
 conda install jupyter
 pip install -r requirements.txt
-pip install taxonerd[cuda113] (depending on the version of CUDA installed in your environment)
+pip install taxonerd
 ```
 Currently, the setup uses `en_core_eco_biobert` model for entity recognition as part of the TaxoNERD pipeline. To download and add the model, run the folllowing command.
 ```
@@ -88,7 +88,7 @@ jupyter notebook
 
 To run the pipeline, please execute the `cleaned_trocr_test.ipynb` notebook in the current (`trocr`) folder.
 
-> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU. Running on the CPU is significantly slower. 
+> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU (V100(16 GB) on SCC is recommended so that multiple models in the pipeline can be hosted on the GPU; smaller GPUs have not been tested). Running on the CPU is significantly slower. 
 
 ## Final Dataframe Column Descriptions
 ### Label
