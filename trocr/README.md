@@ -1,6 +1,10 @@
 # Proof of Concept - Deployment Plan
 
 # File Descriptions
+---
+> ## Codebase on SCC
+> Some folders from the codebase, such as logs and data folders, have **NOT been pushed to GitHub**. The most up-to-date codebase (along with all accompanying files and folders) **on SCC** can be found at the path `/projectnb/sparkgrp/ml-herbarium-grp/summer2023/kabilanm/ml-herbarium/`.
+---
 This directory contains all of the files associated with the Tr-OCR pipeline.
 
 ## trocr_with_detr_label_extraction.ipynb
@@ -88,7 +92,7 @@ jupyter notebook
 
 To run the pipeline, please execute the `cleaned_trocr_test.ipynb` notebook in the current (`trocr`) folder.
 
-> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU (V100(16 GB) on SCC is recommended so that multiple models in the pipeline can be hosted on the GPU; smaller GPUs have not been tested). Running on the CPU is significantly slower. 
+> **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU (V100(16 GB) on SCC is recommended so that multiple models in the pipeline can be hosted on the GPU; smaller GPUs have not been tested). Running on the CPU is significantly slower.
 
 ## Final Dataframe Column Descriptions
 ### Label
