@@ -68,7 +68,7 @@ def main(input_dir, save_dir, cache_dir, delete_intermediate):
     ## Running DETR to extract labels from images
     
     # Use the DETR for inference (adopted from Freddie (https://github.com/freddiev4/comp-vision-scripts/blob/main/object-detection/detr.py))
-    detr_model = 'KabilanM/detr-label-extraction'
+    detr_model = 'spark-ds549/detr-label-detection'
     # The DETR model returns the bounding boxes of the lables indentified from the images
     # We will utilize the bounding boxes to rank lables in the downstream task
     label_bboxes = detr.run(input_dir, output_dir_detr, detr_model)
