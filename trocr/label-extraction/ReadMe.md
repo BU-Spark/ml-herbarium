@@ -42,7 +42,7 @@ label-extraction/
 
 #### `data/`
 This folder contains all the data and model files.
-- `detr_train_test_coco/`: COCO format data, not to be modified.
+- `detr_train_test_coco/`: COCO format data, not to be modified. The data used to fine-tune the DETR model in use.
 - `detr_train_test_coco.zip`: ZIP file of the above data.
 - `detr_train_test_coco_small_dataset.zip`: ZIP file of a small subset of the labelled data.
 - `models--*/`: Model downloaded from Hugging Face (cached here).
