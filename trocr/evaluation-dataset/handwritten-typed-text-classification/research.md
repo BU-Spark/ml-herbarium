@@ -12,7 +12,7 @@ In specific, it was observed that the text in images, particularly handwritten t
 Given the encountered limitations with CNNs, I approached the classification task in two primary steps to circumvent the challenges:
 
 1. **Feature Extraction with TrOCR Encoder:**
-   Leveraged the encoder part of the TrOCR model to obtain reliable feature representations from the images, focusing on capturing inherent characteristics of text. TrOCR encoder was used because, unlike CNNs the TrOCR feature representations contain textual details which would then be used to decode to characters. In essence, the encoder preserves textual information that CNNs might not.
+   Leveraged the encoder part of the TrOCR model to obtain reliable feature representations from the images, focusing on capturing inherent characteristics of text. The encoder from TrOCR was employed due to its capability to retain textual details in its feature representations, which are pivotal for decoding to characters. This stands in contrast to Convolutional Neural Networks (CNNs), which might not preserve such detailed textual information. In essence, the encoder within TrOCR ensures the conservation of textual nuances that are potentially overlooked or lost when using CNNs.
 
 2. **Training a Custom FFN Decoder:**
    Employed a custom Feed-Forward Neural Network (FFN) as the decoder to make predictions based on the feature representations extracted from the encoder. The model was trained specifically to discern the subtle differences in features between the two categories.
