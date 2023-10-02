@@ -93,13 +93,14 @@ python -m spacy download en_core_web_md
 python -m spacy download en_core_web_trf
 ```
 
-
 To start Jupyter Notebooks in the current folder, use the command
 ```
 jupyter notebook
 ```
 
 To run the pipeline, please execute the [`trocr_with_detr_label_extraction.ipynb`](https://github.com/BU-Spark/ml-herbarium/blob/research-doc-patch/trocr/trocr_with_detr_label_extraction.ipynb) notebook in the current (`trocr`) folder.
+
+> **For docker deployment instructions, refer to the `docker` folder in the current (`trocr`) folder.**
 
 > **NOTE:** It is HIGHLY recommended to run the pipeline on a GPU (V100(16 GB) on SCC is recommended so that multiple models in the pipeline can be hosted on the GPU; smaller GPUs have not been tested). Running on the CPU is significantly slower.
 
@@ -109,7 +110,7 @@ This column describes the position that a given image was processed
 ### Transcription
 This column contains every transcription that was found in the image. They are ordered based on the relative position of the top left coordinate for each bounding box in an image. 
 ## Transcription_Confidence
-This contains the TrOCR model confidences in each transcription. This list of values is ordered based on the `Transcription` column (i.e. you can reference each individual transcription and its confidence using the same index number).
+This contains the TrOCR model confidences in each transcription. This list of values is ordered based on the `Transcription` column (i.e., you can reference each individual transcription and its confidence using the same index number).
 ## Image_Path
 This is the absolute path of the location for a given image
 ## Bounding_Boxes
