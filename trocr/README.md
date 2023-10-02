@@ -72,7 +72,7 @@ conda env create -n my-conda-env --file=trocr_env.yml
 conda activate my-conda-env
 ```
 
-Install Jupter and required packages
+Install Jupyter and required packages
 ```
 conda install jupyter
 pip install transformers==4.27.0 --no-deps
