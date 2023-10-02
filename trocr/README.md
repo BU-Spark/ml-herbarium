@@ -42,10 +42,11 @@ python trocr_with_detr_transcription.py --input-dir /path/to/input --save-dir /p
 
 ## trocr.py
 Contains all the functions which relate to running the trocr portion of the pipeline
-## utilities.py
-Contains a number of functions which are primarily related to the included CVIT_Training.py file. (Not in use currently)
 
-## requirements.txt
+## [Not in use] utilities.py
+Contains a number of functions which are primarily related to the included CVIT_Training.py file.
+
+## [Not in use] requirements.txt
 All required python installs for running the pipeline
 
 ## trocr_env.yml
