@@ -11,7 +11,8 @@ The digitized samples are an invaluable source of information for climate change
 
 ### A. Problem Statement:
 
-Develop a machine learning solution for automating the extraction and digitization of critical information from handwritten labels on historical herbarium specimens, dating back to the early 1900s.
+Develop a machine learning solution for automating the extraction and digitization of critical information from handwritten labels on historical herbarium specimens, dating back to the early 1900s. Other potential problems to tackle are segmeneting non-relevant parts of the image, and building a classifier for the image itself. 
+
 
 ### B. Checklist for project completion
 
@@ -31,11 +32,19 @@ Develop a machine learning solution for automating the extraction and digitizati
 
 ### C. Provide a solution in terms of human actions to confirm if the task is within the scope of automation through AI.
 
-1. For the main challenge, a person would look at the plant image with text and try to transcribe the text in the image. They would attempt to get the taxon label and the remaining text in the image. The person would refer to a list of known taxon labels to verify that it is a valid label or match it to the closest label. If the text is hard to recognize, they would look at the surrounding text to try to estimate what the word may be. This is a task that can be completed through AI using state-of-the art models.
+1. OCR and Transcription Improvement:
 
-2. The secondary task, a person would look at the image of the plant and from prior knowledge of known categories of the plants and how they look, the person would then idenify what the plant is. Utilizing knowledge such as the location of the plant would help improve the assurance of what the plant category should be. This is another task that can be automated through AI methods.
+A person would look at the plant image embedded with text, aiming to transcribe this text. Their primary focus is on the taxon label, and the surrounding textual content within the image. In addition, they would be on the lookout for specific items such as geography, collection code, barcode, date collected, collector name, collector number, and habitat.
 
-3. The tertiary task would involve a person looking at the image of the plant and then drawing out the locations of the fruits and flowers on the image, they would then count the number of occurrences per plant. The person would also classify what stage the flower or fruit is in based on the phenology of the particular flower or fruit. This is a common AI problem in terms of segmenting where the location of the plants and fruits are on the image, additionally classifying the stage of the life cycle the fruit or flower is in.
+To ensure accuracy, this person would cross-reference the taxon label with a known list, ensuring it's either a valid label or closely matching one. If they encounter text that's challenging to interpret, they would draw from adjacent text or other contextual cues within the image to infer the likely content. This detailed transcription and validation task aligns well with capabilities of state-of-the-art OCR models, especially with refinements to prioritize the extraction of these newly outlined items.
+
+2. Plant Classification:
+
+Once textual content is identified or masked, the person would then shift their focus to the visual aspects of the plant image. Drawing from their prior knowledge of known plant categories, as well as potential hints from the transcribed information like the taxon label, geography, and collection code, they would determine the plant's identity. Recognizing a plant based on its visual characteristics and aligning it with external clues remains a task achievable with AI, particularly when using advanced computer vision methods and a robust training dataset.
+
+3. Plant Features Identification:
+
+Upon examining the plant image, the person would mark out specific features like fruits and flowers, noting their locations. They would count the number of such features and also categorize them based on their phenological stage, i.e., the stage in their life cycle. This identification and classification step pertains to AI's capabilities in image segmentation and classification, given a well-structured dataset. in.
 
 
 ### D. Outline a path to operationalization.
