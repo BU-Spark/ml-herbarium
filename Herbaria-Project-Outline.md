@@ -11,8 +11,8 @@ The digitized samples are an invaluable source of information for climate change
 
 ### A. Problem Statement:
 
-Develop a machine learning solution for automating the extraction and digitization of critical information from handwritten labels on historical herbarium specimens, dating back to the early 1900s. Other potential problems to tackle are segmeneting non-relevant parts of the image, and building a classifier for the image itself. 
-
+Develop a machine learning solution for automating the extraction and digitization of critical information from handwritten and typed text labels on historical herbarium specimens, dating back to the early 1900s. These labels include: location, date collected, collector name etc. The goal is to be able to automatically upload these labels to a database. We will be contributing our work to the existing Github repo. 
+Include support for recognizing Chinese and Cyrilic characters as well. 
 
 ### B. Checklist for project completion
 
@@ -44,7 +44,7 @@ Once textual content is identified or masked, the person would then shift their 
 
 3. Plant Features Identification:
 
-Upon examining the plant image, the person would mark out specific features like fruits and flowers, noting their locations. They would count the number of such features and also categorize them based on their phenological stage, i.e., the stage in their life cycle. This identification and classification step pertains to AI's capabilities in image segmentation and classification, given a well-structured dataset. in.
+Upon examining the plant image, the person would mark out specific features like fruits and flowers, noting their locations. They would count the number of such features and also categorize them based on their phenological stage, i.e., the stage in their life cycle. This identification and classification step pertains to AI's capabilities in image segmentation and classification, given a well-structured dataset.
 
 
 ### D. Outline a path to operationalization.
@@ -55,7 +55,7 @@ The proposed workflow for digitizing herbarium specimen is as follows:
 - Label transcription: Extracting the label from the specimen sheet, transcribing the label:
 -- Minimal metadata capture 
 -- Detailed data capture
-- Georeferencing: generation of latitude, longitude, and associated uncertainties.
+- Georeferencing: extraction of location label, and associated uncertainties.
 
 After the above mentioned processing, we aim to provide the consolidated dataset of herbaria specimen with the desired labels of Taxon, Geography, Collection Code, Barcode, Location, Date Collected, Collector Name, Collector Number, Habitat, etc. to the end-users i.e. climate change scientists, to help in providing key insights into biodiversity change in the age of the Anthropocene.
 
@@ -71,6 +71,7 @@ Final Format/Technology used to generate the output files will be updated subseq
 - Use for synonyms (GBIF is recommended):
 GBIF: https://hosted-datasets.gbif.org/datasets/backbone/current/
 IPNI:  https://storage.cloud.google.com/ipni-data/
+- Chinese Virtual Herbarium : https://www.cvh.ac.cn/spms/list.php
 
 
 ### References
@@ -90,7 +91,71 @@ IPNI:  https://storage.cloud.google.com/ipni-data/
 
 ## Weekly Meeting Updates
 
-* Kick-off meeting scheduled on 10/06 @ 4pm
+### Kick-off meeting Notes 10/06
+
+* Attendance: All team members, Freddie, Tom
+#### Notes:
+The herbaria is a natural history collection
+
+Behind the few specimens on exhibit are warehouses of preserved specimens
+
+Understanding all the morphological differences between species
+
+Dried and pressed species onto a sheet, 6 million plant specimen, 1.5 million are databased
+
+Multiple digitization efforts going back a decade, but haven’t had the funding to digitize all at once
+
+Pulling out bundles of specimens
+
+* Workflow today: batch imaging, manual web-app, data in form fields to create records, costly and time consuming
+
+#### Action Items
+
+Develop Automatic Tools to extract features from the specimens in order to create db records
+
+Goals: Handwriting Recognition and OCR
+
+Marginal improvements to OCR are not necessary
+
+Innovating on Handwriting Recognition
+
+Semantic Identification of the Correct Fields
+- Geography
+- Taxonomic Name
+- Collector Name
+- Date Collected
+
+Fully automate the creation of some subset of records
+Find opportunities to increase accuracy and performance
+Contained/Deployed ideal
+
+### Client meeting Notes 10/16
+
+* Attendees:  Charles, Jonathan, Freddie, Kabilan, Dima, Smriti, Douglas, Thomas
+
+Other labels to extract:
+- Taxon (genus/species) – disambiguating against thesaurus
+- High level geo – minimal country, preferably province and county
+- Date
+- Collector  and Collector # (optional)
+
+Charles mentioned the work at UMICH, for which Thomas Gardos posted this link on the Slack channel.
+
+We got this pointer from Jonathan and Charles to related work going on at UMichigan. There's a 10 minute video from BioDigiCon last month here (starts at 44:30). They basically use Google Vision OCR to get a raw dump of all the text from the specimen, then use LLMs to convert it to a JSON schema.
+The researcher is Will Weaver, and his project is on GitHub.
+
+Dima showed an initial result below of using ChatGPT-4 + Vision to recognize text from a GBIF image.
+
+Team decided that it is worth exploring these directions (both the UMICH approach as well as the fully converged approach Dima tried below), in addition to improving upon the pipeline built from previous term.
+
+#### Follow up:
+Charles, Jonathan – send pointers or query terms to pull representative asian herbaria dataset.
+
+Try “chinese virtual herbarium”, https://www.cvh.ac.cn/ 
+
+Looks like this link is where you can access over 8M images. https://www.cvh.ac.cn/spms/list.php 
+
+Team will clean up the Trello board
 
 ## Link to Meeting Doc
 
