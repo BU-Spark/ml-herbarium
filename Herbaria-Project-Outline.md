@@ -113,7 +113,7 @@ Pulling out bundles of specimens
 
 Develop Automatic Tools to extract features from the specimens in order to create db records
 
-Goals: Handwriting Recognition and OCR
+*Goals*: Handwriting Recognition and OCR
 
 Marginal improvements to OCR are not necessary
 
