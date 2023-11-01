@@ -7,7 +7,7 @@
 ## Overview
 Here, we aim to build a pipeline to classify handwritten text and typed/machine-printed text extracted from images. The ultimate goal of this pipeline is to classify the plant specimen images into typed/handwritten categories to create an evaluation set. The evaluation set will be used to test the main TrOCR pipeline. We utilize various machine learning models and techniques for this purpose. 
 
-For detailed insights on the models explored and the results of the implementation, refer to the [research.md](https://github.com/BU-Spark/ml-herbarium/blob/research-doc-patch/trocr/evaluation-dataset/handwritten-typed-text-classification/research.md) file.
+The following sections of the ReadMe shed light on the files and folders in this directory and how to run the model scripts. For detailed insights on the models explored and the results of the implementation, refer to the [research.md](https://github.com/BU-Spark/ml-herbarium/blob/research-doc-patch/trocr/evaluation-dataset/handwritten-typed-text-classification/research.md) file.
 
 ## Getting Started
 
