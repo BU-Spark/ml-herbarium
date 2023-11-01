@@ -23,23 +23,23 @@ This methodology enabled to maintain a high level of accuracy and reliability in
 
 The [Sequence to Sequence Learning with Neural Networks](https://arxiv.org/abs/1409.3215) paper inspired me to use this encoder-decoder architecture. In this paper, the authors use multilayered Long Short-Term Memory (LSTM) to map the input sequence to a vector of a fixed dimensionality, and then another deep LSTM to decode the target sequence from the vector. Additionally, BERT-like architectures also act as an inspiration to the encoder-decoder paradigm.
 
-This approach of utilizing an FFN as a decoder, post feature extraction, is important in handling various classification tasks, especially when dealing with specialized forms of data like text in images because it allows us to define a custom network specific to our task.
+This approach of utilizing an FFN as a decoder, post feature extraction, is important in handling various classification tasks, especially when dealing with specialized forms of data like text in images, because it allows us to define a custom network specific to our task.
 
 #### Results Summary
 
 In our handwritten vs. typed-text classification task, the model performed impressively with an overall accuracy of \(96\%\). The test samples were handpicked to be challenging for the model to classify (since some of these were misclassified by a human).
 
-- **Handwritten Text Class:**
-  - **Precision:** \(97.96\%\)
-  - **Recall:** \(96.00\%\)
-  - **F1-Score:** \(96.97\%\)
-  - **Support:** 50 samples
+- *Handwritten Text Class:*
+  - *Precision:* \(97.96\%\)
+  - *Recall:* \(96.00\%\)
+  - *F1-Score:* \(96.97\%\)
+  - *Support:* 50 samples
 
-- **Typed Text Class:**
-  - **Precision:** \(96.23\%\)
-  - **Recall:** \(98.08\%\)
-  - **F1-Score:** \(97.14\%\)
-  - **Support:** 52 samples
+- *Typed Text Class:*
+  - *Precision:* \(96.23\%\)
+  - *Recall:* \(98.08\%\)
+  - *F1-Score:* \(97.14\%\)
+  - *Support:* 52 samples
 
 The balanced performance across both classes, as shown in the nearly identical macro average and weighted average metrics, demonstrates the model's robustness in distinguishing between handwritten and typed texts.
 
