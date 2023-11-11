@@ -1,0 +1,24 @@
+```json
+{
+  "Specimen Information": {
+    "Herbarium": "HERBARIO NACIONAL COLOMBIANO",
+    "Scientific Name": "Sanchezia parvibracteata Sprague ex",
+    "Family": "Hortensius",
+    "Identification": "Det. E. Leonard IV - IX - 43",
+    "Description": "Hierba grande; bracteas verdes, en el ápice amarillentas; cálices amarillo; corola amarilla",
+    "Location": "Comisaría del Putumayo; márgenes del río Guamúes entre San Antonio y desembocadura, 320-470 m. alt.",
+    "Collection Number": "No. 11231",
+    "Collector": "J. Cuatrecasas",
+    "Collection Date": "20 Diciembre 1940"
+  },
+  "Barcodes": {
+    "Barcode Number 1": "00028974",
+    "Barcode Number 2": "02853155"
+  },
+  "Additional Handwritten Notes": {
+    "Text 1": "ocre",
+    "Text 2": "(Amarillo",
+    "Text 3": "verde"
+  }
+}
+```

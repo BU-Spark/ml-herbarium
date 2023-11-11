@@ -1,0 +1,27 @@
+Certainly! Here is the text extracted from the image in JSON format:
+
+```json
+{
+  "HerbariumLabels": [
+    {
+      "Institution": "Herbarium of the University of California",
+      "Collection": "CALIFORNIA FUNGI"
+    },
+    {
+      "Institution": "The HARVARD UNIVERSITY HERBARIA",
+      "StampCode": "HARVARD UNIVERSITY"
+    }
+  ],
+  "SpecimenDetails": {
+    "GenusSpecies": "Dermam _____",
+    "SpeciesAuthor": "Hydn repandum Fr.",
+    "Description": "On Pinus muricata duff, and sticks therein.",
+    "Location": "Mt. Vision Trail, Inverness",
+    "County": "Marin Co.",
+    "Date": "Jan 27, 1941",
+    "CollectorAndDeterminer": "T. T. McCabe"
+  }
+}
+```
+
+Please note that part of the genus name "Dermam _____" is obscured and unclear from the image; therefore, I provided an underscore to indicate the missing or unreadable portion of the name. Similarly, there is a stamp codename which might be partial or unclear, and I have transcribed it as it appears.

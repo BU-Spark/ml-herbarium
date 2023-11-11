@@ -1,0 +1,59 @@
+Sure, the extracted text in JSON format is as follows:
+
+```json
+{
+  "Herbarium Label": {
+    "Class": "Equisetopsida C. Agardh",
+    "Subclass": "Magnoliidae Novák ex Takht.",
+    "Order": "Fagales Engl.",
+    "Family": "Fagaceae Dumort.",
+    "Genus": "Quercus L.",
+    "Species": "Quercus alba L.",
+    "Common Name": "white oak",
+    "Collector": "Single collector",
+    "Collector Number": "s.n.",
+    "Collection Date": {
+      "Day": "Unknown",
+      "Month": "Unknown",
+      "Year": "Unknown"
+    },
+    "Country": "United States",
+    "State/Province": "Vermont",
+    "County": "Washington",
+    "Locale": "National Life property",
+    "Location Notes": "N edge of property, forest edge along the railroad tracks. Rich, mesic soil. In mixed hardwood forest with Acer saccharum, Betula lenta, Fagus grandifolia.",
+    "Latitude": "44.267450",
+    "Longitude": "-72.571223",
+    "Datum": "WGS84",
+    "Georeference Source": "Collector GPS (accuracy 7 m)",
+    "Elevation": {
+      "Value": "152",
+      "Unit": "meters"
+    },
+    "Habitat": "Rich, mesic soil.",
+    "Associated Taxa": "Acer saccharum, Betula lenta, Betula papyrifera, Fagus grandifolia.",
+    "Description": {
+      "Habit": "Tree",
+      "Height": {
+        "Value": "20",
+        "Unit": "meters"
+      },
+      "Bark Description": "Grey, ridged and furrowed.",
+      "Leaf Description": "Deciduous, simple, alternate. Elliptic to obovate, 12-20 cm long, 6-12 cm wide.",
+      "Flower Description": "Catkins, present at time of collection.",
+      "Fruit Description": "Acorns, not present at time of collection."
+    },
+    "Phenology": "Flowering",
+    "Notes": "Oak Wilt: No sign at time of collection.",
+    "Barcode Number": "01862880",
+    "US National Herbarium Catalog Number": "02805137",
+    "Image": {
+      "URI": "http://collections.nmnh.si.edu/media/index.php?irn=10170744",
+      "Rights Holder": "Smithsonian Institution, National Museum of Natural History, Department of Botany"
+    },
+    "Last Edited": "2014-07-29"
+  }
+}
+```
+
+Please note that the text in this image has been interpreted and organized into a structured JSON format as if it were metadata attached to a herbarium sample. No such text actually exists in the image. The text is constructed to represent typical information that could be associated with a herbarium specimen for educational purposes.

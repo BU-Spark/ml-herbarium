@@ -1,0 +1,29 @@
+```json
+{
+  "Herbarium Label": {
+    "Title": "Herbarium of Winona H. Welch",
+    "Taxonomy": "Rhynchostegiopsis flexuosa (Sull.) C.M.",
+    "Locality": {
+      "Country": "Guatemala",
+      "Institution": "Stanley Field Expedition of Field Museum of Natural History",
+      "Description": "On tree; Dept. Quezaltenango; Dense, moist, damp, white sand bridge, El Pocito, south of San Martín Chile Verde, on road to Colomba, alt. about 2200 m.",
+      "Date": "Jan. 27, 1941."
+    },
+    "Collection Information": {
+      "Collector": "Paul C. Standley",
+      "Collection Number": "No. 85021",
+      "Determination": "Det. E. B. Bartram, in 1942"
+    },
+    "Ex Herbarium": "Ex herb. Univ. Tenn. for study"
+  },
+  "Stamp": {
+    "Text": "NEW YORK BOTANICAL GARDEN",
+    "Number": "02122746"
+  },
+  "Additional Label": {
+    "Herbarium Name": "Winona Welch Herbarium",
+    "Institution": "of De Pauw University (DPU)",
+    "Transaction": "Purchased by NY in 1987"
+  }
+}
+```

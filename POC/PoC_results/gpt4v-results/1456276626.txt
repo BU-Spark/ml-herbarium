@@ -1,0 +1,16 @@
+```json
+{
+  "1": "Solidago canadensis L.",
+  "2": "var. scabra Torr. & Gray",
+  "3": "CES Taylor 191",
+  "4": "514386",
+  "5": "PLANTS OF NORTH CAROLINA",
+  "6": "Solidago",
+  "7": "Open slope",
+  "8": "6 - 8 ft.",
+  "9": "Vicinity of Tanaset, near Waynesville; altitude 1000 to",
+  "10": "1500 meters",
+  "11": "No. 5575 P. Mcmillan, Collector Sept. 5",
+  "12": "Smithsonian Institution United States National Museum"
+}
+```

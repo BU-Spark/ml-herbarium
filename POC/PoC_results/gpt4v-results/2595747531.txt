@@ -1,0 +1,23 @@
+```json
+{
+  "Herbarium Information": {
+    "Institution": "RUTGERS Chrysler Herbarium",
+    "Specimen Number": "68470"
+  },
+  "Specimen Data": {
+    "Taxonomy": "Carex barrattii Schwein. & Torr. (C. laxiflora Lam.)",
+    "Habitat": "Swampy edges",
+    "Location": "Crosswicks, N.J., Swamps' Run",
+    "Collection Date": "June 18, 1917"
+  },
+  "Collector Information": {
+    "Collector": "Wm. H. Witte",
+    "Collection Number": "406"
+  },
+  "Imaging Information": {
+    "MAM Imaged": "M.A.M.",
+    "Barcode": "CHRB00528897"
+  },
+  "Additional Note": "propres"
+}
+```

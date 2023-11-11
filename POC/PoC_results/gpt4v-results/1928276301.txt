@@ -1,0 +1,67 @@
+```json
+{
+  "1": {
+    "typed": "00250492",
+    "location": "Bottom left white label"
+  },
+  "2": {
+    "typed": "ISOTYPE OF: Peperomia muscipara Trel.",
+    "location": "Center under the specimen"
+  },
+  "3": {
+    "typed": "PIPERACEAE",
+    "location": "Top right corner"
+  },
+  "4": {
+    "typed": "Peperomia muscipara n. sp.",
+    "handwritten": "Det. Wm. Trelease and T. G. Yuncker 1947",
+    "location": "Label in the middle on the right"
+  },
+  "5": {
+    "typed": "EXPLORATION IN COLOMBIA",
+    "location": "Top right header"
+  },
+  "6": {
+    "typed": "DEPARTMENT OF EL CAUCA \"LA GALLERA,\" MICAY VALLEY",
+    "location": "Top right header under 'EXPLORATION IN COLOMBIA'"
+  },
+  "7": {
+    "typed": "CORDELLERA OCCIDENTAL",
+    "location": "Top right"
+  },
+  "8": {
+    "typed": "No. 8005",
+    "location": "Top right"
+  },
+  "9": {
+    "handwritten": "Bosque humedo y alto sobre la Cordillera Occidental",
+    "location": "Top right corner, just below the number"
+  },
+  "10": {
+    "typed": "FOREST",
+    "location": "On the label in the top right corner"
+  },
+  "11": {
+    "typed": "Alt. 2200 m. 6500 ft.",
+    "location": "On the label in the top right corner, below 'FOREST'"
+  },
+  "12": {
+    "typed": "Flowers greenish-yellow",
+    "location": "On the label in the top right corner, below the altitude"
+  },
+  "13": {
+    "typed": "ELLSWORTH P. KILLIP COLLECTOR",
+    "location": "On the label in the top right corner, at the bottom"
+  },
+  "14": {
+    "typed": "JULY 1, 1922",
+    "location": "On the label in the top right corner, at the bottom"
+  },
+  "15": {
+    "typed": "Collected under the auspices of The New York Botanical Garden. Financial aid for the journey rendered by Nathaniel Lord Britton, Mr. Cornelius Van Brunt, and The Academy of Natural Sciences of Philadelphia.",
+    "location": "Bottom part of the top right label"
+  }
+}
+```
+
+Note that the handwritten text has been categorized under the typed text when associated with the same label, and locations have been described to indicate where on the specimen sheet the text is found.

@@ -1,0 +1,18 @@
+```json
+{
+  "specimen_information": {
+    "lichen": "LICHENS OF VIRGINIA",
+    "collected_by": "COLLECTED BY E.S. Luttrell",
+    "identification_number": "1517",
+    "species": "Cladonia subcariosa Nyl.",
+    "det": "det. E.S. Luttrell",
+    "current_identification": "C. subcariosa f. evoluta Vainio",
+    "herbarium": "The FARLOW HERBARIUM OF HARVARD UNIVERSITY"
+  },
+  "collection_details": {
+    "symbiosis": "with Selaginella apus",
+    "habitat": "on shallow soil at edge of flat granite outcrops on field at Granite, 2 miles west of Richmond, Chesterfield Co.",
+    "date": "6 January, 1941"
+  }
+}
+```

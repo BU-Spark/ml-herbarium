@@ -1,0 +1,17 @@
+```json
+{
+  "Herbarium Information": {
+    "Institution": "RUTGERS UNIVERSITY HERBARIUM",
+    "Specimen Number": "26758"
+  },
+  "Specimen Data": {
+    "Scientific Name": "Rudbeckia triloba L.",
+    "Description": "Common, bank at edge of hardwoods above Delaware, N. J.",
+    "Collection Date": "13 Oct. 1935",
+    "Collector": "M. A. Chrysler"
+  },
+  "Imaging Data": {
+    "Image ID": "CHRB0027062"
+  }
+}
+```

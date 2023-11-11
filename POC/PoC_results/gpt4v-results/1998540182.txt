@@ -1,0 +1,23 @@
+Sure, I can help with that. Here's the extracted text from the image in JSON format:
+
+```json
+{
+  "Specimen_Label": {
+    "Specimen_Id": "W 119219",
+    "Herbarium": "Herbarium of New England Botanical Club",
+    "Species_Name": "Agrostis stolonifera",
+    "Collection_Location": "Fremont, New Hampshire (Rockingham County)",
+    "Collection_Date": "July 19, 1927",
+    "Collector": "C.P. Weatherby",
+    "Additional_Notes": "Open moist ground",
+    "Stamp": "COLLECTED FOR THE NEW ENGLAND BOTANICAL CLUB"
+  },
+  "Herbarium_Stamp": {
+    "Text": "NEW ENGLAND BOTANICAL CLUB",
+    "Date": "MAR 19 1938"
+  },
+  "Barcode": "http://www.barcode.com/119219"
+}
+```
+
+Note: The URL in the "Barcode" field is a placeholder since the barcode is not resolvable from the image and does not have an actual URL encoded in it. The actual barcode provides a unique identifier which typically links to a database entry for the specimen.

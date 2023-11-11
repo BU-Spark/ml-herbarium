@@ -1,0 +1,34 @@
+Here's the extracted text from the image in JSON format:
+
+```json
+{
+  "specimen_id": "595866",
+  "herbarium_label": {
+    "genus_species": "Cyperus odoratus L.",
+    "determination_by": "Y.K. Lee & Bon Zi",
+    "determination_date": "5 Feb 1980",
+    "collection": "CHRB herbarium"
+  },
+  "alternate_identification": {
+    "genus_species": "Cyperus engelmannii Steud.",
+    "identifier": "M.V. Hough",
+    "date": "March 1963"
+  },
+  "flora_info": {
+    "region": "FLORA OF NEW JERSEY:",
+    "species": "Cyperus Engelmannii Steud.",
+    "location": "Ballast, Camden",
+    "collector": "C.F. Parker",
+    "collection_date": "Oct 21 1874"
+  },
+  "institution_code": "CHRB0006030",
+  "herbarium_code": "577443",
+  "rutgers_university_chrysler_herbarium": true,
+  "image_scale": {
+    "centimeters": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "copyright_reserved": true
+  }
+}
+```
+
+The JSON structure organizes the information into separate logical sections, such as the herbarium label details, alternate identification, flora information, identification codes, and metadata about the Rutgers University Chrysler Herbarium and the image scale. Please note that handwritten notes may sometimes contain ambiguities and variations in legibility, but the above JSON represents the text as clearly as possible from the provided image.
