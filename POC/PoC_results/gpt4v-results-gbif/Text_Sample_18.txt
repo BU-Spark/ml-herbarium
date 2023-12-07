@@ -1,0 +1,13 @@
+```json
+{
+  "Title": "FLORA OF NORTH CAROLINA",
+  "Specimen": "Cladonia pycnoclada f. monstrosa",
+  "Authority": "(Hoffm.) Ahti",
+  "Collection Date": "Coll. Jan. 4, 1941",
+  "Location": "In badly eroded section south of Mocksville, Davie Co., N.C.",
+  "Specimen Number": "#9905",
+  "Determiner": "Det. F.W.G.",
+  "Collector": "Coll. Fred W. Gray",
+  "Handwritten Note": "WWA123 82"
+}
+```

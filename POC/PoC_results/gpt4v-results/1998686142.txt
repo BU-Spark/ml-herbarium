@@ -1,0 +1,19 @@
+```json
+{
+  "specimenLabel": {
+    "herbarium": "HERBARIUM OF WALTER DEANE, Bequeathed to the New England Botanical Club, Received April, 1907",
+    "taxonomy": "Calamagrostis, Canadensis, (Michx.) Beauv.",
+    "reference": "Gray's Manual 7th ed. 1908, p. 102. 749. 12 +4+21+21+1i",
+    "annotation": "vel cinnoides"
+  },
+  "collectionLabel": {
+    "herbarium": "HERBARIUM OF J.P. CHURCHILL",
+    "taxonomy": "Calamagrostis, longifolia, Hook., CdE",
+    "collectionInfo": "North East Carry, Mt. Kineo: Piscataquis County, Maine, July 13 / 1900, Coll. J.R. Churchill"
+  },
+  "stamps": {
+    "herbariumClubStamp": "NEW ENGLAND BOTANICAL CLUB"
+  },
+  "barcode": "barcode number not legible in the image provided"
+}
+```

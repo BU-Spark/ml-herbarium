@@ -1,0 +1,25 @@
+```json
+{
+  "Specimen Information": {
+    "Institution": "GRAY HERBARIUM of HARVARD UNIVERSITY",
+    "Taxonomy": {
+      "Genus": "Oenothera",
+      "Species": "biennis",
+      "Subspecies": "var. americana",
+      "Authority": "Desf. ex M.",
+      "Family": "Onagraceae"
+    },
+    "Collection Information": {
+      "Collector": "G. E. Bissell",
+      "Date": "1902",
+      "Location": {
+        "County": "Litchfield",
+        "State": "Connecticut",
+        "Country": "USA"
+      },
+      "Description": "Siliceous rock. about Spring Dale, Winsted"
+    }
+  }
+}
+```
+Please note that I've transcribed the relevant information from the image into a JSON format. The species "Oenothera biennis var. americana Desf. ex M." along with the collection details are represented, as well as the institutional stamp signifying it is part of the Gray Herbarium collection. The collection's locality details are inferred from the pre-printed text on the label "CONNECTICUT FLORA, LITCHFIELD COUNTY".

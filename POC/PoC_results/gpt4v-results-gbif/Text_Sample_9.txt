@@ -1,0 +1,13 @@
+Certainly! Here's the text from the image in JSON format:
+
+```json
+{
+  "Country": "BRAZIL",
+  "State": "São Paulo",
+  "City": "Varzea",
+  "Date": "19 January 1941",
+  "Signature": "M. Carretero"
+}
+```
+
+It should be noted that the readability of the handwritten text may vary and my interpretation of the signature may not be entirely accurate.

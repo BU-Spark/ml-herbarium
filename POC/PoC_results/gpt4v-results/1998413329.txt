@@ -1,0 +1,16 @@
+```json
+{
+  "Specimen Information": {
+    "Herbarium": "HERBARIUM OF KATE FURBISH",
+    "Received Date": "NOVEMBER, 1903",
+    "Label": {
+      "Region": "MAINE FLORA, YORK COUNTY",
+      "Species": "Poa triflora Ehrh.",
+      "Location": "Wells Beach, Wells.",
+      "Collector": "Kate Furbish",
+      "Date": "June, 1898."
+    }
+  },
+  "Herbarium Stamp": "NEW ENGLAND BOTANICAL CLUB."
+}
+```

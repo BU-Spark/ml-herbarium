@@ -1,0 +1,20 @@
+```json
+{
+  "Specimen Information": {
+    "UNITED STATES NATIONAL MUSEUM": "1140596",
+    "Exploration": "EXPLORATION IN COLOMBIA",
+    "Region": "DEPARTMENT OF EL CAUCA",
+    "Location Detail": "\"CANAN\" MT. PURACE",
+    "Name": "Utricularia asplundii P. Taylor",
+    "Habitat": "Open hill-side",
+    "Altitude": "3100-3300 m",
+    "Collection Date": "June 12, 1922"
+  },
+  "Collector Information": {
+    "Collectors": "F. W. PENNELL & ELLSWORTH P. KILLIP",
+    "Collections": "Collected while in employ of The New York Botanical Garden, Gray Herbarium of Harvard University, United States National Museum, and The Academy of Natural Sciences of Philadelphia."
+  }
+}
+```
+
+Please note that the scientific name was previously written as "Nierembergia asplundii (P. Taylor)" and later seems to have been corrected or updated to "Utricularia asplundii P. Taylor". Photographs of herbarium sheets often contain handwriting and annotations that reflect taxonomic updates or revisions.

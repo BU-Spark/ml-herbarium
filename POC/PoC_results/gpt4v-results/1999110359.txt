@@ -1,0 +1,18 @@
+```json
+{
+  "specimen": {
+    "herbarium": "GRAY HERBARIUM HARVARD UNIVERSITY",
+    "taxon": "Xyris torta Sm.",
+    "collection": {
+      "county": "Worcester Co.",
+      "series": "Plantae Novae Angliae Robinsianae.",
+      "collector": "J.W. Robbins, M.D., Uxbridge, Mass.",
+      "date": "Jun. 8. 1872"
+    },
+    "identifier": "ex X. flexuosa",
+    "barcode": "Barcode 00051564"
+  }
+}
+```
+
+Please note that the handwriting on the specimen is difficult to decipher accurately, but the information provided above is my best estimation based on visible text. The date may also be read as "July 8. 1872" depending on the handwriting interpretation. The scientific name "Xyris torta Sm." is also an estimation as it may vary due to the scientific standardization and revision over time.

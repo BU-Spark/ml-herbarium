@@ -1,0 +1,32 @@
+Sure, here is the text extracted from the image in JSON format:
+
+```json
+{
+  "ColorChart": ["ColorChecker Classic"],
+  "PlantDetails": {
+    "Title": "Peperomia Retrorsephylla Miq.",
+    "Annotator": "Guido MATHIEU (GENT) - Dec 2005"
+  },
+  "HerbariumType": "ISOTYPE OF:",
+  "IsotypeDetails": {
+    "Species": "Peperomia aggravascens Trelase, Field Mus. Nat. Hist. Bot. Publ. 17(4):330 1938",
+    "VerifiedBy": "Ricardo Callejas. 1988"
+  },
+  "HerbariumTag": {
+    "Number": "23682",
+    "CollectionName": "HERBARIUM T. G. YUNCKER"
+  },
+  "PlantCollectionDetails": {
+    "PlantNumber": "No. 5990",
+    "Date": "7/21/36",
+    "Species": "Peperomia aggravascens Trelase",
+    "Description": "On rotten log In forest, cloud zone, near the summit of the range above El Achote, above the plains of Siguatepeque. 1800 m. altitude.",
+    "Collector": "Collected by T. G. Yuncker, R. F. Dawson and H. R. Youse in the Department of Comayagua, June to August, 1936."
+  },
+  "Barcode": "00222498",
+  "Institution": "THE NEW YORK BOTANICAL GARDEN",
+  "SubInstitution": "TRUMAN G. YUNCKER HERBARIUM OF DEPAUW UNIVERSITY (DPU) PURCHASED BY INY IN 1987"
+}
+```
+
+Please note that JSON is a data interchange format and strictly uses double quotes for strings. The above structure is meant to organize the information found in the image into a machine-readable form. The data provided corresponds to the labels and annotations seen on the herbarium sheet within the image.

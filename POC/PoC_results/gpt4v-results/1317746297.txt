@@ -1,0 +1,21 @@
+Certainly! Here is the extracted text from the image in JSON format:
+
+```json
+{
+  "institution": "UNITED STATES NATIONAL MUSEUM",
+  "herbarium": "DUDLEY HERBARIUM OF STANFORD UNIVERSITY",
+  "collection_number": "6136",
+  "taxon": "Croton ciliatoglanduliferus Ortega",
+  "location": "Meadow 6 mi. NE of Rancho Granadillo.",
+  "elevation": "Alt. 2600 Ft.",
+  "collector": "Ira L. Wiggins",
+  "date": "28 Oct. 1932",
+  "barcode": "01228450",
+  "specimen_number": "1685951",
+  "color_chart": {
+    "visible": true
+  }
+}
+```
+
+Please note that the taxon name might be interpreted differently by human experts, but I have transcribed it as it appears in the text based on the visible characters.

@@ -1,0 +1,22 @@
+Here is the extracted text from the image in JSON format:
+
+```json
+{
+  "specimen_label": {
+    "collection_number": "1693171",
+    "collector": "Ducke No.163",
+    "date_collected": "12-4-1936",
+    "institution": "UNITED STATES NATIONAL MUSEUM",
+    "taxon": "tabernaemontana macrocalyx k.schum et hollr.",
+    "location": "Brasil, Amazonas: Manáos, Paraná do Ramos, floresta inundada em terras baixas.",
+    "description": null,
+    "common_name": null
+  },
+  "additional_notes": {
+    "copyright_notice": "copyright reserved",
+    "measurement_scale": null
+  }
+}
+```
+
+Please note that the description and common name fields have been kept null as there is no corresponding information provided in the image. The text does not give specific descriptions or local/common names for the specimen. Also, the parts of the label that describe the scale have not been provided with specific values, as the text does not specify them.

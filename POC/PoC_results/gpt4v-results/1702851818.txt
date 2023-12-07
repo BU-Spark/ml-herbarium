@@ -1,0 +1,15 @@
+```json
+{
+  "Specimen Number": "1306756",
+  "Herbarium Info": "UNITED STATES NATIONAL MUSEUM",
+  "Title": "PLANTS OF COSTA RICA",
+  "Species": "Cephaelis elata Sw.",
+  "Determination by": "A. L. Alliñar, 1953",
+  "Description": "Moist forest; branching shrub 4-6 ft.; common; stems green; bracts white tinged lavender.",
+  "Location": "El Muñeco, on Río Navarro, Provincia de Cartago, altitude 1400 meters.",
+  "Collection Date": "March 6, 7, 1926.",
+  "Collectors": "Paul C. Standley & Ruben Torres C."
+}
+```
+
+Please note that this JSON representation includes all the visible typed text on the herbarium sheet, as well as the handwritten taxonomic determination. The formatting is estimated based on common JSON structures. It is possible that the exact fields for the JSON representation might be slightly different depending on specific data structure requirements.

@@ -1,0 +1,19 @@
+```json
+{
+  "Herbarium_Label": {
+    "Title": "HERBARIUM OF ODOARDO BURTON HARPER",
+    "Note": "Presented to the New England Botanical Club by his daughter, Ruth Harper Joy, 1947"
+  },
+  "Specimen_Label": {
+    "Taxonomy": "Viola rotundifolia Michx.",
+    "Habitat": "Woods on humus-covered chert.",
+    "Location": "Oxford, Conn.",
+    "Collector": "E.B.H.",
+    "Collection_Date": "May 4. 1902"
+  },
+  "Stamp": {
+    "Institution": "NEW ENGLAND BOTANICAL CLUB"
+  },
+  "Barcode": "Barcode: 00433164"
+}
+```

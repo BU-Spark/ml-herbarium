@@ -1,0 +1,18 @@
+Sure, here is the text from the image in JSON format:
+
+```json
+{
+  "Institution": "Staten Island Museum",
+  "Barcode": "M.A.M. IMAGED",
+  "Title": "PLANTS OF NEW YORK",
+  "Location": "COLLECTED ON STATEN ISLAND",
+  "Species": "Populus grandidentata Michx.",
+  "Location Detail": "Tottenville",
+  "Collector and Date": "Philip Dowell Collector Oct. 19, 1903",
+  "Number": "No. 26490",
+  "Herbarium Label": "Herbarium of Providence Arboretum",
+  "Note": "ex coll."
+}
+```
+
+Please note that the conversion to JSON format involves interpreting the handwritten and typed text and categorizing it, while preserving the intent and accuracy of the content.

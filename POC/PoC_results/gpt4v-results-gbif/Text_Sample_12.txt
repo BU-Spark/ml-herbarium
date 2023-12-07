@@ -1,0 +1,35 @@
+```json
+{
+  "collection_info": {
+    "collection": "WALTER-KIEFER MEMORIAL LICHEN COLLECTION"
+  },
+  "specimen_info": {
+    "genus_species": "Cladonia fimbriata var. simplex (Weis) Fw.",
+    "location": "Dept. Huehuetenango: Near crossing of Rio San Juan Ixtan, east of San Rafael Petzal.",
+    "elevation": "abt. 1730 m."
+  },
+  "collecting_info": {
+    "title": "PLANTS OF GUATEMALA",
+    "expedition": "Stanley Field Expedition of Field Museum of Natural History",
+    "number": "83083",
+    "identifier": "Cladonia fimbriata var. simplex (Weis)",
+    "determiner": "det. C. W. Dodge 1942"
+  },
+  "collector_info": {
+    "collector_name": "PAUL C. STANDLEY",
+    "date": "JAN. 8, 1941"
+  },
+  "herbarium_info": {
+    "institution": "THE HERBARIUM OF THE UNIVERSITY OF NEBRASKA STATE MUSEUM"
+  },
+  "barcodes_and_numbers": {
+    "nebraska_barcode": "NEB000872557",
+    "accession_number": "210453"
+  },
+  "additional_notes": {
+    "handwritten_note": "Most shaded north bank"
+  }
+}
+```
+
+Please note that the handwritten text interpreted as "Most shaded north bank" may be imprecise due to the nature of handwriting interpretation. The remainder of the text has been transcribed as seen in the image.

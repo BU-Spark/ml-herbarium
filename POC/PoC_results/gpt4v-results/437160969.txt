@@ -1,0 +1,22 @@
+```json
+{
+  "1": "Plantae Schlechterianae No. 1518",
+  "2": "Herb. Mus. Paris",
+  "3": "Myrtopsis summitatotalis Schltr. n.sp.",
+  "4": "Auf den Bergen am Ngoye",
+  "5": "1000 m.",
+  "6": "I.XI.02",
+  "7": "Leg. R. Schlechter",
+  "8": "Australian National Herbarium (CANB)",
+  "9": "Myrtopsis pomaderrioidifa (Baill.) Guillaumin",
+  "10": "DET. T.G Hartley",
+  "11": "2006",
+  "12": "TYPE",
+  "13": "according to protologue the longer filament have some hairs near \n their summit; \n in packet could \n be included \n the different length (indeterminable without flowers)",
+  "14": "St. Mus. Botanicum, \n 1902.",
+  "15": "Revue 23 avril 1967",
+  "16": "P0002851"
+}
+``` 
+
+Please note that the text extraction might not be completely error-free due to handwritten text being subject to interpretation. I did my best to transcribe what was visible and legible.

@@ -1,0 +1,22 @@
+```json
+{
+  "specimen_information": {
+    "institution": "UNITED STATES NATIONAL HERBARIUM",
+    "catalog_number": "2780039"
+  },
+  "collection_data": {
+    "label": {
+      "institution": "INSTITUTO DE BOTANICA Sao Paulo - Brasil",
+      "herbarium_number": "23532",
+      "species": "Tapirira marchandii Engl.",
+      "specimen_details": "Tapirira marchandii Engl.",
+      "country": "BRASIL - Estado de S\u00e3o Paulo: S\u00e3o Paulo (Capital), nativa no Jardim Bot\u00e2nico e Parque do Estado, 19/IV/1931.",
+      "environment": "Arvore de V\u00e1rzea mata \"P\u00e3o Pombo\"",
+      "collector_initials": "F.C. Hoehne"
+    },
+    "bar_code": "01887146"
+  }
+}
+```
+
+Please note that the format of JSON provided is based on the text visible in the image, and the keys have been created based on the context of the text. Some of the content, such as handwritten text or obscured text, cannot be determined from this angle, such as collection numbers at the bottom or specific annotations on the envelope that's covering part of the label. If there is additional text that is not visible, it cannot be transcribed.

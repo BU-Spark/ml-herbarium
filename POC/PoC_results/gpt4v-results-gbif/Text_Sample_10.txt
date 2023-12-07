@@ -1,0 +1,23 @@
+```json
+{
+  "Institution": "The Field Museum (F)",
+  "AccessionNumber": "C0290820F",
+  "CollectionTitle": "PLANTS OF GUATEMALA",
+  "CollectionNumber": "83478",
+  "Expedition": "Stanley Field Expedition of Field Museum of Natural History",
+  "Taxonomy": {
+    "Genus": "Uromyces",
+    "Species": "phaseoli",
+    "Authority": "(Pers.) Wint.",
+    "Determiner": "G. B. Cummins"
+  },
+  "Host": "On Phaseolus macrolepis Piper",
+  "Location": {
+    "Department": "Dept. Quezaltenango",
+    "SpecificLocale": "Lower north slopes of Volcán de Santa María, above Palojunoj",
+    "Altitude": "2500–2700 m."
+  },
+  "Collector": "PAUL C. STANDLEY",
+  "Date": "JAN. 15, 1941"
+}
+```

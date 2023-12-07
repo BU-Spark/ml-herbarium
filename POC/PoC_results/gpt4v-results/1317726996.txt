@@ -1,0 +1,23 @@
+Below is the extracted text from the image in JSON format:
+
+```json
+{
+  "Specimen Information": {
+    "Herbarium": "UNITED STATES NATIONAL MUSEUM",
+    "Specimen Number": "1627083"
+  },
+  "Collection Information": {
+    "Flora": "Hawaiicaensis",
+    "Collected By": "C. N. Forbes on Oahu",
+    "Plant Name": "Charpentiera elliptica Gaud.",
+    "Location": "Waianae Mts; Palawai.",
+    "Elevation": "Apl 26 - May 6 - 1911."
+  },
+  "Additional Information": {
+    "Image Number": "00427028",
+    "Bar Code": "No. 143109"
+  }
+}
+```
+
+Please note that any interpretation of the handwritten text may have some uncertainty and the text "Palawai" was read based on the handwriting. The word before "Palawai" is difficult to discern but interpreted as "Waianae Mts;".

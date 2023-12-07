@@ -1,0 +1,23 @@
+```json
+{
+  "Specimen Information": {
+    "Title": "FLORA OF NORTH CAROLINA",
+    "Institution": "Duke University Herbarium",
+    "County": "Durham",
+    "Species": "Plagiochila ludoviciana Sull.",
+    "Habitat": "Side of moist rock"
+  },
+  "Location and Collector Details": {
+    "Location": "Eno R., near crossing of Huckleberry Spgs. Rd., Durham",
+    "Collector": "A. E. Radford & H. L. Blomquist",
+    "Collection Number": "No. 11492"
+  },
+  "Identification": {
+    "Determiner Initials": "H. L. B.",
+    "Determination Date": "1-5-41"
+  },
+  "Institution Code": {
+    "The Field Museum (F)": "C0037500F"
+  }
+}
+```
