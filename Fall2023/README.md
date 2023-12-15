@@ -15,7 +15,9 @@ The digitized samples are an invaluable source of information for climate change
 Develop a machine learning solution for automating the extraction and digitization of critical information from handwritten and typed text labels on historical herbarium specimens, dating back to the early 1900s. These labels include: location, date collected, collector name etc. The goal is to be able to automatically upload these labels to a database. We will be contributing our work to the existing Github repo.
 Include support for recognizing Chinese and Cyrilic characters as well.
 
-## Install
+## Installation 
+
+> Note : This is a work in progress. We would be adding HerbariaOCR as a PyPI package after formatting the repository a bit more. So stay tuned!
 
 ```sh
 pip install HerbariaOCR
@@ -40,7 +42,7 @@ Note : We have defined "Accuracy" in different ways for the different labels of 
 ## Deployment
 
 We have made use of two platforms for deployment.
-1. The user pipeline can be viewed through our Gradio app which enables one to upload a specific Herbarium specimen and run the Azure-GPT pipeline to extract all the text from the specimen image and display it in the Darwin-Core json format. 
+1. The user pipeline can be viewed through our [Gradio app](https://huggingface.co/spaces/smritae01/HerbariaOCR) hosted on HuggingFace which enables one to upload a specific Herbarium specimen and run the Azure-GPT pipeline to extract all the text from the specimen image and display it in the Darwin-Core json format. 
 2. (Work in Progress) Our entire project has an nbdev deployment at [HerbariaOCR](https://github.com/BU-Spark/HerbariaOCR) and is currently able to run locally. Just clone the repository, install the dependencies from requirements.txt and run the nbdev_preview command to obtain a link to the website for the project. 
 
 ## Pricing
