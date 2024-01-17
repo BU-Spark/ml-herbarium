@@ -1,0 +1,25 @@
+```json
+{
+  "Specimen Information": {
+    "Scientific Name": "Carex laxiculmis Schweinitz var. laxiculmis",
+    "Identified By": "Robert F. C. Naczi",
+    "Date Identified": "August 2005",
+    "Institution": "DELAWARE STATE UNIVERSITY"
+  },
+  "Collection Information": {
+    "Collector": "Charles Wright",
+    "Collection Date": "June 6, 1834",
+    "Location": "Plants of Connecticut, Newington, Hartford Co."
+  },
+  "Herbarium": {
+    "Institution": "NEW ENGLAND BOTANICAL CLUB"
+  },
+  "Barcode": "00337503",
+  "Additional Notes": {
+    "Handwritten Note": [
+      "Carex laxiflora, Schweinitz",
+      "844, C.B. Noody Pot."
+    ]
+  }
+}
+```

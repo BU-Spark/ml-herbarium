@@ -1,0 +1,20 @@
+Sure! Here is the text extracted from the image in JSON format:
+
+```json
+{
+  "Header": "NEW ENGLAND BOTANICAL CLUB",
+  "Subheader": "Herbarium of EDWARD LOOMIS DARLING CHAMBERLAIN",
+  "Label": {
+    "GenusSpecies": "Panix quinquefolia, Marsh.",
+    "Description": "Cultivated - Wakefield.",
+    "Locality": "Rhode Island",
+    "CollectorInitials": "E.L.D.C.",
+    "DateCollected": "September 1900"
+  },
+  "Stamp": "HERBARIUM OF THE NEW ENGLAND BOTANICAL CLUB",
+  "Barcode": "Barcode 00373714",
+  "SpecimenID": "Providence 624"
+}
+```
+
+Please note that not every part of the handwritten text could be perfectly discernible due to potential variations in handwriting, and some interpretations have been made in translating them into typed text. The genus species name, "Panix quinquefolia," might be a misspelling or misinterpretation and it should be confirmed as it is uncommon. The standardized modern name for a plant commonly referenced by a similar name is "Panax quinquefolius," which is known as American ginseng.

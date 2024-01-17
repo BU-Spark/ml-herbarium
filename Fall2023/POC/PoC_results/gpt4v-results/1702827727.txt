@@ -1,0 +1,14 @@
+```json
+{
+  "UNITED STATES NATIONAL HERBARIUM": "",
+  "PLANTS OF YUCATAN": "",
+  "No.": "819",
+  "Date": "10/19/31",
+  "Name": "Chiococca alba (L.) Hitchc.",
+  "Locality": "Progreso, coastal thickets",
+  "Distribution": "Mexico and southward",
+  "C. L. LUNDELL, Collector": ""
+}
+```
+
+Please note that I have represented the text in JSON format by using the most likely field names based on the context of the information presented in the herbarium label. The official stamp or logo of "UNITED STATES NATIONAL HERBARIUM" and the collector's name "C. L. LUNDELL, Collector" were included in the key part with an empty value as there was no additional information to include for these fields within the image.

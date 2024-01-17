@@ -1,0 +1,21 @@
+Certainly! Here is the extracted text from the image in JSON format:
+
+```json
+{
+  "Herbarium Label": {
+    "Plant Name": "Solidago neglecta T & G",
+    "Location": "Bog, Maiden Pt., Friendship, Me. Knox Co",
+    "Date": "4 Sep. 1912",
+    "Collector": "A.S.P"
+  },
+  "Stamp": {
+    "Institution": "NEW ENGLAND BOTANICAL CLUB"
+  },
+  "Header": {
+    "Title": "New England Plants from the Herbarium of A. S. Pease",
+    "Information": "Reprinted to the New England Botanical Club, May, 1912"
+  }
+}
+```
+
+Please note that "T & G" is likely an abbreviation for the author(s) of the plant name, and "A.S.P" represents the collector's initials. The handwritten text indicating collection details is captured, and the other text provides contextual information.

@@ -1,0 +1,30 @@
+Certainly! Here is the text extracted from the image in JSON format:
+
+```json
+{
+  "museumLabel": {
+    "institution": "The Field Museum (F)",
+    "barcode": "C0292056F"
+  },
+  "collectionStamp": {
+    "collectionName": "ARTHUR HERBARIUM",
+    "curator": "Joseph C. Arthur"
+  },
+  "specimenInformation": {
+    "title": "PLANTS OF GUATEMALA",
+    "accessionNumber": "83479",
+    "expedition": "Stanley Field Expedition of Field Museum of Natural History",
+    "speciesName": "Franzschia prunifera-spinea (Hemsl.) Standl. & L. Williams",
+    "hostPlant": "On Prunus Capuli Cav.",
+    "location": {
+      "department": "Dept. Quezaltenango",
+      "specificLocation": "Lower north slopes of Volcán de Santa María, above Palojunoj",
+      "elevation": "alt. 2500–2700 m."
+    },
+    "collector": "PAUL C. STANDLEY",
+    "collectionDate": "JAN. 16, 1941"
+  }
+}
+```
+
+Please note that the curator's name "Joseph C. Arthur" for the "ARTHUR HERBARIUM" stamp is assumed based on typical context, as the image does not specify the curator's full name. If that is not correct or you need the name to be extracted strictly from the image, you may disregard that part of the extraction.

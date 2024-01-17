@@ -15,6 +15,8 @@
 ## Overview
 Here, we aim to use DETR (DEtection TRansformer) to segment labels from our plant sample images, through object detection.
 
+The following sections of the ReadMe shed light on the files and folders in this directory and how to run the model scripts. For detailed insights on the models explored and the results of the implementation, refer to the [research.md](https://github.com/BU-Spark/ml-herbarium/blob/research-doc-patch/trocr/label-extraction/research.md) file.
+
 ## Getting Started
 
 ### Prerequisites and Installation

@@ -1,0 +1,21 @@
+Sure, here is the extracted text in JSON format from the image provided:
+
+```json
+{
+  "SpecimenLabel": {
+    "TopLeftStamp": "McGill College HERBARIUM 22254",
+    "HandwrittenText": "Aspidium acrostichoides. Chatham. Oct / 60",
+    "BottomLabel": {
+      "Code": "MTMG 22254",
+      "ExHerbarium": "Ex Herbarium Montreal Natural History Society",
+      "CollectedInfo": "Collected in the vicinity of Chatham, St. Phillippe d'Argentueil, P.Q.",
+      "Collector": "1870 — J.B. McConnell",
+      "Family": "Aspidiaceae",
+      "Subfamily": "POLYPODIACEAE",
+      "Species": "Polystichum acrostichoides (Michx.) Schott"
+    }
+  }
+}
+```
+
+Please note that without tactile inspection or additional context, certain characters such as "0" in "Oct / 60" could potentially be mistaken for other similar characters like "O" or "D". The interpretations provided are based on visual assessment alone.

@@ -1,0 +1,28 @@
+```json
+{
+  "specimen_label": {
+    "museum": "The Field Museum (F)",
+    "catalog_number": "C0274104F"
+  },
+  "identification_label": {
+    "determination": "Determined by ARTHUR",
+    "herbarium": "HERBARIUM",
+    "signature": "Egger & Simmons"
+  },
+  "collection_info": {
+    "title": "PLANTS OF GUATEMALA",
+    "expedition": "Stanley Field Expedition of Field Museum of Natural History",
+    "accession_number": "84310",
+    "scientific_name": "Cologania riguieri Mich. & Rob. T.",
+    "synonym": "Cucumis cognatus syd.",
+    "genus_species": "Cologania riguiera",
+    "family": "Leguminosae",
+    "substrate": "On Verbesina sublobata Benth.",
+    "location": "Dept. Quezaltenango: Mountains southeast of Palestina, on old road to San Juan Ostuncalco, alt. 2550-2850 m.",
+    "collector": "PAUL C. STANDLEY",
+    "collection_date": "JAN. 21, 1941"
+  }
+}
+```
+
+Please note that the determination label contains handwritten names which might include "Egger & Simmons" or a similar interpretation. The exact handwriting analysis is subject to interpretation, and thus there may be discrepancies in the correct transcription of the handwritten text.

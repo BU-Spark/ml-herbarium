@@ -1,0 +1,18 @@
+```json
+{
+  "Specimen Information": {
+    "Label": "HERBARIUM OF KATE FURBISH",
+    "Collection": "MAINE FLORA, WASHINGTON COUNTY",
+    "Species": "Atriplex patula",
+    "Variety": "var. hastata (L.) Gray.",
+    "Collector": "Kate Furbish",
+    "Location": "North Lubec",
+    "Date": "Sept. 7, 1892"
+  },
+  "Institution Information": {
+    "Stamp": "NEW ENGLAND BOTANICAL CLUB",
+    "Received Date": "RECEIVED NOVEMBER, 1906"
+  },
+  "Barcode": "The University of Alabama BAMA 00001959"
+}
+```

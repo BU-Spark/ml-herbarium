@@ -1,0 +1,31 @@
+Sure, here's the extracted text from the image in JSON format:
+
+```json
+{
+  "LeftSpecimen": {
+    "Collection": "FLORA OF THE PENOBSCOT BAY REGION, MAINE",
+    "Number": "No. 7498",
+    "County": "HANCOCK COUNTY",
+    "ScientificName": "Cirsium lanceolatum (L.) Hill",
+    "CommonName": "Pasture Thistle",
+    "Location": "Swan's Island Head, SWAN'S ISLAND",
+    "Date": "July 10, 1951",
+    "Collector": "A. F. Hill"
+  },
+  "RightSpecimen": {
+    "Collection": "FLORA OF THE PENOBSCOT BAY REGION, MAINE",
+    "Number": "No. 1936",
+    "County": "HANCOCK COUNTY",
+    "ScientificName": "Cirsium lanceolatum (L.) Hill",
+    "CommonName": "Field Thistle",
+    "Location": "Gray's Cove, DEER ISLE",
+    "Date": "August 22, 1902",
+    "Collector": "A. F. Hill"
+  },
+  "AdditionalInfo": {
+    "Stamps": ["NEW ENGLAND BOTANICAL CLUB", "HERBARIUM OF BOSTON UNIVERSITY"]
+  }
+}
+```
+
+Please note that I've structured the text based on the two specimens in the image and added the stamps under `AdditionalInfo`. Some of the text was handwritten and possibly subject to interpretation; I have transcribed it to the best of my ability based on the image provided.

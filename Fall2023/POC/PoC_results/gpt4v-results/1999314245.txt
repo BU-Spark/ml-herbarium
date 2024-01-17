@@ -1,0 +1,31 @@
+Here's the extracted text from the image in JSON format:
+
+```json
+{
+  "Herbarium Label": {
+    "Collection Name": "HERBARIUM OF CHARLES ALFRED WEATHERBY",
+    "Additional Information": "Bequeathed to the New England Botanical Club, 1940"
+  },
+  "Stamp": {
+    "Text": "NEW ENGLAND BOTANICAL CLUB",
+    "Club Code": "№ 2022."
+  },
+  "Handwritten Text": {
+    "Plant Name": "Carex laxiflora Lam.",
+    "Locality": "North Castle.",
+    "State": "Conn.",
+    "Collector": "C.A. Weatherby",
+    "Date": "July 15, 1903",
+    "Field Notes": "rocky woods. slit"
+  },
+  "Envelope": {
+    "Code": "3638"
+  },
+  "Scale": {
+    "Units": "cm",
+    "Measurement Range": "0 to 10"
+  }
+}
+```
+
+Please note that the handwriting was interpreted to the best of my ability, and the word "slit" might be referential shorthand by the collector that may not be clear out of context.

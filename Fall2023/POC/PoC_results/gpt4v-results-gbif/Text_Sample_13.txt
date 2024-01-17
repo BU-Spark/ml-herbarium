@@ -1,0 +1,18 @@
+```json
+{
+  "specimen_id": "277684",
+  "institution": "FLORIDA AGRICULTURAL EXPERIMENT STATION",
+  "species": "Crotalaria avonensis Eastwood ex Pennell",
+  "location": {
+    "habitat": "Under live oak",
+    "place": "Keystone Heights, Putnam Co"
+  },
+  "collection_date": "1-26-41",
+  "identifier": {
+    "name": "W.G. Morrill",
+    "notes": "coll & det"
+  },
+  "barcode": "01956173",
+  "associated_institution": "NEW YORK BOTANICAL GARDEN"
+}
+```

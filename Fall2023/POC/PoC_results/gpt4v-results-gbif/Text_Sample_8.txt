@@ -1,0 +1,20 @@
+Certainly! Based on this image, the following JSON structure contains both the typed and handwritten text extracted from the record catalog card:
+
+```json
+{
+  "Dept. No.": "11782",
+  "Acc. No.": "7065",
+  "Phylum": "ARTHROPODA",
+  "Family": "PETROLISTHES",
+  "Date Received": "1941",
+  "Number of Specimens": "1 male",
+  "SCIENTIFIC NAME": "Petrolisthes armatus (Gibbes)",
+  "IDENTIFIED BY": "Janet Haig",
+  "LOCALITY": "Bellavista, Panama City",
+  "DATE WHEN COLLECTED": "1941",
+  "COLLECTOR": "Askoy Exped.",
+  "REMARKS": ""
+}
+```
+
+Please note that the header "RECORD CATALOGUE" and the stamp or mark "234-vi AQ" are not included in the JSON format, as they are not part of the data fields. The word "Remarks" appears to have an empty field with no handwritten or typed additional comments. Also, "No." is assumed to be an abbreviation for "Number," and "Acc. No." is understood as "Accession Number." If there's additional information in those stamps or any other detail that was omitted, please let me know, and I'll include it.

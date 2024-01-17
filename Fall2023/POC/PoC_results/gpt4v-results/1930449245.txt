@@ -1,0 +1,21 @@
+Here is the extracted text from the image in JSON format:
+
+```json
+{
+  "Specimen Information": {
+    "Herbarium": "The New York Botanical Garden",
+    "Number": "572",
+    "Species": "Clitoria falcata Lam.",
+    "Collection Date": "Pleasant to Martinfield Aug. 26.",
+    "Altitude": "Alt. Charlotte Amalie",
+    "Habitat": "Along road, tree 25 ft.",
+    "Emended": "Harrisia martinii"
+  },
+  "Label Info": {
+    "Handwritten Text": "Cultivated plant from the upper garden Harrisia martinii",
+    "Barcode": "01340365"
+  }
+}
+```
+
+Some text is handwritten and may be subject to interpretation; I've done my best to transcribe it accurately. The herbarium barcode (01340365) and the emended name ("Harrisia martinii") are also included. The typed and handwritten collection information and the herbarium identification have been grouped under appropriate headings.

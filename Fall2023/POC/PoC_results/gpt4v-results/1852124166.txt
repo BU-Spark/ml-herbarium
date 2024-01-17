@@ -1,0 +1,18 @@
+```json
+{
+  "1": "Cyphomandra hartwegii (Miers) Walp. var. hartwegii",
+  "2": "Solanaceae",
+  "3": "Lynn Bohs 1986",
+  "4": "HARVARD UNIVERSITY HERBARIA",
+  "5": "1318904",
+  "6": "UNITED STATES NATIONAL MUSEUM",
+  "7": "Cyphomandra heterophylla D. Sm.",
+  "8": "Small tree; flowers green, drooping; Fruit 3 cm. diameter",
+  "9": "Barro Colorado Island, Canal Zone",
+  "10": "July 9",
+  "11": "No. 511 L.A. KENOVER, Collector",
+  "Handwritten": "Schulz"
+}
+``` 
+
+Please note that I have extracted the handwritten text "Schulz" separately and mentioned it as "Handwritten" in the JSON object. The other details have been extracted from typed text and numbered sequentially for readability.

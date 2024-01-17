@@ -1,0 +1,23 @@
+```json
+{
+  "New York Botanical Garden": {
+    "Barcode": "00086138",
+    "Specimen Information": {
+      "Species": "Castilleja integra",
+      "Location": "Organ Mts. N.M. Van Patten's.",
+      "Date": "Jun 9, 1906",
+      "Collector": "Paul C. Standley",
+      "Notes": "HERBARIUM C^l PAUL C. STANDLEY SPRINGFIELD, MISSOURI"
+    }
+  },
+  "Specimen Description": {
+    "Title": "Castilleja organorum sp. nov.",
+    "Text": [
+      "An erect perennial: stems clustered, or branched from the base, sparingly branched above, about 4 dm. high, stout, with rather stiff, spreading or often retrorse pubescence throughout, the pubescence above and upon the inflorescence being softer and even slightly matted: leaves numerous, linear, with one or three nerves, 4.5 mm. long or less, finely scabrate on both surfaces: flowers rather few in a short and rather dense spike: bracts oblong, entire, broadly obtuse, 2 cm. long or less, scarlet for two thirds their length, rough, puberulent: calyx 16 mm. long or less, tubular or somewhat distended below, equally cleft before and behind, the lateral divisions each divided into two linear-lanceolate lobes, scarlet above and greenish below, rough puberulent: corolla slightly exserted, the galea half as long as the tube or less, bright green faced with scarlet, the rather conspicuous lower lip consisting of three bright green, strongly laciniated teeth: capsule about 12 mm. long, ovoid, with a short beak."
+    ],
+    "Additional Notes": [
+      "The type was collected on the rocky sides of the Organ mountains not far from Van Patten's Camp, June 9, 1906, by the writer, altitude about 5700 feet. Other specimens from the same range are as follows: Fitchner canyon, September 23, 1905. Wooton and Standley, west side, near San Augustine ranch, August 16, 1895, Wooton. The plant is related to C. integrada, but differs in its very distinct pubescence and smaller flowers and bracts. It is not very distant from C. patriotica and C. rostrata, but is distinguished by its different calyx and corolla."
+    ]
+  }
+}
+```

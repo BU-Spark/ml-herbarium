@@ -1,0 +1,32 @@
+```json
+{
+  "Specimen Label": {
+    "Scientific Name": "Suaeda torreyana Wats.",
+    "Type Status": "(Syntype)",
+    "Identifiers": "Det. C. O. Hopkins & W. H. Blackwell",
+    "Institution": "Miami University (MU)",
+    "Year Identified": "1975"
+  },
+  "Institution Label": {
+    "Institution Name": "NEW YORK BOTANICAL GARDEN"
+  },
+  "Collection Note": {
+    "Title": "U. S. GEOLOGICAL EXPLORATION OF THE 40TH PARALLEL",
+    "Subtitle": "Under Clarence King, U. S. Geologist.",
+    "Number": "No. 796"
+  },
+  "Specimen Note": {
+    "Previous Identification": "Suaeda fruticosa, Forst.",
+    "Location": "Rh. Truckee Lake, Nevada.",
+    "Altitude": "Alt. N. 4900 ft."
+  },
+  "Barcode": {
+    "Number": "00324412"
+  },
+  "Color Checker": {
+    "Top Left Label": "IMAGED",
+    "Bottom Right Text": "© 2007 PANTONE Inc. All rights reserved."
+  }
+}
+```
+Please note that the image contains some handwritten notes that might be difficult to interpret due to handwriting legibility and image clarity. Additionally, there are minor corrections and annotations on the label, such as "S. fruticosa, Forst." being crossed out and replaced with "S. torreyana, Wats." which has been included in the JSON under "Specimen Note".

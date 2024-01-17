@@ -1,0 +1,26 @@
+```json
+{
+  "specimen_information": {
+    "image_note": "IMAGED",
+    "herbarium": "NEW YORK BOTANICAL GARDEN",
+    "barcode": "00145417",
+    "copyright": "copyright reserved"
+  },
+  "collection_information": {
+    "label_title": "PLANTS OF CUBA",
+    "province": "PROVINCE OF SANTA CLARA",
+    "species": "Cirsium polyacanthum DC.",
+    "physical_description": "6 ft. high. Mts. '1890'",
+    "location": "Limones, Soledad, Cienfuegos",
+    "associated_institution": "Collected for the ARNOLD ARBORETUM",
+    "collector": "J. G. Jack",
+    "date": "March 19, 1928"
+  },
+  "annotation": {
+    "as_determined_by": "Gerald B. Ownbey",
+    "year": "1963"
+  }
+}
+```
+
+Please note that the abbreviation "Mt." was interpreted as "Mts." and "1890" may refer to an unspecified detail related to physical description or collection circumstances, but it is included as part of the physical description as per the visible label's layout. The interpretation of "Mt." or "1890" is speculative, as the photo does not provide direct context for these elements.

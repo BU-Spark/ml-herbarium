@@ -1,0 +1,15 @@
+```json
+{
+  "institution": "STATEN ISLAND MUSEUM",
+  "catalog": "N.A.I.I. IMAGED",
+  "barcode": "Staten Island Museum SII-NY-002230",
+  "specimen_number": "II-126-10",
+  "collection": "FLORA OF STATEN ISLAND",
+  "herbarium": "HERBARIUM OF DANA W. FELLOWS, M.D. 350",
+  "species": "Stellaria graminea L.",
+  "location": "Bulls Head",
+  "collector": "D. W. Fellows",
+  "collection_date": "30 May, 1925",
+  "copyright": "copyright reserved"
+}
+```

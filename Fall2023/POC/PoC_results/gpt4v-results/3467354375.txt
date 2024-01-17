@@ -1,0 +1,16 @@
+```json
+{
+  "TypedText": {
+    "Title": "MUSCI SUECICI",
+    "Species": "Mnium punctatum (L.) Rieb."
+  },
+  "HandwrittenText": {
+    "Location": "LYCKSELE LAPPMARK, Tärna",
+    "Specifics": "sjöar, tjärn.",
+    "Date": "28 juli 1916",
+    "Altitude": "900 m. höjd.",
+    "Collector": "Leg. Hj. Möller"
+  },
+  "Barcode": "04442750"
+}
+```

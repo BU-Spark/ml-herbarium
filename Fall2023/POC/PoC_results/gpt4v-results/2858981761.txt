@@ -1,0 +1,26 @@
+```json
+{
+  "specimen_info": {
+    "institution": "CARNEGIE MUSEUM HERBARIUM",
+    "location": "PITTSBURGH, PA.",
+    "catalog_number": "0153438",
+    "barcode": "PA Database"
+  },
+  "collection_info": {
+    "label_title": "PLANTS OF PENNSYLVANIA",
+    "scientific_name": "Panicum latifolium (L.) var. implicatum (Scribn.)",
+    "collection_details": {
+      "habitat": "Road bank,",
+      "altitude": "1300ft.",
+      "location": "1/2 mi. W. of Alum Bank",
+      "collection_number": "2618",
+      "date": "June 2, 1941"
+    },
+    "collector": "David Berkheimer"
+  },
+  "visual_identifiers": {
+    "specimen_number": "2409"
+  }
+}
+```
+Please note that due to the handwritten nature of the text and potential variations in spelling, some inaccuracies may occur in transcription.

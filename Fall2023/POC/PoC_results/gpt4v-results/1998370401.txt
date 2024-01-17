@@ -1,0 +1,20 @@
+```json
+{
+  "Specimen Information": {
+    "Herbarium": "ARNOLD ARBORETUM",
+    "University": "HARVARD UNIVERSITY"
+  },
+  "Collection Data": {
+    "Label Number": "#455",
+    "Location": "Windham Co.",
+    "Description": "PLANTS OF THE CONNECTICUT RIVER",
+    "Town": "Westminster, Vt.",
+    "Date": "Sept. 1, 1903",
+    "Collected By": "W. H. BLANCHARD",
+    "Identification": "No. 7502 Viburnum Lentago"
+  },
+  "Additional Notes": {
+    "Handwritten Note": "To replace Robbins specimen"
+  }
+}
+```

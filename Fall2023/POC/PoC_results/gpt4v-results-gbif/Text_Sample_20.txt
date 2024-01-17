@@ -1,0 +1,23 @@
+```json
+{
+  "Specimen Number": "84243",
+  "Title": "PLANTS OF GUATEMALA",
+  "Expedition": "Stanley Field Expedition of Field Museum of Natural History",
+  "Species": "Neckera chlorocaulis C. M.",
+  "Determination": "det. E. B. Bartram 1942",
+  "Location": "On tree",
+  "Collection Detail": {
+    "Department": "Quezaltenango",
+    "Description": "Mountains southeast of Palestina, on old road to San Juan Ostuncalco",
+    "Altitude": "alt. 2550-2850 m."
+  },
+  "Collector": "PAUL C. STANDLEY",
+  "Collection Date": "JAN. 21, 1941",
+  "Revision Label": {
+    "Species": "Neckera ehrenbergii C. M.",
+    "Determination": "Det. I. Sastre-DJ",
+    "Revision Date": "13 Mar 1987"
+  },
+  "Barcode": "02716092"
+}
+```
