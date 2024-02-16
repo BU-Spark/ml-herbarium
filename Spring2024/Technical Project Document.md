@@ -64,3 +64,6 @@ TorchServe: https://github.com/pytorch/serve
 Keep track of ongoing meetings in the Project Description document prepared by Spark staff for your project.
 Note: Once this markdown is finalized and merge, the contents of this should also be appended to the Project Description document.
 
+## Temp Link
+https://docs.google.com/document/d/1AkQW9WFcBbHqGl8Js3KIth1u3vtOKAgWTyO3nsYgzYI/edit?usp=sharing
+Will update to github repo at the end of semester.
